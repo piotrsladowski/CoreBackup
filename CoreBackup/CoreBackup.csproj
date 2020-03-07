@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -12,6 +12,18 @@
       <SubType>Designer</SubType>
     </AvaloniaResource>
     <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Remove="Assets\Image1.png" />
+    <AvaloniaResource Remove="Assets\mem.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Assets\Image1.png" />
+    <None Remove="Assets\mem.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Image1.png" />
+    <Content Include="Assets\mem.jpg" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.9.3" />

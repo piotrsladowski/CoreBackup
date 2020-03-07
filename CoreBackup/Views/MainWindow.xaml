@@ -8,10 +8,35 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="CoreBackup">
 
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+  <Design.DataContext>
+    <vm:MainWindowViewModel/>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+  </Design.DataContext>
+
+  <Grid RowDefinitions="20, *, 30" ShowGridLines="True">
+    <Menu Grid.Row="0">
+      <MenuItem Header="_Plik">
+        <MenuItem Header="_Open"/>
+        <Separator/>
+        <MenuItem Header="_Exit"/>
+      </MenuItem>
+      <MenuItem Header="_O programie">
+        <MenuItem Header="_Autorzy"/>
+      </MenuItem>
+    </Menu>
+    <Grid Grid.Row="1" RowDefinitions="*" ColumnDefinitions="*,*" ShowGridLines="True">
+      <StackPanel Grid.Column="0">
+        <Button>Test</Button>
+        <Image MaxHeight="100" Source="/Assets/avalonia-logo.ico"></Image>
+      </StackPanel>
+    </Grid>
+    <WrapPanel Grid.Row="2" VerticalAlignment="Center">
+      <TextBlock Text="Connected = true"></TextBlock>
+      <TextBlock Text="Cześć"></TextBlock>
+      <ComboBox>
+        <ComboBoxItem >item 1</ComboBoxItem>
+      </ComboBox>
+    </WrapPanel>
+  </Grid>
 
 </Window>
