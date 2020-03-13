@@ -9,9 +9,6 @@ namespace CoreBackup.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        public string Greeting => "Welcome to Avalonia!";
-
-
         
         ViewModelBase content;
         public ViewModelBase Content
@@ -20,9 +17,18 @@ namespace CoreBackup.ViewModels
             private set => this.RaiseAndSetIfChanged(ref content, value);
         }
 
+        public MainWindowViewModel()
+        {
+            Content = new ConfigurationViewModel();
+            // Tutaj powinno być:
+            // Content = new ContainerViewModel();
+            // Ale sypie błąd. Nie wiem dlaczego, jest identycznie zrobione 
+        }
+
         public void ShowConfigWindow()
         {
             Content = new ConfigurationViewModel();
+            // Binding działa do okienka Configu
            
         }
 
