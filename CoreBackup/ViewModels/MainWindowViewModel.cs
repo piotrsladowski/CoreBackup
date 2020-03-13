@@ -10,6 +10,8 @@ namespace CoreBackup.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         public string Greeting => "Welcome to Avalonia!";
+
+
         
         ViewModelBase content;
         public ViewModelBase Content
@@ -18,10 +20,10 @@ namespace CoreBackup.ViewModels
             private set => this.RaiseAndSetIfChanged(ref content, value);
         }
 
-
         public void ShowConfigWindow()
         {
             Content = new ConfigurationViewModel();
+           
         }
 
     }

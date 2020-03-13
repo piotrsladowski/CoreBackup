@@ -38,8 +38,8 @@
         <!-- Sidebar -->
         <StackPanel Grid.Column="0">
         <Image MaxHeight="50" ClipToBounds="True" Source="/Assets/avalonia-logo.ico"></Image>
-        <Button Command="{Binding $parent[Window].DataContext.ShowConfigWindow}" Padding="16">Backup</Button>
-        <Button Padding="16">Configuration</Button>
+        <Button Padding="16">Backup</Button>
+        <Button Command="{Binding ShowConfigWindow}" Padding="16">Configuration</Button>
         <Button Padding="16">File explorer</Button>
         <Button Padding="16">Advanced</Button>
         <Button Padding="16">Event log</Button>
