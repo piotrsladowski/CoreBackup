@@ -7,36 +7,49 @@
         x:Class="CoreBackup.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="CoreBackup">
-
+        
   <Design.DataContext>
     <vm:MainWindowViewModel/>
 
   </Design.DataContext>
+    <Grid RowDefinitions="20, *, 30" ShowGridLines="True">
+      <Menu Grid.Row="0">
+        <MenuItem Header="_Plik">
+          <MenuItem Header="_Open" Icon="/Assets/avalonia-logo.ico"/>
+          <MenuItem Header="_Save"/>
+          <MenuItem Header="Temptation"/>
+          <Separator/>
+          <MenuItem Header="_Exit"/>
+        </MenuItem>
+        <MenuItem Header="_O programie">
+          <MenuItem Header="_Autorzy"/>
+        </MenuItem>
+      </Menu>
 
-  <Grid RowDefinitions="20, *, 30" ShowGridLines="True">
-    <Menu Grid.Row="0">
-      <MenuItem Header="_Plik">
-        <MenuItem Header="_Open"/>
-        <Separator/>
-        <MenuItem Header="_Exit"/>
-      </MenuItem>
-      <MenuItem Header="_O programie">
-        <MenuItem Header="_Autorzy"/>
-      </MenuItem>
-    </Menu>
-    <Grid Grid.Row="1" RowDefinitions="*" ColumnDefinitions="*,*" ShowGridLines="True">
+      <Grid ClipToBounds="True" Grid.Row="1" RowDefinitions="*" ColumnDefinitions="140,*" ShowGridLines="True">
       <StackPanel Grid.Column="0">
-        <Button>Test</Button>
-        <Image MaxHeight="100" Source="/Assets/avalonia-logo.ico"></Image>
+        <Button>Tutaj</Button>
+        <Button>będą różne</Button>
+        <Button>sekcje naszego</Button>
+        <Button>fajnego</Button>
+        <Button>programu</Button>
+        <Button>Pytanie?</Button>
+        <Button>OK</Button>
+        <Image MaxHeight="100" ClipToBounds="True" Source="/Assets/avalonia-logo.ico"></Image>
       </StackPanel>
+        <Grid Grid.Column="1" ColumnDefinitions="*,*" RowDefinitions="50,*" ShowGridLines="True" ClipToBounds="True">
+          <Button Grid.Column="0" Grid.ColumnSpan="2">Przyciski i różne śmieszne kontrolki</Button>
+          <TextBlock Grid.Row="1" TextAlignment="Center">Lokalne pliki</TextBlock>
+          <TextBlock Grid.Row="1" Grid.Column="1" TextAlignment="Center">Zdalne pliki</TextBlock>
+        </Grid>
     </Grid>
+
     <WrapPanel Grid.Row="2" VerticalAlignment="Center">
       <TextBlock Text="Connected = true"></TextBlock>
       <TextBlock Text="Cześć"></TextBlock>
       <ComboBox>
-        <ComboBoxItem >item 1</ComboBoxItem>
+        <ComboBoxItem>item 1</ComboBoxItem>
       </ComboBox>
     </WrapPanel>
   </Grid>
-
 </Window>
