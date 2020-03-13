@@ -7,5 +7,8 @@ namespace CoreBackup.ViewModels
 {
     public class ViewModelBase : ReactiveObject
     {
+
+
+        
     }
 }
