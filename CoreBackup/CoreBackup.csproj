@@ -16,14 +16,16 @@
   <ItemGroup>
     <AvaloniaResource Remove="Assets\Image1.png" />
     <AvaloniaResource Remove="Assets\mem.jpg" />
-    <AvaloniaResource Remove="Views\ConfigurationView.xaml" />
-    <AvaloniaResource Remove="Views\ContainerView.xaml" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\Image1.png" />
     <None Remove="Assets\mem.jpg" />
-    <None Remove="Views\ConfigurationView.xaml" />
-    <None Remove="Views\ContainerView.xaml" />
+    <None Include="Views\ConfigurationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Include="Views\ContainerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Image1.png" />
@@ -33,15 +35,5 @@
     <PackageReference Include="Avalonia" Version="0.9.4" />
     <PackageReference Include="Avalonia.Desktop" Version="0.9.4" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.4" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\ConfigurationView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\ContainerView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
   </ItemGroup>
 </Project>

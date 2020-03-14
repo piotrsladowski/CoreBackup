@@ -19,9 +19,10 @@ namespace CoreBackup.ViewModels
 
         public MainWindowViewModel()
         {
-            Content = new ConfigurationViewModel();
+            // Content = new ConfigurationViewModel();
             // Tutaj powinno być:
-            // Content = new ContainerViewModel();
+            Content = new ContainerViewModel();
+            // u mnie działa
             // Ale sypie błąd. Nie wiem dlaczego, jest identycznie zrobione 
         }
 
