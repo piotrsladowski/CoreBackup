@@ -25,29 +25,25 @@
     </Menu>
 
     <!-- Main -->
-    <Grid ClipToBounds="True" Grid.Row="1" RowDefinitions="*" ColumnDefinitions="160,*" ShowGridLines="True">
+    <Grid ClipToBounds="True" Grid.Row="1" RowDefinitions="*" ColumnDefinitions="360,*" ShowGridLines="True">
       <!-- Sidebar -->
       <StackPanel Grid.Column="0">
         <Image MaxHeight="50" ClipToBounds="True" Source="/Assets/avalonia-logo.ico"></Image>
         <Button Padding="16">Backup</Button>
         <Button Command="{Binding $parent[Window].DataContext.ShowConfigWindow}" Padding="16">Configuration</Button>
         <Button Padding="16">File explorer</Button>
-        <Button Padding="16">Advanced</Button>
-        <Button Padding="16">Event log</Button>
+        <Button Command="{Binding ChangeScreenAdvanced}" Padding="16">Advanced</Button>
+        <Button Command="{Binding ChangeScreenEventLog}" Padding="16">Event log</Button>
         <!--
         <Image MaxHeight="100" ClipToBounds="True" Source="/Assets/avalonia-logo.ico"></Image>-->
       </StackPanel>
 
       <!-- Container -->
-      <Grid Grid.Column="1" ColumnDefinitions="*,*" RowDefinitions="50,*" ShowGridLines="True" ClipToBounds="True">
-        <Button Grid.Column="0" Grid.ColumnSpan="2">Przyciski i różne śmieszne kontrolki</Button>
-        <TextBlock Grid.Row="1" TextAlignment="Center">Lokalne pliki</TextBlock>
-        <TextBlock Grid.Row="1" Grid.Column="1" TextAlignment="Center">Zdalne pliki</TextBlock>
-      </Grid>
+      <UserControl Content="{Binding Screen}" Grid.Column="1"/>
     </Grid>
 
     <!-- Footer-->
-    <WrapPanel Grid.Row="2" VerticalAlignment="Center">
+    <WrapPanel Grid.Row="2" VerticalAlignment="Center"> 
       <TextBlock Text="Connection status: {Binding status}" Margin="7,0,10,0"></TextBlock>
       <TextBlock Text=""></TextBlock>
 
