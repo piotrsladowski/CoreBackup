@@ -16,20 +16,18 @@
   <ItemGroup>
     <AvaloniaResource Remove="Assets\Image1.png" />
     <AvaloniaResource Remove="Assets\mem.jpg" />
-    <AvaloniaResource Remove="Views\AdvancedView.xaml" />
+    <AvaloniaResource Remove="Views\ActionsView.xaml" />
     <AvaloniaResource Remove="Views\EventLogView.xaml" />
-    <AvaloniaResource Remove="Views\ScreenView.xaml" />
-    <AvaloniaResource Remove="Views\SplashView.xaml" />
-    <AvaloniaResource Remove="Views\TestScreenView.xaml" />
+    <AvaloniaResource Remove="Views\FileExplorerView.xaml" />
+    <AvaloniaResource Remove="Views\HomeView.xaml" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\Image1.png" />
     <None Remove="Assets\mem.jpg" />
-    <None Remove="Views\AdvancedView.xaml" />
+    <None Remove="Views\ActionsView.xaml" />
     <None Remove="Views\EventLogView.xaml" />
-    <None Remove="Views\ScreenView.xaml" />
-    <None Remove="Views\SplashView.xaml" />
-    <None Remove="Views\TestScreenView.xaml" />
+    <None Remove="Views\FileExplorerView.xaml" />
+    <None Remove="Views\HomeView.xaml" />
     <None Include="Views\ConfigurationView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
@@ -47,27 +45,22 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.4" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\ScreenView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\TestScreenView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\SplashView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Views\EventLogView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\AdvancedView.xaml">
+    <EmbeddedResource Include="Views\ActionsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\FileExplorerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\HomeView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

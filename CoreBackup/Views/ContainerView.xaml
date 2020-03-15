@@ -29,10 +29,10 @@
       <!-- Sidebar -->
       <StackPanel Grid.Column="0">
         <Image MaxHeight="50" ClipToBounds="True" Source="/Assets/avalonia-logo.ico"></Image>
-        <Button Padding="16">Backup</Button>
-        <Button Command="{Binding $parent[Window].DataContext.ShowConfigWindow}" Padding="16">Configuration</Button>
-        <Button Padding="16">File explorer</Button>
-        <Button Command="{Binding ChangeScreenAdvanced}" Padding="16">Advanced</Button>
+        <Button Command="{Binding ChangeScreenHome}" Padding="16">Home</Button>
+        <Button Command="{Binding ChangeScreenConfiguration}" Padding="16">Configuration</Button>
+        <Button Command="{Binding ChangeScreenFileExplorer}" Padding="16">File explorer</Button>
+        <Button Command="{Binding ChangeScreenActions}" Padding="16">Actions</Button>
         <Button Command="{Binding ChangeScreenEventLog}" Padding="16">Event log</Button>
         <!--
         <Image MaxHeight="100" ClipToBounds="True" Source="/Assets/avalonia-logo.ico"></Image>-->

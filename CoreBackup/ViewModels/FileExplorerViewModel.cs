@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CoreBackup.ViewModels
 {
-    class AdvancedViewModel : ViewModelBase
+    class FileExplorerViewModel : ViewModelBase
     {
     }
 }

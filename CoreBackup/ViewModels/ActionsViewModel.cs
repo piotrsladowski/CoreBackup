@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CoreBackup.ViewModels
 {
-    class ScreenViewModel : ViewModelBase
+    class ActionsViewModel : ViewModelBase
     {
     }
 }

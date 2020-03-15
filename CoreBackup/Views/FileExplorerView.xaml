@@ -3,10 +3,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="CoreBackup.Views.AdvancedView">
+             x:Class="CoreBackup.Views.FileExplorerView">
   <Grid ColumnDefinitions="*,*" RowDefinitions="50,*" ShowGridLines="True" ClipToBounds="True">
-    <Button Grid.Column="0" Grid.ColumnSpan="2">Advanced</Button>
-    <TextBlock Grid.Row="1" TextAlignment="Center">NÓll</TextBlock>
-    <TextBlock Grid.Row="1" Grid.Column="1" TextAlignment="Center">Zdalne pliki</TextBlock>
+    <Button Grid.Column="0" Grid.ColumnSpan="2">File Explorer</Button>
+    <TextBlock Grid.Row="1" TextAlignment="Center">Local Files</TextBlock>
+    <TextBlock Grid.Row="1" Grid.Column="1" TextAlignment="Center">Remote Files</TextBlock>
   </Grid>
 </UserControl>

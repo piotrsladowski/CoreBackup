@@ -16,22 +16,33 @@ namespace CoreBackup.ViewModels
 
         public ContainerViewModel()
         {
-            Screen = new SplashViewModel();
+            Screen = new HomeViewModel();
         }
 
-        public void ChangeScreen()
+        public void ChangeScreenHome()
         {
-            Screen = new TestScreenViewModel();
+            Screen = new HomeViewModel();
+        }
+
+        public void ChangeScreenConfiguration()
+        {
+            Screen = new ConfigurationViewModel();
         }
 
         public void ChangeScreenEventLog()
         {
             Screen = new EventLogViewModel();
         }
-        public void ChangeScreenAdvanced()
+        public void ChangeScreenActions()
         {
-            Screen = new AdvancedViewModel();
+            Screen = new ActionsViewModel();
         }
 
+        public void ChangeScreenFileExplorer()
+        {
+            Screen = new FileExplorerViewModel();
+        }
+
+       
     }
 }
