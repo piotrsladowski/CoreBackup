@@ -1,5 +1,4 @@
-﻿using CoreBackup.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using ReactiveUI;
@@ -19,18 +18,12 @@ namespace CoreBackup.ViewModels
 
         public MainWindowViewModel()
         {
-            // Content = new ConfigurationViewModel();
-            // Tutaj powinno być:
             Content = new ContainerViewModel();
-            // u mnie działa
-            // Ale sypie błąd. Nie wiem dlaczego, jest identycznie zrobione 
         }
 
         public void ShowConfigWindow()
         {
-            Content = new ConfigurationViewModel();
-            // Binding działa do okienka Configu
-           
+            Content = new ConfigurationViewModel();           
         }
 
     }

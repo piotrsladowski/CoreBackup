@@ -14,15 +14,26 @@ namespace CoreBackup.ViewModels
 
         #region Constructor
         ViewModelBase screen;
+        ViewModelBase navbar;
         public ViewModelBase Screen
         {
             get => screen;
             private set => this.RaiseAndSetIfChanged(ref screen, value);
         }
 
+        public ViewModelBase Navbar
+        {
+            get => navbar;
+            private set => this.RaiseAndSetIfChanged(ref navbar, value);
+        }
+
         public ContainerViewModel()
         {
+            // Base ViewModels
             Screen = new HomeViewModel();
+            Navbar = new NavbarViewModel();
+
+            // Mutable ViewModels
             homeScreen = new HomeViewModel();
             actionsScreen = new ActionsViewModel();
             configScreen = new ConfigurationViewModel();
@@ -87,7 +98,5 @@ namespace CoreBackup.ViewModels
                 Screen = fileExplorerScreen;
         }
         #endregion
-
-
     }
 }
