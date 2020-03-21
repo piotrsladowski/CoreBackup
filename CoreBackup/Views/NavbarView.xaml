@@ -4,6 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Class="CoreBackup.Views.NavbarView">
   <Menu>
+    <!--Menu Styling -->
+    <Menu.Styles>
+      <Style Selector="MenuItem">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Padding" Value="5"/>
+      </Style>
+    </Menu.Styles>
+    
     <MenuItem Header="_File">
       <MenuItem Header="_Open"/>
       <MenuItem Header="_Save"/>

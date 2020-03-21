@@ -3,6 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using CoreBackup.ViewModels;
 using CoreBackup.Views;
+using CoreBackup.Windows;
 
 namespace CoreBackup
 {
