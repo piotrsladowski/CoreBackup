@@ -5,6 +5,42 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CoreBackup.Views.ContainerView">
 
+  <!-- STYLIZATION -->
+  <UserControl.Styles>
+    <!-- Sidebar Menu Buttons -->
+    <Styles>
+      <Style Selector = "Button.MenuButton">
+        <Setter Property = "Foreground" Value = "#FFFFFFFF" />
+        <Setter Property = "BorderThickness" Value = "0.1" />
+        <Setter Property = "Background" Value = "#FF3399F2" />
+        <Setter Property = "BorderBrush" Value = "#FFFFFFFF" />
+        <Setter Property = "FontSize" Value = "13"/>
+        
+      </Style>
+      <Style Selector = "Button.MenuButton:pointerover">
+        <Setter Property = "BorderBrush" Value = "#FFDD4812" />
+        <Setter Property= "Background" Value="#FF442353"/>
+        <Setter Property = "FontSize" Value = "14"/>
+        <Setter Property= "Padding" Value = "18"/>
+        <Setter Property="Opacity" Value="1"/>
+        <Setter Property="Transitions">
+          <Transitions>
+            <DoubleTransition Property="Opacity" Duration="0:0:0.3"/>
+          </Transitions>
+        </Setter>
+      </Style>
+      <Style Selector = "Button.MenuButton:focus">
+        <Setter Property = "BorderBrush" Value = "#FFDD4812" />
+        <Setter Property= "Background" Value="#FF0E70C2"/>
+        <Setter Property = "FontSize" Value = "14"/>
+        <Setter Property= "Padding" Value = "17"/>
+        <!--<Setter Property="IsEnabled" Value="False"/>-->
+      </Style>
+    </Styles>
+    <!-- Sidebar Menu Buttons End -->
+  </UserControl.Styles>
+  <!-- STYLIZATION END -->
+
   <Grid RowDefinitions="30, *, 30" ShowGridLines="True">
     <!-- Top Navbar -->
     <UserControl Content="{Binding Navbar}" Grid.Row="0"></UserControl>
@@ -12,12 +48,12 @@
     <Grid ClipToBounds="True" Grid.Row="1" RowDefinitions="*" ColumnDefinitions="300,*" ShowGridLines="True">
       <!-- Sidebar -->
       <StackPanel Grid.Column="0">
-        <Image  MaxHeight="50" ClipToBounds="True" Source="/Assets/avalonia-logo.ico" Margin="15"></Image>
-        <Button Command="{Binding ChangeScreenTasks}" Padding="16">Tasks</Button>
-        <Button Command="{Binding ChangeScreenFileExplorer}" Padding="16">File explorer</Button>
-        <Button Command="{Binding ChangeScreenConfiguration}" Padding="16">Configuration</Button>
-        <Button Command="{Binding ChangeScreenEventLog}" Padding="16">Event log</Button>
-        <Button Command="{Binding ChangeScreenHome}" Padding="16">Home (To remove)</Button>
+        <Image  MaxHeight="40" ClipToBounds="True" Source="/Assets/avalonia-logo.ico" Margin="30"></Image>
+        <Button Classes="MenuButton" Command="{Binding ChangeScreenTasks}" Padding="20">Tasks</Button>
+        <Button Classes="MenuButton" Command="{Binding ChangeScreenFileExplorer}" Padding="20">File explorer</Button>
+        <Button Classes="MenuButton" Command="{Binding ChangeScreenConfiguration}" Padding="20">Configuration</Button>
+        <Button Classes="MenuButton" Command="{Binding ChangeScreenEventLog}" Padding="20">Event log</Button>
+        <Button Classes="MenuButton" Command="{Binding ChangeScreenHome}" Padding="20">Home (To remove)</Button>
       </StackPanel>
 
       <!-- Container -->
@@ -35,3 +71,7 @@
   </Grid>
   
 </UserControl>
+<!--
+Microsoft Original Palette Hex:
+https://docs.microsoft.com/en-us/visualstudio/extensibility/ux-guidelines/color-value-reference-for-visual-studio?view=vs-2019
+-->

@@ -11,7 +11,6 @@ namespace CoreBackup.ViewModels
 {
     public partial class ConfigurationViewModel : ViewModelBase
     {
-        public bool OK = true;
         private bool _localDirectoryChoice;
 
         public bool LocalDirectoryChoice
