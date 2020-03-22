@@ -12,7 +12,6 @@
     </AvaloniaResource>
     <AvaloniaResource Include="Assets\**" />
     <Folder Include="Models\Crypto\" />
-    <Folder Include="Models\Remote\" />
   </ItemGroup>
   <ItemGroup>
     <AvaloniaResource Remove="Views\EventLogView.xaml" />
@@ -83,9 +82,6 @@
     <None Update="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\TasksView.xaml">

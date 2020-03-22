@@ -5,6 +5,10 @@ using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using System.Threading.Tasks;
+// FOR FTP SERVER
+using System.Net;
+using System.Threading;
+using System.IO;
 
 
 namespace CoreBackup.ViewModels
@@ -36,9 +40,9 @@ namespace CoreBackup.ViewModels
         }
 
         
-        public ReactiveCommand<Unit, Unit> FileExplorerCommand { get; }
-        public ReactiveCommand<Unit, Unit> LocalDirectoryCommand { get; }
-        public ReactiveCommand<Unit, Unit> RemoteServerCommand { get; }
+        private ReactiveCommand<Unit, Unit> FileExplorerCommand { get; }
+        private ReactiveCommand<Unit, Unit> LocalDirectoryCommand { get; }
+        private ReactiveCommand<Unit, Unit> RemoteServerCommand { get; }
 
         public ConfigurationViewModel()
         {
@@ -50,16 +54,13 @@ namespace CoreBackup.ViewModels
 
         }
 
-        public void LocalRadioBox()
+        private void LocalRadioBox()
         {
             RemoteServerChoice = false;
             LocalDirectoryChoice = true;
-            Debug.WriteLine(LocalDirectoryChoice);
-
-            
         }
 
-        public void RemoteRadioBox()
+        private void RemoteRadioBox()
         {
             LocalDirectoryChoice = false;
             RemoteServerChoice = true;
@@ -71,7 +72,7 @@ namespace CoreBackup.ViewModels
             Debug.WriteLine(Path);
         }
 
-        public async Task<string> GetPath()
+        private async Task<string> GetPath()
         {
             string[] resultReturn = null;
             if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
@@ -87,6 +88,8 @@ namespace CoreBackup.ViewModels
 
         }
 
-        // FTP server config
+        // -----------------  FTP SERVER CONFIGURATION -------------
+       
+
     }
 }
