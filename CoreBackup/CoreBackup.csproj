@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.9.4" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="0.9.4" />
     <PackageReference Include="Avalonia.Desktop" Version="0.9.4" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.4" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="3.8.1" />
@@ -83,9 +84,6 @@
     <None Update="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\TasksView.xaml">

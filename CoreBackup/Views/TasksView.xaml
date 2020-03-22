@@ -21,15 +21,38 @@
       <Image Source="avares://CoreBackup/Assets/Icons/arrow_right_90_blue.png"></Image>
     </Button>
   </Grid>
-  <Grid Grid.Row="1" ColumnDefinitions="400, 10, 400" ShowGridLines="True">
-    <ListBox Name="lbox" Items="{Binding LocalFiles, Mode=OneTime}" Grid.Column="0"></ListBox>
+  <Grid Grid.Row="1" ShowGridLines="False" ClipToBounds="True">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="50*"/>
+      <ColumnDefinition Width="10"/>
+      <ColumnDefinition Width="50*"/>
+    </Grid.ColumnDefinitions>
+    <ListBox Items="{Binding LocalFiles, Mode=OneTime}" Grid.Column="0">
+      <ListBox.Template>
+        <ControlTemplate>
+          <DockPanel LastChildFill="True">
+            <Grid DockPanel.Dock="Top" Height="30">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="50"></ColumnDefinition>
+                <ColumnDefinition Width="70"></ColumnDefinition>
+              </Grid.ColumnDefinitions>
+            </Grid>
+            <ItemsPresenter></ItemsPresenter>
+          </DockPanel>
+        </ControlTemplate>
+      </ListBox.Template>
+    </ListBox>
     <GridSplitter Grid.Column="1"></GridSplitter>
-    <TextBlock Grid.Column="2"></TextBlock>
+    <DataGrid Grid.Column="2"
+      Items="{Binding RemoteFiles}"
+      AutoGenerateColumns="True"
+      CanUserReorderColumns="True"
+      >
+      
+    </DataGrid>
   </Grid>
 
 </Grid>
-  
-  
-  
 
 </UserControl>
