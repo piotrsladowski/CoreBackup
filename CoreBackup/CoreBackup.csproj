@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -11,10 +11,10 @@
       <SubType>Designer</SubType>
     </AvaloniaResource>
     <AvaloniaResource Include="Assets\**" />
+    <Folder Include="Models\Crypto\" />
+    <Folder Include="Models\Remote\" />
   </ItemGroup>
   <ItemGroup>
-    <AvaloniaResource Remove="Assets\Image1.png" />
-    <AvaloniaResource Remove="Assets\mem.jpg" />
     <AvaloniaResource Remove="Views\ActionsView.xaml" />
     <AvaloniaResource Remove="Views\EventLogView.xaml" />
     <AvaloniaResource Remove="Views\FileExplorerView.xaml" />
@@ -25,8 +25,6 @@
     <AvaloniaResource Remove="Windows\SettingsWindow.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Assets\Image1.png" />
-    <None Remove="Assets\mem.jpg" />
     <None Remove="Views\ActionsView.xaml" />
     <None Remove="Views\EventLogView.xaml" />
     <None Remove="Views\FileExplorerView.xaml" />
@@ -44,10 +42,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Image1.png" />
-    <Content Include="Assets\mem.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.9.4" />
     <PackageReference Include="Avalonia.Desktop" Version="0.9.4" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.4" />
@@ -55,6 +49,7 @@
     <PackageReference Include="MahApps.Metro" Version="1.6.5" />
     <PackageReference Include="Microsoft.Graph" Version="3.0.1" />
     <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
+    <PackageReference Include="ReactiveUI" Version="11.2.3" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\EventLogView.xaml">
