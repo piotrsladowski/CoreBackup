@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace CoreBackup.ViewModels
 {
-    class ActionsViewModel : ViewModelBase
+    class TasksViewModel : ViewModelBase
     {
 
         // https://reactiveui.net/docs/handbook/collections/
@@ -25,7 +25,7 @@ namespace CoreBackup.ViewModels
         public ReactiveCommand<Unit, Unit> SendToRemoteCommand { get; }
         public ReactiveCommand<Unit, Unit> PauseCommand { get; }
 
-        public ActionsViewModel()
+        public TasksViewModel()
         {
             SendToRemoteCommand = ReactiveCommand.Create(SendToRemote);
             PauseCommand = ReactiveCommand.Create(Pause);

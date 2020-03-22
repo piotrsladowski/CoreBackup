@@ -6,7 +6,7 @@ namespace CoreBackup.ViewModels
 {
     class ContainerViewModel : ViewModelBase
     {
-        ViewModelBase actionsScreen;
+        ViewModelBase tasksScreen;
         ViewModelBase configScreen;
         ViewModelBase homeScreen;
         ViewModelBase fileExplorerScreen;
@@ -35,18 +35,18 @@ namespace CoreBackup.ViewModels
 
             // Mutable ViewModels
             homeScreen = new HomeViewModel();
-            actionsScreen = new ActionsViewModel();
+            tasksScreen = new TasksViewModel();
             configScreen = new ConfigurationViewModel();
             fileExplorerScreen = new FileExplorerViewModel();
             eventLogScreen = new EventLogViewModel();
         }
         #endregion
 
-        #region ViewModel Actions
-        public ViewModelBase ActionsScreen
+        #region ViewModel tasks
+        public ViewModelBase TasksScreen
         {
-            get => actionsScreen;
-            private set => this.RaiseAndSetIfChanged(ref actionsScreen, value);
+            get => tasksScreen;
+            private set => this.RaiseAndSetIfChanged(ref tasksScreen, value);
         }
 
 
@@ -89,9 +89,9 @@ namespace CoreBackup.ViewModels
         {          
                 Screen = eventLogScreen;           
         }
-        public void ChangeScreenActions()
+        public void ChangeScreenTasks()
         {           
-                Screen = actionsScreen;
+                Screen = tasksScreen;
         }
         public void ChangeScreenFileExplorer()
         {          

@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace CoreBackup.Views
 {
-    public class ActionsView : UserControl
+    public class TasksView : UserControl
     {
-        public ActionsView()
+        public TasksView()
         {
             this.InitializeComponent();
         }

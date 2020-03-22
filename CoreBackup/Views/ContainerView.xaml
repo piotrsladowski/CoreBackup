@@ -13,11 +13,11 @@
       <!-- Sidebar -->
       <StackPanel Grid.Column="0">
         <Image  MaxHeight="50" ClipToBounds="True" Source="/Assets/avalonia-logo.ico" Margin="15"></Image>
-        <Button Command="{Binding ChangeScreenHome}" Padding="16">Home</Button>
-        <Button Command="{Binding ChangeScreenConfiguration}" Padding="16">Configuration</Button>
+        <Button Command="{Binding ChangeScreenTasks}" Padding="16">Tasks</Button>
         <Button Command="{Binding ChangeScreenFileExplorer}" Padding="16">File explorer</Button>
-        <Button Command="{Binding ChangeScreenActions}" Padding="16">Actions</Button>
+        <Button Command="{Binding ChangeScreenConfiguration}" Padding="16">Configuration</Button>
         <Button Command="{Binding ChangeScreenEventLog}" Padding="16">Event log</Button>
+        <Button Command="{Binding ChangeScreenHome}" Padding="16">Home (To remove)</Button>
       </StackPanel>
 
       <!-- Container -->
