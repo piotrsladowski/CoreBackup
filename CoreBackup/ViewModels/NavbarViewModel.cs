@@ -1,4 +1,6 @@
-﻿using ReactiveUI;
+﻿using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Reactive;
@@ -11,11 +13,12 @@ namespace CoreBackup.ViewModels
         public ReactiveCommand<Unit, Unit> OpenSettingsWindowCommand { get; }
         //public ReactiveCommand<Unit, Unit> ExitAppCommand { get; }
         public ReactiveCommand<Unit, Unit> OpenAboutWindowCommand { get; }
+        public ReactiveCommand<Unit, Unit> ExitAppCommand { get; }
         public NavbarViewModel()
         {
             OpenSettingsWindowCommand = ReactiveCommand.Create(OpenSettingsWindow);
             OpenAboutWindowCommand = ReactiveCommand.Create(OpenAboutWindow);
-            //ExitAppCommand = ReactiveCommand.Create(ExitApp);
+            ExitAppCommand = ReactiveCommand.Create(ExitApp);
         }
 
 
@@ -32,7 +35,12 @@ namespace CoreBackup.ViewModels
             
         }
 
-
+        private void ExitApp()
+        {
+            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime) 
+            { desktopLifetime.Shutdown(); 
+            } 
+        }
 
     }
 }

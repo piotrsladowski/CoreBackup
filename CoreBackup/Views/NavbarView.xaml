@@ -19,7 +19,7 @@
       <MenuItem Header="_Settings" Command="{Binding OpenSettingsWindowCommand}"/>
       <!--Preferences open new window // theme // settings -->
       <Separator/>
-      <MenuItem Header="_Exit" Command="{Binding Platform.OnExit}"/>
+      <MenuItem Header="_Exit" Command="{Binding ExitAppCommand}"/>
     </MenuItem>
 
     <MenuItem Header="_Help">
