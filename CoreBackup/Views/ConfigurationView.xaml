@@ -4,5 +4,36 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CoreBackup.Views.ConfigurationView">
-    New window. Configuration settings
+
+  <StackPanel>
+    <Grid ColumnDefinitions="1*" RowDefinitions="10,30,5">
+      <Rectangle HorizontalAlignment="Stretch" Fill="#FF007ACC" Height="10" Grid.Column="0" Grid.Row="0"/>
+      <Rectangle HorizontalAlignment="Stretch" Fill="DarkSlateBlue" Height="5" Grid.Column="0" Grid.Row="0"/>
+      <TextBlock Text="--- Select Backup Mode ---" TextAlignment="Center" FontSize="20" Margin="10" Grid.Column="0" Grid.Row="1"/>
+      <Rectangle HorizontalAlignment="Stretch" Fill="#FF007ACC" Height="10" Grid.Column="0" Grid.Row="2"/>
+      <Rectangle HorizontalAlignment="Stretch" Fill="DarkSlateBlue" Height="5" Grid.Column="0" Grid.Row="2"/>
+    </Grid>
+    
+    <Grid ColumnDefinitions="15*, 10*, 15*, 10*" RowDefinitions="30,30,25,20" Margin="10">     
+      <TextBlock Text="Local Directory" Grid.Row="0" Grid.Column="0" TextAlignment="Right"
+                 Margin="0,8,10,10"  FontSize="15"/>
+      <RadioButton  Grid.Row="0" Grid.Column="1" Command="{Binding LocalDirectoryCommand}"
+                    IsChecked="{Binding LocalDirectoryChoice}"/>
+      <TextBlock Text="Remote Server" Grid.Row="0" Grid.Column="2" TextAlignment="Right"
+                 Margin="0,8,10,10" FontSize="15"/>
+      <RadioButton Grid.Row="0" Grid.Column="3" Command="{Binding RemoteServerCommand}"
+                   IsChecked="{Binding RemoteServerChoice}"/>
+
+
+     
+      <TextBox Text="{Binding Path}" Margin="0 0 5 0" Grid.Column="0" IsReadOnly="True" Grid.Row="2"
+               IsVisible="{Binding LocalDirectoryChoice}"/>
+      <Button Content="Browse" Command="{Binding FileExplorerCommand}" Margin="0 0 0 0" Grid.Column="1"
+                Grid.Row="2" IsVisible="{Binding LocalDirectoryChoice}"/>
+     
+     
+    </Grid>
+  </StackPanel>
+
+  
 </UserControl>

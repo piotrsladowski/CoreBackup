@@ -4,7 +4,6 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
     <Compile Update="**\*.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
@@ -36,6 +35,7 @@
     <None Remove="Views\SettingsWindow.xaml" />
     <None Remove="Windows\AboutWindow.xaml" />
     <None Remove="Windows\SettingsWindow.xaml" />
+    <None Include="..\.editorconfig" Link=".editorconfig" />
     <None Include="Views\ConfigurationView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
@@ -51,6 +51,10 @@
     <PackageReference Include="Avalonia" Version="0.9.4" />
     <PackageReference Include="Avalonia.Desktop" Version="0.9.4" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.4" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="3.8.1" />
+    <PackageReference Include="MahApps.Metro" Version="1.6.5" />
+    <PackageReference Include="Microsoft.Graph" Version="3.0.1" />
+    <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\EventLogView.xaml">
@@ -89,5 +93,8 @@
     <None Update="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
 </Project>

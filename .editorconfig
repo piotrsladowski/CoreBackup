@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CS0108: Składowa ukrywa dziedziczoną składową; brak słowa kluczowego new
+dotnet_diagnostic.CS0108.severity = none
