@@ -9,13 +9,13 @@ namespace CoreBackup.Models.Remote
 {
     public partial class FTP
     {
-        private string Username;
-        private string Filename;
-        private string Fullname;
-        private string Server;
-        private string Password;
-        private string path;
-        private string localdest;
+        private string Username { get; set; }
+        private string Filename { get; set; }
+        private string Fullname { get; set; }
+        private string Server { get; set; }
+        private string Password { get; set; }
+        private string path { get; set; }
+        private string localdest { get; set; }
 
         public FTP(string Username, string Filename, string Fullname, string Server, string Password, string path,
             string localdest)

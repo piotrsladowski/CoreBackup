@@ -2,14 +2,19 @@
 using Avalonia.Controls;
 using ReactiveUI;
 using System.Diagnostics;
-using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using System.Threading.Tasks;
 // FOR FTP SERVER
 using System.Net;
 using System.Threading;
 using System.IO;
-
+using Microsoft.Graph;
+using Application = Avalonia.Application;
+using System.Collections.Generic;
+using CoreBackup.Models.Remote;
+using System;
+using Avalonia.Input;
+using Xceed.Wpf.Toolkit.PropertyGrid.Converters;
 
 namespace CoreBackup.ViewModels
 {
@@ -39,7 +44,7 @@ namespace CoreBackup.ViewModels
             set => this.RaiseAndSetIfChanged(ref _path, value);
         }
 
-        
+
         private ReactiveCommand<Unit, Unit> FileExplorerCommand { get; }
         private ReactiveCommand<Unit, Unit> LocalDirectoryCommand { get; }
         private ReactiveCommand<Unit, Unit> RemoteServerCommand { get; }
@@ -89,7 +94,54 @@ namespace CoreBackup.ViewModels
         }
 
         // -----------------  FTP SERVER CONFIGURATION -------------
-       
+
+        private string _username;
+        public string UsernameInput
+        {
+            get => _username;
+            set => this.RaiseAndSetIfChanged(ref _username, value);
+        }
+
+        private string _password;
+
+        public string PasswordInput
+        {
+            get => _password;
+            set => this.RaiseAndSetIfChanged(ref _password, value);
+        }
+
+        private string _server;
+
+        public string ServerInput
+        {
+            get => _server;
+            set => this.RaiseAndSetIfChanged(ref _server, value);
+        }
+
+        private string _filename;
+
+        public string FilenameInput
+        {
+            get => _filename;
+            set => this.RaiseAndSetIfChanged(ref _filename, value);
+        }
+
+        private int _cBoxSelectedIdx;
+
+        public int CBoxSelectedIdx
+        {
+            get => _cBoxSelectedIdx;
+            set => this.RaiseAndSetIfChanged(ref _cBoxSelectedIdx, value);
+        }
+
+        public void Check()
+        {
+            Debug.WriteLine(UsernameInput);
+            Debug.WriteLine(PasswordInput);
+            Debug.WriteLine(ServerInput);
+            Debug.WriteLine(FilenameInput);
+            Debug.WriteLine(CBoxSelectedIdx);
+        }
 
     }
 }
