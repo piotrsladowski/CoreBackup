@@ -149,7 +149,7 @@ namespace CoreBackup.ViewModels
             }
             catch (System.Net.NetworkInformation.PingException)
             {
-                ConnectionStatus = "Disconnected-Exception";
+                ConnectionStatus = "Disconnected";
             }
         }
         #endregion
