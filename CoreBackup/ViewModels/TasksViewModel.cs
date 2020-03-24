@@ -30,8 +30,18 @@ namespace CoreBackup.ViewModels
         public ReactiveCommand<Unit, Unit> SendToRemoteCommand { get; }
         public ReactiveCommand<Unit, Unit> PauseCommand { get; }
 
+
+        private string tekst;
+
+        public string Tekst
+        {
+            get => tekst;
+            set => this.RaiseAndSetIfChanged(ref tekst, value);
+        }
+
         public TasksViewModel()
         {
+            tekst = "TESTOWY";
             SendToRemoteCommand = ReactiveCommand.Create(SendToRemote);
             PauseCommand = ReactiveCommand.Create(Pause);
 
@@ -52,6 +62,19 @@ namespace CoreBackup.ViewModels
            // ObservableCollectionExtended is single-threaded.
            .Bind(out _derivedRemoteFiles)
            .Subscribe();
+
+
+            BasicIO bIO = new BasicIO();
+            LocalFiles.Where(l => l.Length != 0).ToList().All(i => LocalFiles.Remove(i));
+            foreach (FileInfo f in bIO.getFilesInDirectory("E:\\"))
+            {
+                LocalFiles.Add(f.ToString());
+                FileInformation fi = new FileInformation();
+                fi.Filename = f.Name;
+                fi.Size = f.Length;
+                RemoteFiles.Add(fi);
+                Tekst = "zmieniony";
+            }
         }
 
 
@@ -63,9 +86,10 @@ namespace CoreBackup.ViewModels
             {
                 LocalFiles.Add(f.ToString());
                 FileInformation fi = new FileInformation();
-                fi.filename = f.Name;
-                fi.size = f.Length;
+                fi.Filename = f.Name;
+                fi.Size = f.Length;
                 RemoteFiles.Add(fi);
+                Tekst = "zmieniony";
             }
         }
 

@@ -6,11 +6,13 @@
         x:Class="CoreBackup.Windows.AboutWindow"
         Title="About"
         Width="500" Height="300">
-  <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+  <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
     <Image Grid.Row="0" MaxHeight="100" ClipToBounds="True" Source="avares://CoreBackup/Assets/avalonia-logo.ico"></Image>
     <TextBlock Grid.Row="1" TextAlignment="Center" Margin="0,10,0,0">CoreBackup</TextBlock>
     <TextBlock Grid.Row="2" TextAlignment="Center">Version 0.1</TextBlock>
     <TextBlock Grid.Row="3" TextAlignment="Center">Piotr Śladowski, Mateusz Smendowski</TextBlock>
     <TextBlock Grid.Row="4" TextAlignment="Center" Margin="0,10,0,0">Used 3rd party components</TextBlock>
+    <TextBlock Grid.Row="5" TextAlignment="Center" Margin="0,0,0,0">Icons by Icon8</TextBlock>
+    <!--Add hyperlink in Avalonia 0.10-->
   </Grid>
 </Window>

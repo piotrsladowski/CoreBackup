@@ -5,54 +5,58 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CoreBackup.Views.TasksView">
 
-<Grid RowDefinitions="50,*" ShowGridLines="True">
-  <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*,*,*" ShowGridLines="True" ClipToBounds="True">
-    <Button Grid.Column="0">Test</Button>
-    <Button Grid.Column="1" Background="Transparent">
-      <Image Source="avares://CoreBackup/Assets/Icons/arrow_left_90_blue.png"></Image>
-    </Button>
-    <Button Grid.Column="2" Background="Transparent" Command="{Binding Pause}">
-      <Image Source="avares://CoreBackup/Assets/Icons/pause_90_blue.png"></Image>
-    </Button>
-    <Button Grid.Column="3" Background="Transparent">
-      <Image Source="avares://CoreBackup/Assets/Icons/play_90_blue.png"></Image>
-    </Button>
-    <Button Grid.Column="4" Background="Transparent" Command="{Binding SendToRemote}">
-      <Image Source="avares://CoreBackup/Assets/Icons/arrow_right_90_blue.png"></Image>
-    </Button>
-  </Grid>
-  <Grid Grid.Row="1" ShowGridLines="False" ClipToBounds="True">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="50*"/>
-      <ColumnDefinition Width="10"/>
-      <ColumnDefinition Width="50*"/>
-    </Grid.ColumnDefinitions>
-    <ListBox Items="{Binding LocalFiles, Mode=OneTime}" Grid.Column="0">
-      <ListBox.Template>
-        <ControlTemplate>
-          <DockPanel LastChildFill="True">
-            <Grid DockPanel.Dock="Top" Height="30">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"></ColumnDefinition>
-                <ColumnDefinition Width="50"></ColumnDefinition>
-                <ColumnDefinition Width="70"></ColumnDefinition>
-              </Grid.ColumnDefinitions>
-            </Grid>
-            <ItemsPresenter></ItemsPresenter>
-          </DockPanel>
-        </ControlTemplate>
-      </ListBox.Template>
-    </ListBox>
-    <GridSplitter Grid.Column="1"></GridSplitter>
-    <DataGrid Grid.Column="2"
-      Items="{Binding RemoteFiles}"
-      AutoGenerateColumns="True"
-      CanUserReorderColumns="True"
-      >
-      
-    </DataGrid>
-  </Grid>
+  <Grid RowDefinitions="50,*" ShowGridLines="True" ClipToBounds="True">
+    <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*,*,*" ShowGridLines="True" ClipToBounds="True">
+      <TextBlock Text="{Binding Tekst}"/>
+      <Button Grid.Column="1" Background="Transparent">
+        <Image Source="avares://CoreBackup/Assets/Icons/arrow_left_90_blue.png"></Image>
+      </Button>
+      <Button Grid.Column="2" Background="Transparent" Command="{Binding Pause}">
+        <Image Source="avares://CoreBackup/Assets/Icons/pause_90_blue.png"></Image>
+      </Button>
+      <Button Grid.Column="3" Background="Transparent">
+        <Image Source="avares://CoreBackup/Assets/Icons/play_90_blue.png"></Image>
+      </Button>
+      <Button Grid.Column="4" Background="Transparent" Command="{Binding SendToRemote}">
+        <Image Source="avares://CoreBackup/Assets/Icons/arrow_right_90_blue.png"></Image>
+      </Button>
+    </Grid>
+    <StackPanel Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Visible">
+      <Grid ShowGridLines="False" ClipToBounds="True">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="10"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <DataGrid Grid.Column="0" Items="{Binding RemoteFiles}" CanUserReorderColumns="True" CanUserResizeColumns="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="Filename"
+                                Binding="{Binding Filename}"
+                                Width="2*"/>
+            <DataGridTextColumn Header="Modification Date"
+                        Binding="{Binding ModificationTime}"
+                        Width="2*"/>
+            <DataGridTextColumn Header="Size"
+                        Binding="{Binding Size}"
+                       Width="2*" />
+          </DataGrid.Columns>
+        </DataGrid>
+        <GridSplitter Grid.Column="1"></GridSplitter>
+        <DataGrid Grid.Column="2" Items="{Binding RemoteFiles}" CanUserReorderColumns="True" CanUserResizeColumns="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="Filename"
+                                Binding="{Binding Filename}"
+                                Width="2*"/>
+            <DataGridTextColumn Header="Modification Date"
+                        Binding="{Binding ModificationTime}"
+                        Width="2*"/>
+            <DataGridTextColumn Header="Size"
+                        Binding="{Binding Size}"
+                        Width="2*"/>
+          </DataGrid.Columns>
 
-</Grid>
-
+        </DataGrid>
+      </Grid>
+    </StackPanel>
+  </Grid>
 </UserControl>
