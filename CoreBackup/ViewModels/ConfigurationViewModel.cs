@@ -15,6 +15,7 @@ using CoreBackup.Models.Remote;
 using System;
 using Avalonia.Input;
 using Xceed.Wpf.Toolkit.PropertyGrid.Converters;
+using File = Microsoft.Graph.File;
 
 namespace CoreBackup.ViewModels
 {
@@ -141,6 +142,17 @@ namespace CoreBackup.ViewModels
             Debug.WriteLine(ServerInput);
             Debug.WriteLine(FilenameInput);
             Debug.WriteLine(CBoxSelectedIdx);
+        }
+
+        public void FtpAction()
+        {
+            string Localdest = "C:\\Users\\Mateusz\\Desktop\\AkcjePlikow";
+            FTP client = new FTP(UsernameInput, FilenameInput, ServerInput, PasswordInput, Localdest);
+            FtpWebRequest request = FTP.Configuration(client);
+            //client.Download(client.Configuration(client));
+            double total = client.GetFileSize(request);
+            Debug.WriteLine(total);
+
         }
 
     }

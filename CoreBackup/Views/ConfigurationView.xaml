@@ -52,7 +52,7 @@
       <TextBox Text="{Binding FilenameInput}" Watermark="FileName" Grid.Column="1" Grid.Row="5" MaxHeight="30"
                IsVisible="{Binding RemoteServerChoice}" />
 
-      <Button Command="{Binding Upload}" IsVisible="{Binding RemoteServerChoice}" Grid.Column="2" Grid.Row="2">Action</Button>
+      <Button Command="{Binding FtpAction}" IsVisible="{Binding RemoteServerChoice}" Grid.Column="2" Grid.Row="2">Action</Button>
       <ProgressBar IsVisible="{Binding RemoteServerChoice}" Grid.Column="2" Grid.Row="3"/>
      
       
