@@ -13,7 +13,9 @@ using Application = Avalonia.Application;
 using System.Collections.Generic;
 using CoreBackup.Models.Remote;
 using System;
+using Avalonia.Controls.Templates;
 using Avalonia.Input;
+using CoreBackup.Views;
 using SharpDX.Direct3D11;
 using Xceed.Wpf.Toolkit.PropertyGrid.Converters;
 using File = Microsoft.Graph.File;
@@ -184,17 +186,17 @@ namespace CoreBackup.ViewModels
                     FtpClient.Action = FtpClient.FTP_Actions[1];
             }
         }
-        #endregion
-        #region FTP Xaml Events Handling
 
+       
+        #endregion
+
+        #region FTP Xaml Events Handling
         public void FtpAction()
         {
             if(FtpClient.Action == "Upload")
-                FtpClient.Upload();
-            else
-            {
-                
-            }
+                Task.Run(() => FtpClient.Upload());
+            else if(FtpClient.Action == "Download")
+                Task.Run(() => FtpClient.Download());
         }
         #endregion
     }

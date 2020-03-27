@@ -77,7 +77,7 @@
 
       <Button Command="{Binding FtpAction}" IsVisible="{Binding RemoteServerChoice}" Grid.Column="0" Grid.Row="7"
              Width="130" Margin="-80,5,0,0">Action</Button>
-      <ProgressBar Value="{Binding ProgresState}" IsVisible="{Binding RemoteServerChoice}" Grid.Column="1" Grid.Row="7" Margin="-90,5,0,0"
+      <ProgressBar x:Name="progressBar" Foreground="Green"  IsVisible="{Binding RemoteServerChoice}" IsEnabled="True" Grid.Column="1" Grid.Row="7" Margin="-90,5,0,0"
                    Width="300"/>
      
       
