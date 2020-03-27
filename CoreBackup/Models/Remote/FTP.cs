@@ -1,41 +1,66 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Net;
-using System.Threading;
-using System.IO;
+using System.Runtime.CompilerServices;
+using Microsoft.Graph;
 
 namespace CoreBackup.Models.Remote
 {
     public partial class FTP
     {
-        private string Username { get; set; }
-        private string Filename { get; set; }
-        private string Fullname { get; set; }
-        // Pełna scieżka do pliku
-        private string Server { get; set; }
-        private string Password { get; set; }
-        //private string path { get; set; }
-        private string Localdest { get; set; }
+        // Przerobić na strukture
+        public string Username { get; set; }
+        public string Filename { get; set; } 
+        //public string Fullname { get; set; }
+        public string Server { get; set; }
+        public string Password { get; set; }
+        public string Path { get; set; }
+        //private string Localdest { get; set; }
 
-        
-        public FTP(string Username, string Filename,  string Server, string Password,  string Localdest)
+        public List<string> FTP_Actions = new List<string>();
+        public string Action { get; set; }
+        public FTP()
         {
-            this.Username = Username;
-            this.Filename = Filename;
-            //this.Fullname = Fullname;
-            this.Server = Server;
-            this.Password = Server;
-            this.Localdest = Localdest;
+            FTP_Actions.Add("Download");
+            FTP_Actions.Add("Upload");
         }
 
-        public static FtpWebRequest Configuration(FTP client_ftp)
+
+
+        public void Upload()
+        {
+            FtpWebRequest request = (FtpWebRequest) WebRequest.Create(new Uri(string.Format("{0}/{1}", Server, Filename)));
+            request.Method = WebRequestMethods.Ftp.UploadFile;
+            request.Credentials = new NetworkCredential(Username, Password);
+            Stream ftpStream = request.GetRequestStream();
+            FileStream fs = System.IO.File.OpenRead(Path);
+            byte[] buffer = new byte[1024];
+            double total = (double) fs.Length;
+            int byteRead = 0;
+            double read = 0;
+            do
+            {
+                byteRead = fs.Read(buffer, 0, 1024);
+                ftpStream.Write(buffer, 0, byteRead);
+                read += (double) byteRead;
+
+            } while (byteRead != 0);
+
+            fs.Close();
+            ftpStream.Close();
+
+        }
+        
+        /*
+        public static FtpWebRequest Configuration()
         {
             try
             {
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(new Uri(string.Format("{0}/{1}", client_ftp.Server, client_ftp.Filename)));
-                request.Credentials = new NetworkCredential(client_ftp.Username, client_ftp.Password);
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(new Uri(string.Format("{0}/{1}", Server)));
+                request.Credentials = new NetworkCredential(client_ftp.FtpSettings.Username, client_ftp.Password);
                 return request;
             }
             catch (Exception e)
@@ -46,6 +71,7 @@ namespace CoreBackup.Models.Remote
             return null;
         }
 
+        
         public void Download(FtpWebRequest request)
         {
             request.Method = WebRequestMethods.Ftp.DownloadFile;
@@ -67,7 +93,7 @@ namespace CoreBackup.Models.Remote
 
             ftpstream.Close();
             fs.Close();
-            */
+            
         }
 
         public double GetFileSize(FtpWebRequest request)
@@ -112,7 +138,7 @@ namespace CoreBackup.Models.Remote
             fs.Close();
             ftpstream.Close();
         }
-
+        */
     }
     
 

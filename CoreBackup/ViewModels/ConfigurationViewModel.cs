@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using CoreBackup.Models.Remote;
 using System;
 using Avalonia.Input;
+using SharpDX.Direct3D11;
 using Xceed.Wpf.Toolkit.PropertyGrid.Converters;
 using File = Microsoft.Graph.File;
 
@@ -21,6 +22,16 @@ namespace CoreBackup.ViewModels
 {
     public partial class ConfigurationViewModel : ViewModelBase
     {
+        /// <summary>
+        /// SHORTCUTS FOR VARIABLES NAMES
+        /// LD - Local Directory
+        /// RS - Remote Server
+        /// UF - Upload File
+        /// DF - Download File
+        /// </summary>
+        
+
+        #region LocalVsRemote RadioBox Choice
         private bool _localDirectoryChoice;
 
         public bool LocalDirectoryChoice
@@ -37,29 +48,6 @@ namespace CoreBackup.ViewModels
             set => this.RaiseAndSetIfChanged(ref _remoteServerChoice, value);
         }
 
-        private string _path;
-
-        public string Path
-        {
-            get => _path;
-            set => this.RaiseAndSetIfChanged(ref _path, value);
-        }
-
-
-        private ReactiveCommand<Unit, Unit> FileExplorerCommand { get; }
-        private ReactiveCommand<Unit, Unit> LocalDirectoryCommand { get; }
-        private ReactiveCommand<Unit, Unit> RemoteServerCommand { get; }
-
-        public ConfigurationViewModel()
-        {
-
-            FileExplorerCommand = ReactiveCommand.Create(BtnBrowseFiles);
-            LocalDirectoryCommand = ReactiveCommand.Create(LocalRadioBox);
-            RemoteServerCommand = ReactiveCommand.Create(RemoteRadioBox);
-
-
-        }
-
         private void LocalRadioBox()
         {
             RemoteServerChoice = false;
@@ -71,36 +59,91 @@ namespace CoreBackup.ViewModels
             LocalDirectoryChoice = false;
             RemoteServerChoice = true;
         }
+        #endregion
 
-        private async void BtnBrowseFiles()
+        #region Paths
+        private string _path;
+
+        public string Path
         {
-            Path = await GetPath();
-            Debug.WriteLine(Path);
+            get => _path;
+            set => this.RaiseAndSetIfChanged(ref _path, value);
         }
 
-        private async Task<string> GetPath()
+        // PATH TO FILE TO BE UPLOADED
+        private string _uploadPath;
+        public string UploadPath
+        {
+            get => _uploadPath;
+            set => this.RaiseAndSetIfChanged(ref _uploadPath, value);
+        }
+        #endregion
+
+
+
+        private ReactiveCommand<Unit, Unit> FileExplorerCommand { get; }
+        private ReactiveCommand<Unit, Unit> LocalDirectoryCommand { get; }
+        private ReactiveCommand<Unit, Unit> RemoteServerCommand { get; }
+        private ReactiveCommand<Unit, Unit> RemoteServerUploadFileCommand { get; }
+
+        public ConfigurationViewModel()
+        {
+
+            FileExplorerCommand = ReactiveCommand.Create(BtnBrowseLocalFiles);
+            LocalDirectoryCommand = ReactiveCommand.Create(LocalRadioBox);
+            RemoteServerCommand = ReactiveCommand.Create(RemoteRadioBox);
+            RemoteServerUploadFileCommand = ReactiveCommand.Create(BtnServerUploadFiles);
+
+        }
+
+       
+
+        private async void BtnBrowseLocalFiles()
+        {
+            Path = await GetPath(false);
+        }
+
+        private async void BtnServerUploadFiles()
+        {
+            UploadPath = await GetPath(true);
+        }
+
+        private async Task<string> GetPath(bool OnlyRemoteServerPart)
         {
             string[] resultReturn = null;
+            string fullPath = null;
             if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
             {
                 OpenFileDialog dialog = new OpenFileDialog();
-                dialog.Filters.Add(new FileDialogFilter() {Name = "Text", Extensions = {"txt"}});
+                //dialog.Filters.Add(new FileDialogFilter());
                 string[] result = await dialog.ShowAsync(desktopLifetime.MainWindow);
                 resultReturn = result;
+                fullPath = string.Join(" ", resultReturn);
+                if (OnlyRemoteServerPart)
+                {
+                    string[] PathTreeSteps = fullPath.Split('\\');
+                    FtpClient.Path = fullPath;
+                    FtpClient.Filename = PathTreeSteps[PathTreeSteps.Length - 1];
+                }
+                
             }
-
-            //await GetPath();
-            return string.Join(" ", resultReturn);
-
+            return fullPath;
         }
 
         // -----------------  FTP SERVER CONFIGURATION -------------
+        #region FTP Configuration Fields
+
+        private FTP FtpClient = new FTP();
 
         private string _username;
         public string UsernameInput
         {
             get => _username;
-            set => this.RaiseAndSetIfChanged(ref _username, value);
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _username, value);
+                FtpClient.Username = value;
+            }
         }
 
         private string _password;
@@ -108,7 +151,11 @@ namespace CoreBackup.ViewModels
         public string PasswordInput
         {
             get => _password;
-            set => this.RaiseAndSetIfChanged(ref _password, value);
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _password, value);
+                FtpClient.Password = value;
+            }
         }
 
         private string _server;
@@ -116,44 +163,39 @@ namespace CoreBackup.ViewModels
         public string ServerInput
         {
             get => _server;
-            set => this.RaiseAndSetIfChanged(ref _server, value);
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _server, value);
+                FtpClient.Server = value;
+            }
         }
 
-        private string _filename;
-
-        public string FilenameInput
-        {
-            get => _filename;
-            set => this.RaiseAndSetIfChanged(ref _filename, value);
-        }
 
         private int _cBoxSelectedIdx;
-
         public int CBoxSelectedIdx
         {
             get => _cBoxSelectedIdx;
-            set => this.RaiseAndSetIfChanged(ref _cBoxSelectedIdx, value);
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _cBoxSelectedIdx, value);
+                if (_cBoxSelectedIdx == 0)
+                    FtpClient.Action = FtpClient.FTP_Actions[0];
+                else if (_cBoxSelectedIdx == 1)
+                    FtpClient.Action = FtpClient.FTP_Actions[1];
+            }
         }
-
-        public void Check()
-        {
-            Debug.WriteLine(UsernameInput);
-            Debug.WriteLine(PasswordInput);
-            Debug.WriteLine(ServerInput);
-            Debug.WriteLine(FilenameInput);
-            Debug.WriteLine(CBoxSelectedIdx);
-        }
+        #endregion
+        #region FTP Xaml Events Handling
 
         public void FtpAction()
         {
-            string Localdest = "C:\\Users\\Mateusz\\Desktop\\AkcjePlikow";
-            FTP client = new FTP(UsernameInput, FilenameInput, ServerInput, PasswordInput, Localdest);
-            FtpWebRequest request = FTP.Configuration(client);
-            //client.Download(client.Configuration(client));
-            double total = client.GetFileSize(request);
-            Debug.WriteLine(total);
-
+            if(FtpClient.Action == "Upload")
+                FtpClient.Upload();
+            else
+            {
+                
+            }
         }
-
+        #endregion
     }
 }

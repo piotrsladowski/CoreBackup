@@ -17,7 +17,7 @@
       <Rectangle HorizontalAlignment="Stretch" Fill="DarkSlateBlue" Height="5" Grid.Column="0" Grid.Row="2"/>-->
     </Grid>
     
-    <Grid ColumnDefinitions="15*, 10*, 15*, 10*" RowDefinitions="20,30,25,25,25,25,25" Margin="10,0,0,0">     
+    <Grid ColumnDefinitions="15*, 10*, 15*, 10*" RowDefinitions="20,30,30,30,30,30,30,30" Margin="10,0,0,0">     
       <TextBlock Text="Local Directory" Grid.Row="0" Grid.Column="0" TextAlignment="Right"
                  Margin="0,8,10,10"  FontSize="14"/>
       <RadioButton  Grid.Row="0" Grid.Column="1" Command="{Binding LocalDirectoryCommand}"
@@ -36,28 +36,53 @@
                 Grid.Row="2" IsVisible="{Binding LocalDirectoryChoice}" MaxWidth="130" Margin="-70,0,0,0"/>
 
       <!-- REMOTE SERVER OPTIONS VISIBLE -->
-      <ComboBox Grid.Column="0" Grid.Row="2" IsVisible="{Binding RemoteServerChoice}" Margin="30,0,0,0" MinWidth="300"
+      
+      <!-- SELECT FTP ACTION -->
+      <TextBlock Text="Select FTP Server Action" Grid.Column="0" Grid.Row="2" IsVisible="{Binding RemoteServerChoice}"
+                 Margin="60,0,0,0"/>
+      <ComboBox Grid.Column="1" Grid.Row="2" IsVisible="{Binding RemoteServerChoice}" Margin="-90,0,0,0" Width="300"
                  SelectedIndex="{Binding CBoxSelectedIdx}">
         <ComboBoxItem Name="download_item">Download</ComboBoxItem>
         <ComboBoxItem Name="upload_item">Upload</ComboBoxItem>
       </ComboBox>
-        
-      
-      <TextBox Text="{Binding ServerInput}" Watermark="ftp://ip_address" Grid.Column="1" Grid.Row="2" MaxHeight="30"
-               IsVisible="{Binding RemoteServerChoice}"/>
-      <TextBox Text="{Binding UsernameInput}" Watermark="Username" Grid.Column="1" Grid.Row="3" MaxHeight="30"
-               IsVisible="{Binding RemoteServerChoice}"/>
-      <TextBox Text="{Binding PasswordInput}" PasswordChar="*" Watermark="Password" Grid.Column="1" Grid.Row="4" MaxHeight="30"
-               IsVisible="{Binding RemoteServerChoice}"/>
-      <TextBox Text="{Binding FilenameInput}" Watermark="FileName" Grid.Column="1" Grid.Row="5" MaxHeight="30"
-               IsVisible="{Binding RemoteServerChoice}" />
+        <!-- SELECT PATH -->
+      <TextBlock Text="Select Source File Path" Grid.Column="0" Grid.Row="3" IsVisible="{Binding RemoteServerChoice}"
+                 Margin="60,0,0,0"/>
+      <TextBox Text="{Binding UploadPath}" Grid.Column="1" IsReadOnly="True" Grid.Row="3"
+               IsVisible="{Binding RemoteServerChoice}" TextWrapping="Wrap" Width="300"
+               MinHeight="20" Margin="-90,0,0,0"/>
+      <Button Content="Browse" Command="{Binding RemoteServerUploadFileCommand}" Grid.Column="2"
+                Grid.Row="3" IsVisible="{Binding RemoteServerChoice}" MaxWidth="130" Margin="-110,0,0,0"/>
 
-      <Button Command="{Binding FtpAction}" IsVisible="{Binding RemoteServerChoice}" Grid.Column="2" Grid.Row="2">Action</Button>
-      <ProgressBar IsVisible="{Binding RemoteServerChoice}" Grid.Column="2" Grid.Row="3"/>
+      <!-- SERVER -->
+      <TextBlock Text="Type FTP Server Address" Grid.Column="0" Grid.Row="4" IsVisible="{Binding RemoteServerChoice}"
+                 Margin="60,0,0,0"/>
+      <TextBox Text="{Binding ServerInput}" Watermark="ftp://ip_address" Grid.Column="1" Grid.Row="4" MaxHeight="30"
+               IsVisible="{Binding RemoteServerChoice}" Width="300" Margin="-90,0,0,0"/>
+
+
+       <!-- USERNAME -->
+      <TextBlock Text="Type FTP Server Username" Grid.Column="0" Grid.Row="5" IsVisible="{Binding RemoteServerChoice}"
+                  Margin="60,0,0,0"/>
+      <TextBox Text="{Binding UsernameInput}" Watermark="Username" Grid.Column="1" Grid.Row="5" MaxHeight="30"
+               IsVisible="{Binding RemoteServerChoice}" Width="300" Margin="-90,0,0,0"/>
+
+      <!-- PASSWORD -->
+      <TextBlock Text="Type FTP Server Password" Grid.Column="0" Grid.Row="6" IsVisible="{Binding RemoteServerChoice}"
+                  Margin="60,0,0,0"/>
+      <TextBox Text="{Binding PasswordInput}" PasswordChar="*" Watermark="Password" Grid.Column="1" Grid.Row="6" MaxHeight="30"
+               IsVisible="{Binding RemoteServerChoice}" Width="300" Margin="-90,0,0,0"/>
+      
+      
+
+      <Button Command="{Binding FtpAction}" IsVisible="{Binding RemoteServerChoice}" Grid.Column="0" Grid.Row="7"
+             Width="130" Margin="-80,5,0,0">Action</Button>
+      <ProgressBar Value="{Binding ProgresState}" IsVisible="{Binding RemoteServerChoice}" Grid.Column="1" Grid.Row="7" Margin="-90,5,0,0"
+                   Width="300"/>
      
       
       
-      <Button Command="{Binding Check}" IsVisible="{Binding RemoteServerChoice}" Grid.Column="3" Grid.Row="3">CheckLogs</Button>
+     
 
                    
      

@@ -66,7 +66,7 @@ namespace CoreBackup.ViewModels
 
             BasicIO bIO = new BasicIO();
             LocalFiles.Where(l => l.Length != 0).ToList().All(i => LocalFiles.Remove(i));
-            foreach (FileInfo f in bIO.getFilesInDirectory("E:\\"))
+            foreach (FileInfo f in bIO.getFilesInDirectory("C:\\"))
             {
                 LocalFiles.Add(f.ToString());
                 FileInformation fi = new FileInformation();
@@ -82,7 +82,7 @@ namespace CoreBackup.ViewModels
         {
             BasicIO bIO = new BasicIO();
             LocalFiles.Where(l => l.Length != 0).ToList().All(i => LocalFiles.Remove(i));
-            foreach (FileInfo f in bIO.getFilesInDirectory("E:\\"))
+            foreach (FileInfo f in bIO.getFilesInDirectory("C:\\"))
             {
                 LocalFiles.Add(f.ToString());
                 FileInformation fi = new FileInformation();
