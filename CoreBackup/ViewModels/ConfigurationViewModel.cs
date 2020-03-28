@@ -13,6 +13,7 @@ using Application = Avalonia.Application;
 using System.Collections.Generic;
 using CoreBackup.Models.Remote;
 using System;
+using System.Diagnostics.SymbolStore;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using CoreBackup.Views;
@@ -88,36 +89,49 @@ namespace CoreBackup.ViewModels
             get => _downloadPath;
             set => this.RaiseAndSetIfChanged(ref _downloadPath, value);
         }
+
+        private string _ftpPath;
+        public string FtpPath
+        {
+            get => _ftpPath;
+            set => this.RaiseAndSetIfChanged(ref _ftpPath, value);
+        }
         #endregion
-
-
-
-
-        private ReactiveCommand<Unit, Unit> FileExplorerCommand { get; }
-        private ReactiveCommand<Unit, Unit> LocalDirectoryCommand { get; }
-        private ReactiveCommand<Unit, Unit> RemoteServerCommand { get; }
-        private ReactiveCommand<Unit, Unit> RemoteServerUploadFileCommand { get; }
 
         public ConfigurationViewModel()
         {
-
             FileExplorerCommand = ReactiveCommand.Create(BtnBrowseLocalFiles);
             LocalDirectoryCommand = ReactiveCommand.Create(LocalRadioBox);
             RemoteServerCommand = ReactiveCommand.Create(RemoteRadioBox);
-            RemoteServerUploadFileCommand = ReactiveCommand.Create(BtnServerUploadFiles);
-
+            RemoteServerBrowseFileCommand = ReactiveCommand.Create(BtnServerActionFiles);
+            RemoteServerActionCommand = ReactiveCommand.Create(FtpAction);
         }
 
-       
+        #region Reactive Commands and Binded Functions
+        // RADIO BOXES 
+        private ReactiveCommand<Unit, Unit> LocalDirectoryCommand { get; }
+        private ReactiveCommand<Unit, Unit> RemoteServerCommand { get; }
 
+        // LOCAL FILE EXPLORER
+        private ReactiveCommand<Unit, Unit> FileExplorerCommand { get; }
+
+        // FTP SERVER FILE EXPLORER
+        private ReactiveCommand<Unit, Unit> RemoteServerBrowseFileCommand { get; }
+
+        // FTP SERVER ACTION 
+        private ReactiveCommand<Unit, Unit> RemoteServerActionCommand { get; }
+       
         private async void BtnBrowseLocalFiles()
         {
             Path = await GetPath(false,false);
         }
 
-        private async void BtnServerUploadFiles()
+        private async void BtnServerActionFiles()
         {
-            UploadPath = await GetPath(true,false);
+            if(_cBoxSelectedIdx == 0)
+                FtpPath = await GetPath(false, true);
+            else if(_cBoxSelectedIdx == 1)
+                FtpPath = await GetPath(true, false);
         }
 
         private async Task<string> GetPath(bool Upload, bool Download)
@@ -126,22 +140,17 @@ namespace CoreBackup.ViewModels
             string fullPath = null;
             if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
             {
-                OpenFileDialog dialog = new OpenFileDialog();
+                
                 if (Download)
                 {
-                    CommonOpenFileDialog folderDialog = new CommonOpenFileDialog();
-                    folderDialog.IsFolderPicker = true;
-                    folderDialog.Multiselect = true;
-                    folderDialog.IsFolderPicker = true;
-                    if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok)
-                    {
-                        fullPath = folderDialog.FileName;
-                    }
-
-
+                    OpenFolderDialog dialog = new OpenFolderDialog();
+                    string result = await dialog.ShowAsync(desktopLifetime.MainWindow);
+                    fullPath = result;
+                    Debug.WriteLine(fullPath);
                 }
                 else
                 {
+                    OpenFileDialog dialog = new OpenFileDialog();
                     string[] result = await dialog.ShowAsync(desktopLifetime.MainWindow);
                     resultReturn = result;
                     fullPath = string.Join(" ", resultReturn);
@@ -157,9 +166,11 @@ namespace CoreBackup.ViewModels
             }
             return fullPath;
         }
+        #endregion
 
-        // -----------------  FTP SERVER CONFIGURATION -------------
+        // FTP SERVER CONFIGURATION //
         #region FTP Configuration Fields
+
 
         private FTP FtpClient = new FTP();
 
@@ -206,17 +217,20 @@ namespace CoreBackup.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref _cBoxSelectedIdx, value);
+                // Clear Fields in XAML
+                FtpPath = "";
+                PasswordInput = "";
             }
         }
 
-       
+
         #endregion
 
-        #region FTP Xaml Events Handling
+        #region FTP Actions 
         public void FtpAction()
         {
             if(_cBoxSelectedIdx == 0)
-                FtpClient.Download("Zadanie3.jpg", "C:\\Users\\Mateusz\\Desktop");
+                FtpClient.Download("Zadanie3.jpg", FtpPath);
             else if(_cBoxSelectedIdx == 1)
                 FtpClient.Upload();
         }
@@ -224,7 +238,12 @@ namespace CoreBackup.ViewModels
         public void ListFiles()
         {
             FtpClient.GetFileList();
-            Debug.WriteLine(FtpClient.directories.Count);
+            int count = FtpClient.directories.Count;
+            foreach (var item in FtpClient.directories)
+            {
+                Debug.WriteLine(item);
+                FtpClient.directories.IndexOf(item);
+            }
 
         }
         #endregion

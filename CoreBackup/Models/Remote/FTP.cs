@@ -1,30 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Net;
-using System.Runtime.CompilerServices;
-using Microsoft.Graph;
 
 namespace CoreBackup.Models.Remote
 {
     public partial class FTP
     {
-        // Przerobić na strukture
         public string Username { get; set; }
         public string Upload_Filename { get; set; }
+        public string Download_Filename { get; set; }
         public string Server { get; set; }
         public string Password { get; set; }
         public string Path { get; set; }
 
-        
         public List<string> directories;
 
         #region Upload
         public void Upload()
         {
-            FtpWebRequest request = (FtpWebRequest) WebRequest.Create(new Uri(string.Format("{0}/{1}", Server, Upload_Filename)));
+            FtpWebRequest request = (FtpWebRequest) WebRequest.Create(new Uri(string.Format("{0}/{1}", "ftp://" + Server, Upload_Filename)));
             request.Method = WebRequestMethods.Ftp.UploadFile;
             request.Credentials = new NetworkCredential(Username, Password);
             Stream ftpStream = request.GetRequestStream();
@@ -48,19 +43,19 @@ namespace CoreBackup.Models.Remote
         #region Download
         public void Download(string filename, string destinationPath)
         {
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(new Uri(string.Format("{0}/{1}", Server, filename)));
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(new Uri(string.Format("{0}/{1}", "ftp://" + Server, filename)));
             request.Credentials = new NetworkCredential(Username, Password);
             request.Method = WebRequestMethods.Ftp.DownloadFile;  
 
 
-            FtpWebRequest request1 = (FtpWebRequest)WebRequest.Create(new Uri(string.Format("{0}/{1}", Server, filename)));
+            FtpWebRequest request1 = (FtpWebRequest)WebRequest.Create(new Uri(string.Format("{0}/{1}", "ftp://" + Server, filename)));
             request1.Credentials = new NetworkCredential(Username, Password);
             request1.Method = WebRequestMethods.Ftp.GetFileSize;  
             FtpWebResponse response = (FtpWebResponse)request1.GetResponse();
             double total = response.ContentLength;
             response.Close();
 
-            FtpWebRequest request2 = (FtpWebRequest)WebRequest.Create(new Uri(string.Format("{0}/{1}", Server, filename)));
+            FtpWebRequest request2 = (FtpWebRequest)WebRequest.Create(new Uri(string.Format("{0}/{1}", "ftp://" + Server, filename)));
             request2.Credentials = new NetworkCredential(Username, Password);
             request2.Method = WebRequestMethods.Ftp.GetDateTimestamp; 
             FtpWebResponse response2 = (FtpWebResponse)request2.GetResponse();
@@ -69,6 +64,11 @@ namespace CoreBackup.Models.Remote
 
 
             Stream ftpstream = request.GetResponse().GetResponseStream();
+
+            
+            // Dodać rozwiązanie gdy wybrana scieżka to np. C:\  
+
+
             FileStream fs = new FileStream(destinationPath + "\\" + filename, FileMode.Create);
 
             // Method to calculate and show the progress.
@@ -91,7 +91,7 @@ namespace CoreBackup.Models.Remote
         #region Get List of All Server Files
         public void GetFileList()
         {
-            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create(Server);
+            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + Server);
             ftpRequest.Credentials = new NetworkCredential(Username, Password);
             ftpRequest.Method = WebRequestMethods.Ftp.ListDirectory;
             FtpWebResponse response = (FtpWebResponse)ftpRequest.GetResponse();
@@ -118,8 +118,7 @@ namespace CoreBackup.Models.Remote
             return total;
         }
         #endregion
+        // SECURE FTP - SFTP
 
     }
-
-
 }
