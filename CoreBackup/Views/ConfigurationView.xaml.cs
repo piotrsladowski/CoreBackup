@@ -31,10 +31,6 @@ namespace CoreBackup.Views
             backgroundWorker.ProgressChanged += ProgressChanged;
             backgroundWorker.DoWork += ShowProgress;
             backgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
-
-
-
-
         }
 
         private void ShowProgress(object sender, DoWorkEventArgs e)
@@ -59,7 +55,6 @@ namespace CoreBackup.Views
         private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             // This is called on the UI thread when the DoWork method completes
-            // so it's a good place to hide busy indicators, or put clean up code
         }
 
         private void InitializeComponent()

@@ -13,27 +13,18 @@ namespace CoreBackup.Models.Remote
     {
         // Przerobić na strukture
         public string Username { get; set; }
-        public string Filename { get; set; }
-        public string Filename_Download { get; set; }
-        //public string Fullname { get; set; }
+        public string Upload_Filename { get; set; }
         public string Server { get; set; }
         public string Password { get; set; }
         public string Path { get; set; }
 
-        //private string Localdest { get; set; }
+        
+        public List<string> directories;
 
-        public List<string> FTP_Actions = new List<string>();
-        public string Action { get; set; }
-        public FTP()
-        {
-            FTP_Actions.Add("Download");
-            FTP_Actions.Add("Upload");
-        }
-
-
+        #region Upload
         public void Upload()
         {
-            FtpWebRequest request = (FtpWebRequest) WebRequest.Create(new Uri(string.Format("{0}/{1}", Server, Filename)));
+            FtpWebRequest request = (FtpWebRequest) WebRequest.Create(new Uri(string.Format("{0}/{1}", Server, Upload_Filename)));
             request.Method = WebRequestMethods.Ftp.UploadFile;
             request.Credentials = new NetworkCredential(Username, Password);
             Stream ftpStream = request.GetRequestStream();
@@ -52,24 +43,24 @@ namespace CoreBackup.Models.Remote
             } while (byteRead != 0);
             fs.Close();
             ftpStream.Close();
-
         }
-
-        public void Download()
+        #endregion
+        #region Download
+        public void Download(string filename, string destinationPath)
         {
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(new Uri(string.Format("{0}/{1}", Server, Filename)));
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(new Uri(string.Format("{0}/{1}", Server, filename)));
             request.Credentials = new NetworkCredential(Username, Password);
             request.Method = WebRequestMethods.Ftp.DownloadFile;  
 
 
-            FtpWebRequest request1 = (FtpWebRequest)WebRequest.Create(new Uri(string.Format("{0}/{1}", Server, Filename)));
+            FtpWebRequest request1 = (FtpWebRequest)WebRequest.Create(new Uri(string.Format("{0}/{1}", Server, filename)));
             request1.Credentials = new NetworkCredential(Username, Password);
             request1.Method = WebRequestMethods.Ftp.GetFileSize;  
             FtpWebResponse response = (FtpWebResponse)request1.GetResponse();
             double total = response.ContentLength;
             response.Close();
 
-            FtpWebRequest request2 = (FtpWebRequest)WebRequest.Create(new Uri(string.Format("{0}/{1}", Server, Filename)));
+            FtpWebRequest request2 = (FtpWebRequest)WebRequest.Create(new Uri(string.Format("{0}/{1}", Server, filename)));
             request2.Credentials = new NetworkCredential(Username, Password);
             request2.Method = WebRequestMethods.Ftp.GetDateTimestamp; 
             FtpWebResponse response2 = (FtpWebResponse)request2.GetResponse();
@@ -78,7 +69,7 @@ namespace CoreBackup.Models.Remote
 
 
             Stream ftpstream = request.GetResponse().GetResponseStream();
-            FileStream fs = new FileStream(Path, FileMode.Create);
+            FileStream fs = new FileStream(destinationPath + "\\" + filename, FileMode.Create);
 
             // Method to calculate and show the progress.
             byte[] buffer = new byte[1024];
@@ -95,31 +86,29 @@ namespace CoreBackup.Models.Remote
             while (byteRead != 0);
             ftpstream.Close();
             fs.Close();
-
         }
-
-
-        public List<String> GetFileList()
+        #endregion
+        #region Get List of All Server Files
+        public void GetFileList()
         {
-            List<String> file_list = new List<String>();
-            FtpWebRequest request = (FtpWebRequest) WebRequest.Create(Server);
-            request.Method = WebRequestMethods.Ftp.ListDirectory;
-            request.Credentials = new NetworkCredential(Username, Password);
-            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-            Stream responseStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(responseStream);
-            String line = String.Empty;
-            while ((line = reader.ReadLine()) != null)
+            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create(Server);
+            ftpRequest.Credentials = new NetworkCredential(Username, Password);
+            ftpRequest.Method = WebRequestMethods.Ftp.ListDirectory;
+            FtpWebResponse response = (FtpWebResponse)ftpRequest.GetResponse();
+            StreamReader streamReader = new StreamReader(response.GetResponseStream());
+
+            directories = new List<string>();
+
+            string line = streamReader.ReadLine();
+            while (!string.IsNullOrEmpty(line))
             {
-                file_list.Add(line);
+                directories.Add(line);
+                line = streamReader.ReadLine();
             }
-
-            reader.Close();
-            response.Close();
-            return file_list;
-
+            streamReader.Close();
         }
-
+        #endregion
+        #region GetFileSize
         public double GetFileSize(FtpWebRequest request)
         {
             request.Method = WebRequestMethods.Ftp.GetFileSize;
@@ -128,45 +117,8 @@ namespace CoreBackup.Models.Remote
             response.Close();
             return total;
         }
+        #endregion
 
-
-        /*
-        
-        
-        public void Download(FtpWebRequest request)
-        {
-        ;
-            double total = GetFileSize(request);
-            /*
-            Stream ftpstream = request.GetResponse().GetResponseStream();
-            FileStream fs = new FileStream(Localdest, FileMode.Create);
-
-            byte[] buffer = new byte[1024];
-            int byteRead = 0;
-            double read = 0;
-            do
-            {
-                byteRead = ftpstream.Read(buffer, 0, 1024);
-                fs.Write(buffer, 0, byteRead);
-                read += (double)byteRead;
-                double percentage = read / total * 100;
-            } while (byteRead != 0);
-
-            ftpstream.Close();
-            fs.Close();
-            
-        }
-
-
-        FtpWebRequest request = (FtpWebRequest)WebRequest.Create(new Uri(string.Format("{0}/{1}", Server, Filename)));
-            request.Method = WebRequestMethods.Ftp.DownloadFile;
-            request.Credentials = new NetworkCredential(Username, Password);
-            FtpWebResponse response = (FtpWebResponse) request.GetResponse();
-            Stream responseStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(responseStream);
-            String result = reader.ReadToEnd();
-            //double total = GetFileSize(request);
-        */
     }
 
 

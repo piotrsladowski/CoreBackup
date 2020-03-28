@@ -17,7 +17,7 @@
       <Rectangle HorizontalAlignment="Stretch" Fill="DarkSlateBlue" Height="5" Grid.Column="0" Grid.Row="2"/>-->
     </Grid>
     
-    <Grid ColumnDefinitions="15*, 10*, 15*, 10*" RowDefinitions="20,30,30,30,30,30,30,30" Margin="10,0,0,0">     
+    <Grid ColumnDefinitions="15*, 10*, 15*, 10*" RowDefinitions="20,30,30,30,30,30,30,30,30" Margin="10,0,0,0">     
       <TextBlock Text="Local Directory" Grid.Row="0" Grid.Column="0" TextAlignment="Right"
                  Margin="0,8,10,10"  FontSize="14"/>
       <RadioButton  Grid.Row="0" Grid.Column="1" Command="{Binding LocalDirectoryCommand}"
@@ -34,6 +34,7 @@
                MinHeight="20" Margin="30,0,0,0"/>
       <Button Content="Browse" Command="{Binding FileExplorerCommand}" Grid.Column="1"
                 Grid.Row="2" IsVisible="{Binding LocalDirectoryChoice}" MaxWidth="130" Margin="-70,0,0,0"/>
+      
 
       <!-- REMOTE SERVER OPTIONS VISIBLE -->
       
@@ -52,7 +53,7 @@
                IsVisible="{Binding RemoteServerChoice}" TextWrapping="Wrap" Width="300"
                MinHeight="20" Margin="-90,0,0,0"/>
       <Button Content="Browse" Command="{Binding RemoteServerUploadFileCommand}" Grid.Column="2"
-                Grid.Row="3" IsVisible="{Binding RemoteServerChoice}" MaxWidth="130" Margin="-110,0,0,0"/>
+                Grid.Row="3" IsVisible="{Binding RemoteServerChoice}" Width="70" Margin="-250,0,0,0"/>
 
       <!-- SERVER -->
       <TextBlock Text="Type FTP Server Address" Grid.Column="0" Grid.Row="4" IsVisible="{Binding RemoteServerChoice}"
@@ -72,14 +73,16 @@
                   Margin="60,0,0,0"/>
       <TextBox Text="{Binding PasswordInput}" PasswordChar="*" Watermark="Password" Grid.Column="1" Grid.Row="6" MaxHeight="30"
                IsVisible="{Binding RemoteServerChoice}" Width="300" Margin="-90,0,0,0"/>
-      
-      
 
+      <!-- ACTION and PROGRESS BAR -->
       <Button Command="{Binding FtpAction}" IsVisible="{Binding RemoteServerChoice}" Grid.Column="0" Grid.Row="7"
              Width="130" Margin="-80,5,0,0">Action</Button>
       <ProgressBar x:Name="progressBar" Foreground="Green"  IsVisible="{Binding RemoteServerChoice}" IsEnabled="True" Grid.Column="1" Grid.Row="7" Margin="-90,5,0,0"
                    Width="300"/>
-     
+
+      
+
+      
       
       
      

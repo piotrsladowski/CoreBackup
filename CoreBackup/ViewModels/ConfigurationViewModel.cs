@@ -16,8 +16,11 @@ using System;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using CoreBackup.Views;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using SharpDX.Direct3D11;
+using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.PropertyGrid.Converters;
+using Directory = Microsoft.Graph.Directory;
 using File = Microsoft.Graph.File;
 
 namespace CoreBackup.ViewModels
@@ -62,10 +65,8 @@ namespace CoreBackup.ViewModels
             RemoteServerChoice = true;
         }
         #endregion
-
         #region Paths
         private string _path;
-
         public string Path
         {
             get => _path;
@@ -79,7 +80,16 @@ namespace CoreBackup.ViewModels
             get => _uploadPath;
             set => this.RaiseAndSetIfChanged(ref _uploadPath, value);
         }
+
+        // DESTINATION DIRECTORY PATH - DOWNLOADED FILE
+        private string _downloadPath;
+        public string DownloadPath
+        {
+            get => _downloadPath;
+            set => this.RaiseAndSetIfChanged(ref _downloadPath, value);
+        }
         #endregion
+
 
 
 
@@ -102,30 +112,46 @@ namespace CoreBackup.ViewModels
 
         private async void BtnBrowseLocalFiles()
         {
-            Path = await GetPath(false);
+            Path = await GetPath(false,false);
         }
 
         private async void BtnServerUploadFiles()
         {
-            UploadPath = await GetPath(true);
+            UploadPath = await GetPath(true,false);
         }
 
-        private async Task<string> GetPath(bool OnlyRemoteServerPart)
+        private async Task<string> GetPath(bool Upload, bool Download)
         {
             string[] resultReturn = null;
             string fullPath = null;
             if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
             {
                 OpenFileDialog dialog = new OpenFileDialog();
-                //dialog.Filters.Add(new FileDialogFilter());
-                string[] result = await dialog.ShowAsync(desktopLifetime.MainWindow);
-                resultReturn = result;
-                fullPath = string.Join(" ", resultReturn);
-                if (OnlyRemoteServerPart)
+                if (Download)
                 {
-                    string[] PathTreeSteps = fullPath.Split('\\');
-                    FtpClient.Path = fullPath;
-                    FtpClient.Filename = PathTreeSteps[PathTreeSteps.Length - 1];
+                    CommonOpenFileDialog folderDialog = new CommonOpenFileDialog();
+                    folderDialog.IsFolderPicker = true;
+                    folderDialog.Multiselect = true;
+                    folderDialog.IsFolderPicker = true;
+                    if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok)
+                    {
+                        fullPath = folderDialog.FileName;
+                    }
+
+
+                }
+                else
+                {
+                    string[] result = await dialog.ShowAsync(desktopLifetime.MainWindow);
+                    resultReturn = result;
+                    fullPath = string.Join(" ", resultReturn);
+                    if (Upload)
+                    {
+                        dialog.AllowMultiple = true;
+                        string[] PathTreeSteps = fullPath.Split('\\');
+                        FtpClient.Path = fullPath;
+                        FtpClient.Upload_Filename = PathTreeSteps[PathTreeSteps.Length - 1];
+                    }
                 }
                 
             }
@@ -180,10 +206,6 @@ namespace CoreBackup.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref _cBoxSelectedIdx, value);
-                if (_cBoxSelectedIdx == 0)
-                    FtpClient.Action = FtpClient.FTP_Actions[0];
-                else if (_cBoxSelectedIdx == 1)
-                    FtpClient.Action = FtpClient.FTP_Actions[1];
             }
         }
 
@@ -193,10 +215,17 @@ namespace CoreBackup.ViewModels
         #region FTP Xaml Events Handling
         public void FtpAction()
         {
-            if(FtpClient.Action == "Upload")
-                Task.Run(() => FtpClient.Upload());
-            else if(FtpClient.Action == "Download")
-                Task.Run(() => FtpClient.Download());
+            if(_cBoxSelectedIdx == 0)
+                FtpClient.Download("Zadanie3.jpg", "C:\\Users\\Mateusz\\Desktop");
+            else if(_cBoxSelectedIdx == 1)
+                FtpClient.Upload();
+        }
+
+        public void ListFiles()
+        {
+            FtpClient.GetFileList();
+            Debug.WriteLine(FtpClient.directories.Count);
+
         }
         #endregion
     }
