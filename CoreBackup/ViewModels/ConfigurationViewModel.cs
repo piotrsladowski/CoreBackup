@@ -227,10 +227,12 @@ namespace CoreBackup.ViewModels
                 {
                     IsUpload = false;
                     IsDownload = true;
+                    ListFiles();
                 } else if (_cBoxSelectedIdx == 1)
                 {
                     IsUpload = true;
                     IsDownload = false;
+                    ListFiles();
                 }
             }
         }
@@ -273,6 +275,7 @@ namespace CoreBackup.ViewModels
 
         public void ListFiles()
         {
+            _ftpFiles.Clear();
             FtpClient.GetFileList();
             foreach (var item in FtpClient.directories)
             {
