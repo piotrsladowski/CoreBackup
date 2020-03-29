@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
 
@@ -91,8 +92,8 @@ namespace CoreBackup.Models.Remote
         #region Get List of All Server Files
         public void GetFileList()
         {
-            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + Server);
-            ftpRequest.Credentials = new NetworkCredential(Username, Password);
+            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + "127.0.0.1");
+            ftpRequest.Credentials = new NetworkCredential("Mateusz", "mateusz");
             ftpRequest.Method = WebRequestMethods.Ftp.ListDirectory;
             FtpWebResponse response = (FtpWebResponse)ftpRequest.GetResponse();
             StreamReader streamReader = new StreamReader(response.GetResponseStream());
