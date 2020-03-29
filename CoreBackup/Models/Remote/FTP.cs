@@ -14,7 +14,6 @@ namespace CoreBackup.Models.Remote
     {
         public string Username { get; set; }
         public string Upload_Filename { get; set; }
-        public string Download_Filename { get; set; }
         public string Server { get; set; }
         public string Password { get; set; }
         public string Path { get; set; }
@@ -152,8 +151,8 @@ namespace CoreBackup.Models.Remote
         {
             try
             {
-                FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + "127.0.0.1");
-                ftpRequest.Credentials = new NetworkCredential("Mateusz", "mateusz");
+                FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + Server);
+                ftpRequest.Credentials = new NetworkCredential(Username,Password);
                 ftpRequest.Method = WebRequestMethods.Ftp.ListDirectory;
                 FtpWebResponse response = (FtpWebResponse)ftpRequest.GetResponse();
                 StreamReader streamReader = new StreamReader(response.GetResponseStream());

@@ -5,26 +5,10 @@ using System.Diagnostics;
 using Avalonia.Controls.ApplicationLifetimes;
 using System.Threading.Tasks;
 // FOR FTP SERVER
-using System.Net;
-using System.Threading;
-using System.IO;
-using Microsoft.Graph;
 using Application = Avalonia.Application;
-using System.Collections.Generic;
 using CoreBackup.Models.Remote;
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics.SymbolStore;
-using Avalonia.Controls.Templates;
-using Avalonia.Input;
-using CoreBackup.Views;
-using DynamicData;
-using Microsoft.WindowsAPICodePack.Dialogs;
-using SharpDX.Direct3D11;
-using Xceed.Wpf.Toolkit;
-using Xceed.Wpf.Toolkit.PropertyGrid.Converters;
-using Directory = Microsoft.Graph.Directory;
-using File = Microsoft.Graph.File;
 
 namespace CoreBackup.ViewModels
 {
@@ -107,8 +91,8 @@ namespace CoreBackup.ViewModels
             RemoteServerCommand = ReactiveCommand.Create(RemoteRadioBox);
             RemoteServerBrowseFileCommand = ReactiveCommand.Create(BtnServerActionFiles);
             RemoteServerActionCommand = ReactiveCommand.Create(FtpAction);
+            ConnectFtpCommand = ReactiveCommand.Create(FtpConnection);
             _ftpFiles = new ObservableCollection<string>();
-            ListFiles();
         }
 
         #region Reactive Commands and Binded Functions
@@ -121,6 +105,9 @@ namespace CoreBackup.ViewModels
 
         // FTP SERVER FILE EXPLORER
         private ReactiveCommand<Unit, Unit> RemoteServerBrowseFileCommand { get; }
+
+        // CONNECT TO FTP SERVER
+        private ReactiveCommand<Unit, Unit> ConnectFtpCommand { get; }
 
         // FTP SERVER ACTION 
         private ReactiveCommand<Unit, Unit> RemoteServerActionCommand { get; }
@@ -222,7 +209,6 @@ namespace CoreBackup.ViewModels
                 this.RaiseAndSetIfChanged(ref _cBoxSelectedIdx, value);
                 // Clear Fields in XAML
                 FtpPath = "";
-                PasswordInput = "";
                 if (_cBoxSelectedIdx == 0)
                 {
                     IsUpload = false;
@@ -251,16 +237,27 @@ namespace CoreBackup.ViewModels
             set => this.RaiseAndSetIfChanged(ref _isDownload, value);
         }
 
-        
+        private bool _isLogged;
+        public bool IsLogged
+        {
+            get => _isLogged;
+            set => this.RaiseAndSetIfChanged(ref _isLogged, value);
+        }
 
+        private string _toDownloadFile;
 
+        public string ToDownloadFile
+        {
+            get => _toDownloadFile;
+            set => this.RaiseAndSetIfChanged(ref _toDownloadFile, value);
+        }
         #endregion
 
         #region FTP Actions 
-        public void FtpAction()
+        private void FtpAction()
         {
             if(IsDownload)
-                FtpClient.Download("Zadanie3.jpg", FtpPath);
+                FtpClient.Download(_toDownloadFile, FtpPath);
             else if(IsUpload)
                 FtpClient.Upload();
         }
@@ -273,7 +270,7 @@ namespace CoreBackup.ViewModels
             set => this.RaiseAndSetIfChanged(ref _ftpFiles, value);
         }
 
-        public void ListFiles()
+        private void ListFiles()
         {
             _ftpFiles.Clear();
             FtpClient.GetFileList();
@@ -281,8 +278,21 @@ namespace CoreBackup.ViewModels
             {
                 _ftpFiles.Add(item);
             }
-
         }
+
+        private void FtpConnection()
+        {
+            try
+            {
+                IsLogged = FtpClient.ValidateLogging();
+                Debug.WriteLine(IsLogged);
+                ListFiles();
+            }
+            catch (NullReferenceException) { }
+            catch (Exception) { }
+            
+        }
+
         #endregion
     }
 }
