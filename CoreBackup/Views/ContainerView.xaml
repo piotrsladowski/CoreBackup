@@ -54,6 +54,7 @@
         <Button Classes="MenuButton" Command="{Binding ChangeScreenConfiguration}" Padding="20">Configuration</Button>
         <Button Classes="MenuButton" Command="{Binding ChangeScreenEventLog}" Padding="20">Event log</Button>
         <Button Classes="MenuButton" Command="{Binding ChangeScreenHome}" Padding="20">Home (To remove)</Button>
+        <UserControl Content="{Binding InfoPanel}" Grid.Column="1"/>
       </StackPanel>
 
       <!-- Container -->
