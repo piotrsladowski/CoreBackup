@@ -41,7 +41,8 @@
       <!-- SERVER -->
       <TextBlock Text="Type FTP Server IP Address" Grid.Column="0" Grid.Row="2" IsVisible="{Binding RemoteServerChoice}"
                  Margin="60,0,0,0"/>
-      <TextBox Text="{Binding ServerInput}"  Watermark="IP.IP.IP.IP" Grid.Column="1" Grid.Row="2" MaxHeight="30"
+      <TextBox Text="{Binding ServerInput, 
+                }"  Watermark="IP.IP.IP.IP" Grid.Column="1" Grid.Row="2" MaxHeight="30"
                IsVisible="{Binding RemoteServerChoice}" Width="300" Margin="-90,0,0,0"/>
       <!-- USERNAME -->
       <TextBlock Text="Type FTP Server Username" Grid.Column="0" Grid.Row="3" IsVisible="{Binding RemoteServerChoice}"
@@ -56,6 +57,10 @@
       <!-- BUTTON CONNECT -->
       <Button Content="Connect" Command="{Binding ConnectFtpCommand}" Grid.Column="1" Grid.Row="5" IsVisible="{Binding RemoteServerChoice}" 
               Width="150" Margin="-90,5,0,5" Height="30" IsDefault="True"/>
+      <!-- ERROR LIST BOX -->
+      <ListBox Items="{Binding ErrorMessages}" IsVisible="{Binding RemoteServerChoice}" Grid.Column="2" Grid.Row="2" Grid.RowSpan="2"
+               Margin="30,0,0,0" Focusable="False">
+      </ListBox>
       <!-- SELECT FTP ACTION -->
       <TextBlock Text="Select FTP Server Action" Grid.Column="0" Grid.Row="6" IsVisible="{Binding IsLogged}"
                  Margin="60,0,0,0"/>
@@ -79,10 +84,12 @@
       <!-- ACTION and PROGRESS BAR -->
       <Button Command="{Binding  RemoteServerActionCommand}" IsVisible="{Binding IsLogged}" Grid.Column="0" Grid.Row="9"
              Width="130" Margin="-80,5,0,0">Action</Button>
+     
       <ProgressBar x:Name="progressBar" Foreground="Green"  IsVisible="{Binding IsLogged}" IsEnabled="True" Grid.Column="1" Grid.Row="9" Margin="-90,5,0,0"
                    Width="300"/>
-         
-     
+
+      
+  
     </Grid>
   </StackPanel>
 

@@ -6,6 +6,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.Graph;
+using Renci.SshNet;
 using File = System.IO.File;
 
 namespace CoreBackup.Models.Remote
@@ -20,7 +21,7 @@ namespace CoreBackup.Models.Remote
 
         public List<string> directories;
 
-
+        
         #region Validate Logging Process
         /// <summary>
         /// User Login Validation
@@ -173,8 +174,6 @@ namespace CoreBackup.Models.Remote
             }
         }
         #endregion
-
-        // SECURE FTP - SFTP
 
     }
 }

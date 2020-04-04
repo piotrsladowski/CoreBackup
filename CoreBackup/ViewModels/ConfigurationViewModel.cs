@@ -9,6 +9,10 @@ using Application = Avalonia.Application;
 using CoreBackup.Models.Remote;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using CoreBackup.Validators;
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace CoreBackup.ViewModels
 {
@@ -21,8 +25,7 @@ namespace CoreBackup.ViewModels
         /// UF - Upload File
         /// DF - Download File
         /// </summary>
-        
-
+        /// 
         #region LocalVsRemote RadioBox Choice
         private bool _localDirectoryChoice;
 
@@ -91,7 +94,7 @@ namespace CoreBackup.ViewModels
             RemoteServerCommand = ReactiveCommand.Create(RemoteRadioBox);
             RemoteServerBrowseFileCommand = ReactiveCommand.Create(BtnServerActionFiles);
             RemoteServerActionCommand = ReactiveCommand.Create(FtpAction);
-            ConnectFtpCommand = ReactiveCommand.Create(FtpConnection);
+            ConnectFtpCommand = ReactiveCommand.Create(FtpConnect);
             _ftpFiles = new ObservableCollection<string>();
         }
 
@@ -171,7 +174,6 @@ namespace CoreBackup.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref _username, value);
-                FtpClient.Username = value;
             }
         }
 
@@ -183,7 +185,6 @@ namespace CoreBackup.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref _password, value);
-                FtpClient.Password = value;
             }
         }
 
@@ -195,7 +196,6 @@ namespace CoreBackup.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref _server, value);
-                FtpClient.Server = value;
             }
         }
 
@@ -223,6 +223,7 @@ namespace CoreBackup.ViewModels
             }
         }
 
+        // True if Upload Option is a ComboBox's choice
         private bool _isUpload;
         public bool IsUpload
         {
@@ -230,6 +231,7 @@ namespace CoreBackup.ViewModels
             set => this.RaiseAndSetIfChanged(ref _isUpload, value); 
         }
 
+        // True if Download Option is a ComboBox's choice
         private bool _isDownload = true;
         public bool IsDownload
         {
@@ -237,6 +239,7 @@ namespace CoreBackup.ViewModels
             set => this.RaiseAndSetIfChanged(ref _isDownload, value);
         }
 
+        // Validation State
         private bool _isLogged;
         public bool IsLogged
         {
@@ -244,25 +247,19 @@ namespace CoreBackup.ViewModels
             set => this.RaiseAndSetIfChanged(ref _isLogged, value);
         }
 
-        private string _toDownloadFile;
 
+        // Name of the which is going to be Downloaded
+        private string _toDownloadFile;
         public string ToDownloadFile
         {
             get => _toDownloadFile;
             set => this.RaiseAndSetIfChanged(ref _toDownloadFile, value);
         }
+
         #endregion
 
-        #region FTP Actions 
-        private void FtpAction()
-        {
-            if(IsDownload)
-                FtpClient.Download(_toDownloadFile, FtpPath);
-            else if(IsUpload)
-                FtpClient.Upload();
-        }
-
-
+        #region FTP Actions
+        // Collection contains the names of files on the server
         private ObservableCollection<string> _ftpFiles;
         public ObservableCollection<string> FtpFiles
         {
@@ -270,6 +267,8 @@ namespace CoreBackup.ViewModels
             set => this.RaiseAndSetIfChanged(ref _ftpFiles, value);
         }
 
+
+        // Get All files' names and inject them to local Collection
         private void ListFiles()
         {
             _ftpFiles.Clear();
@@ -280,19 +279,66 @@ namespace CoreBackup.ViewModels
             }
         }
 
-        private void FtpConnection()
+        // Collection contains the validation failures
+        private BindingList<string> errors = new BindingList<string>();
+        private ObservableCollection<string> _errorMessages = new ObservableCollection<string>();
+
+        public ObservableCollection<string> ErrorMessages
         {
-            try
+            get => _errorMessages;
+            set => this.RaiseAndSetIfChanged(ref _errorMessages, value);
+        }
+
+        private void FtpConnect()
+        {
+            errors.Clear();
+            ErrorMessages.Clear();
+            ConfigurationViewModelValidator validator = new ConfigurationViewModelValidator();
+            ValidationResult results = validator.Validate(this);
+
+            if (results.IsValid == false)
             {
-                IsLogged = FtpClient.ValidateLogging();
-                Debug.WriteLine(IsLogged);
-                ListFiles();
+                foreach (ValidationFailure failure in results.Errors)
+                {
+                    errors.Add($"{failure.PropertyName} : {failure.ErrorMessage}");
+                    ErrorMessages.Add($"{failure.ErrorMessage}");
+                }
             }
-            catch (NullReferenceException) { }
-            catch (Exception) { }
-            
+            else
+            {
+                FtpClient.Username = UsernameInput;
+                FtpClient.Password = PasswordInput;
+                FtpClient.Server = ServerInput;
+
+                try
+                {
+                    IsLogged = FtpClient.ValidateLogging();
+                    if (IsLogged)
+                    {
+                        ListFiles();
+                    }
+                    else
+                    {
+                        ErrorMessages.Add("Access denied - wrong Username / Password / IP");
+                    }
+
+                }
+                catch (NullReferenceException) { }
+                catch (Exception) { }
+            }
+        }
+
+        // Ftp Binded Action
+        private void FtpAction()
+        {
+            if (IsDownload)
+                FtpClient.Download(_toDownloadFile, FtpPath);
+            else if (IsUpload)
+                FtpClient.Upload();
         }
 
         #endregion
+
+
     }
 }

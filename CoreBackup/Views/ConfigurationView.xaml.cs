@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection.PortableExecutable;
 using System.Threading;
@@ -6,6 +7,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 using Avalonia.Controls.Templates;
 using Avalonia.Interactivity;
 using CoreBackup.ViewModels;
@@ -22,9 +24,9 @@ namespace CoreBackup.Views
 
         public ConfigurationView()
         {
-            
+
             this.InitializeComponent();
-            progressBar = this.FindControl<ProgressBar>("progressBar"); 
+            progressBar = this.FindControl<ProgressBar>("progressBar");
             // Acces to Xaml element by x:Name Property
             backgroundWorker.RunWorkerAsync();
             backgroundWorker.WorkerReportsProgress = true;
@@ -48,7 +50,7 @@ namespace CoreBackup.Views
         private void ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             // This is called on the UI thread when ReportProgress method is called
-            if(progressBar.IsVisible == true)
+            if (progressBar.IsVisible == true)
                 progressBar.Value = e.ProgressPercentage;
         }
 
@@ -61,6 +63,7 @@ namespace CoreBackup.Views
         {
             AvaloniaXamlLoader.Load(this);
         }
+
 
     }
 }
