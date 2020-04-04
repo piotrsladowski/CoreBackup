@@ -15,55 +15,10 @@ using FluentValidation;
 using FluentValidation.Results;
 using CoreBackup.ViewModels.ConfigurationViewModels;
 
-namespace CoreBackup.ViewModels
+namespace CoreBackup.ViewModels.ConfigurationViewModels
 {
-    public partial class ConfigurationViewModel : ViewModelBase
+    class FTPConfViewModel : ViewModelBase
     {
-        /// <summary>
-        /// SHORTCUTS FOR VARIABLES NAMES
-        /// LD - Local Directory
-        /// RS - Remote Server
-        /// UF - Upload File
-        /// DF - Download File
-        /// </summary>
-        /// 
-        #region LocalVsRemote RadioBox Choice
-        private bool _localDirectoryChoice;
-
-        public bool LocalDirectoryChoice
-        {
-            get => _localDirectoryChoice;
-            set => this.RaiseAndSetIfChanged(ref _localDirectoryChoice, value);
-        }
-
-        private bool _remoteServerChoice;
-
-        public bool RemoteServerChoice
-        {
-            get => _remoteServerChoice;
-            set => this.RaiseAndSetIfChanged(ref _remoteServerChoice, value);
-        }
-
-        private void LocalRadioBox()
-        {
-            RemoteServerChoice = false;
-            LocalDirectoryChoice = true;
-        }
-
-        private void RemoteRadioBox()
-        {
-            LocalDirectoryChoice = false;
-            RemoteServerChoice = true;
-        }
-        #endregion
-        #region Paths
-        private string _path;
-        public string Path
-        {
-            get => _path;
-            set => this.RaiseAndSetIfChanged(ref _path, value);
-        }
-
         // PATH TO FILE TO BE UPLOADED
         private string _uploadPath;
         public string UploadPath
@@ -86,53 +41,14 @@ namespace CoreBackup.ViewModels
             get => _ftpPath;
             set => this.RaiseAndSetIfChanged(ref _ftpPath, value);
         }
-        #endregion
 
-        ViewModelBase directoryLeft;
-        ViewModelBase ftpLeft;
-        ViewModelBase directoryRight;
-        ViewModelBase ftpRight;
-
-        ViewModelBase leftData;
-        ViewModelBase rightData;
-        public ViewModelBase LeftData
+        public FTPConfViewModel()
         {
-            get => leftData;
-            private set => this.RaiseAndSetIfChanged(ref leftData, value);
-        }
-
-        public ViewModelBase RightData
-        {
-            get => rightData;
-            private set => this.RaiseAndSetIfChanged(ref rightData, value);
-        }
-        public ConfigurationViewModel()
-        {
-            InitializeConfViewModels();
-            FileExplorerCommand = ReactiveCommand.Create(BtnBrowseLocalFiles);
-            LocalDirectoryCommand = ReactiveCommand.Create(LocalRadioBox);
-            RemoteServerCommand = ReactiveCommand.Create(RemoteRadioBox);
             RemoteServerBrowseFileCommand = ReactiveCommand.Create(BtnServerActionFiles);
             RemoteServerActionCommand = ReactiveCommand.Create(FtpAction);
             ConnectFtpCommand = ReactiveCommand.Create(FtpConnect);
             _ftpFiles = new ObservableCollection<string>();
         }
-
-        private void InitializeConfViewModels()
-        {
-            ftpLeft = new FTPConfViewModel();
-            ftpRight = new FTPConfViewModel();
-            directoryLeft = new DirectoryConfVIewModel();
-            directoryRight = new DirectoryConfVIewModel();
-        }
-
-        #region Reactive Commands and Binded Functions
-        // RADIO BOXES 
-        private ReactiveCommand<Unit, Unit> LocalDirectoryCommand { get; }
-        private ReactiveCommand<Unit, Unit> RemoteServerCommand { get; }
-
-        // LOCAL FILE EXPLORER
-        private ReactiveCommand<Unit, Unit> FileExplorerCommand { get; }
 
         // FTP SERVER FILE EXPLORER
         private ReactiveCommand<Unit, Unit> RemoteServerBrowseFileCommand { get; }
@@ -142,17 +58,12 @@ namespace CoreBackup.ViewModels
 
         // FTP SERVER ACTION 
         private ReactiveCommand<Unit, Unit> RemoteServerActionCommand { get; }
-       
-        private async void BtnBrowseLocalFiles()
-        {
-            Path = await GetPath(false,false);
-        }
 
         private async void BtnServerActionFiles()
         {
-            if(_cBoxSelectedIdx == 0)
+            if (_cBoxSelectedIdx == 0)
                 FtpPath = await GetPath(false, true);
-            else if(_cBoxSelectedIdx == 1)
+            else if (_cBoxSelectedIdx == 1)
                 FtpPath = await GetPath(true, false);
         }
 
@@ -162,7 +73,7 @@ namespace CoreBackup.ViewModels
             string fullPath = null;
             if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
             {
-                
+
                 if (Download)
                 {
                     OpenFolderDialog dialog = new OpenFolderDialog();
@@ -184,11 +95,10 @@ namespace CoreBackup.ViewModels
                         FtpClient.Upload_Filename = PathTreeSteps[PathTreeSteps.Length - 1];
                     }
                 }
-                
+
             }
             return fullPath;
         }
-        #endregion
 
         // FTP SERVER CONFIGURATION //
         #region FTP Configuration Fields
@@ -199,8 +109,7 @@ namespace CoreBackup.ViewModels
         public string UsernameInput
         {
             get => _username;
-            set
-            {
+            set {
                 this.RaiseAndSetIfChanged(ref _username, value);
             }
         }
@@ -210,8 +119,7 @@ namespace CoreBackup.ViewModels
         public string PasswordInput
         {
             get => _password;
-            set
-            {
+            set {
                 this.RaiseAndSetIfChanged(ref _password, value);
             }
         }
@@ -221,37 +129,16 @@ namespace CoreBackup.ViewModels
         public string ServerInput
         {
             get => _server;
-            set
-            {
+            set {
                 this.RaiseAndSetIfChanged(ref _server, value);
             }
         }
 
-
-        private int _cBoxLeftSelectedIdx;
-        public int CBoxLeftSelectedIdx
-        {
-            get => _cBoxLeftSelectedIdx;
-            set {
-                this.RaiseAndSetIfChanged(ref _cBoxLeftSelectedIdx, value);
-                // Clear Fields in XAML
-                FtpPath = "";
-                if (_cBoxLeftSelectedIdx == 0)
-                {
-                    LeftData = directoryLeft;
-                }
-                else if (_cBoxLeftSelectedIdx == 1)
-                {
-                    LeftData = ftpLeft;
-                }
-            }
-        }
         private int _cBoxSelectedIdx;
         public int CBoxSelectedIdx
         {
             get => _cBoxSelectedIdx;
-            set
-            {
+            set {
                 this.RaiseAndSetIfChanged(ref _cBoxSelectedIdx, value);
                 // Clear Fields in XAML
                 FtpPath = "";
@@ -260,7 +147,8 @@ namespace CoreBackup.ViewModels
                     IsUpload = false;
                     IsDownload = true;
                     ListFiles();
-                } else if (_cBoxSelectedIdx == 1)
+                }
+                else if (_cBoxSelectedIdx == 1)
                 {
                     IsUpload = true;
                     IsDownload = false;
@@ -274,7 +162,7 @@ namespace CoreBackup.ViewModels
         public bool IsUpload
         {
             get => _isUpload;
-            set => this.RaiseAndSetIfChanged(ref _isUpload, value); 
+            set => this.RaiseAndSetIfChanged(ref _isUpload, value);
         }
 
         // True if Download Option is a ComboBox's choice
@@ -339,7 +227,8 @@ namespace CoreBackup.ViewModels
         {
             errors.Clear();
             ErrorMessages.Clear();
-            ConfigurationViewModelValidator validator = new ConfigurationViewModelValidator();
+            FTPConfViewModelValidator validator = new FTPConfViewModelValidator();
+            //ConfigurationViewModelValidator validator = new ConfigurationViewModelValidator();
             ValidationResult results = validator.Validate(this);
 
             if (results.IsValid == false)
@@ -384,7 +273,5 @@ namespace CoreBackup.ViewModels
         }
 
         #endregion
-
-
     }
 }

@@ -8,13 +8,28 @@
   
 
   <StackPanel>
-    <Grid ColumnDefinitions="1*" RowDefinitions="10,30,5">
+    <Grid RowDefinitions="50,*">
       <!--Rectangle HorizontalAlignment="Stretch" Fill="#FF007ACC" Height="10" Grid.Column="0" Grid.Row="0"/>
       <Rectangle HorizontalAlignment="Stretch" Fill="DarkSlateBlue" Height="5" Grid.Column="0" Grid.Row="0"/>-->
-      <TextBlock Text="--- Select Backup Mode ---" TextAlignment="Center" FontSize="16" Margin="1" Grid.Column="0" Grid.Row="1"/>
+      <TextBlock Text="--- Select Backup Mode ---" TextAlignment="Center" FontSize="16" Margin="1" Grid.Row="0"/>
       <!--
       <Rectangle HorizontalAlignment="Stretch" Fill="#FF007ACC" Height="10" Grid.Column="0" Grid.Row="2"/>
       <Rectangle HorizontalAlignment="Stretch" Fill="DarkSlateBlue" Height="5" Grid.Column="0" Grid.Row="2"/>-->
+      <Grid Grid.Row="1" ColumnDefinitions="*,*" RowDefinitions="40,40,*">
+        <TextBlock Grid.Column="0" Grid.Row="0">Select Data Source</TextBlock>
+        <ComboBox Grid.Column="0" Grid.Row="1" SelectedIndex="{Binding CBoxLeftSelectedIdx}">
+          <ComboBoxItem>Local Directory</ComboBoxItem>
+          <ComboBoxItem>FTP</ComboBoxItem>
+        </ComboBox>
+        <UserControl Grid.Column="0" Grid.Row="2" Content="{Binding LeftData}"/>
+        <TextBlock Grid.Column="1" Grid.Row="0">Select Data Source</TextBlock>
+        <ComboBox Grid.Column="1" Grid.Row="1" SelectedIndex="{Binding CBoxRightSelectedIdx}">
+          <ComboBoxItem>Local Directory</ComboBoxItem>
+          <ComboBoxItem>FTP</ComboBoxItem>
+        </ComboBox>
+        <UserControl Grid.Column="1" Grid.Row="2" Content="{Binding RightData}"/>
+      </Grid>
+    
     </Grid>
     
     <Grid ColumnDefinitions="15*, 10*, 15*, 10*" RowDefinitions="20,30,30,40,30,30,30,30,30,30" Margin="10,0,0,0">     

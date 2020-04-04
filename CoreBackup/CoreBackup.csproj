@@ -14,6 +14,8 @@
     <Folder Include="Models\Crypto\" />
   </ItemGroup>
   <ItemGroup>
+    <AvaloniaResource Remove="Views\ConfigurationViews\DirectoryConfView.xaml" />
+    <AvaloniaResource Remove="Views\ConfigurationViews\FTPConfView.xaml" />
     <AvaloniaResource Remove="Views\EventLogView.xaml" />
     <AvaloniaResource Remove="Views\FileExplorerView.xaml" />
     <AvaloniaResource Remove="Views\HomeView.xaml" />
@@ -24,6 +26,8 @@
     <AvaloniaResource Remove="Windows\SettingsWindow.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Views\ConfigurationViews\DirectoryConfView.xaml" />
+    <None Remove="Views\ConfigurationViews\FTPConfView.xaml" />
     <None Remove="Views\EventLogView.xaml" />
     <None Remove="Views\FileExplorerView.xaml" />
     <None Remove="Views\HomeView.xaml" />
@@ -88,6 +92,16 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\TasksView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\ConfigurationViews\FTPConfView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\ConfigurationViews\DirectoryConfView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>
