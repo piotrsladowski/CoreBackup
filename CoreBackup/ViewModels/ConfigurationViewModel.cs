@@ -109,21 +109,53 @@ namespace CoreBackup.ViewModels
         public ConfigurationViewModel()
         {
             InitializeConfViewModels();
-            FileExplorerCommand = ReactiveCommand.Create(BtnBrowseLocalFiles);
             LocalDirectoryCommand = ReactiveCommand.Create(LocalRadioBox);
             RemoteServerCommand = ReactiveCommand.Create(RemoteRadioBox);
-            RemoteServerBrowseFileCommand = ReactiveCommand.Create(BtnServerActionFiles);
-            RemoteServerActionCommand = ReactiveCommand.Create(FtpAction);
-            ConnectFtpCommand = ReactiveCommand.Create(FtpConnect);
-            _ftpFiles = new ObservableCollection<string>();
+
+        }
+
+        private int _cBoxLeftSelectedIdx;
+        public int CBoxLeftSelectedIdx
+        {
+            get => _cBoxLeftSelectedIdx;
+            set {
+                this.RaiseAndSetIfChanged(ref _cBoxLeftSelectedIdx, value);
+                // Clear Fields in XAML
+                if (_cBoxLeftSelectedIdx == 1)
+                {
+                    LeftData = directoryLeft;
+                }
+                else if (_cBoxLeftSelectedIdx == 2)
+                {
+                    LeftData = ftpLeft;
+                }
+            }
+        }
+
+        private int _cBoxRightSelectedIdx;
+        public int CBoxRightSelectedIdx
+        {
+            get => _cBoxRightSelectedIdx;
+            set {
+                this.RaiseAndSetIfChanged(ref _cBoxRightSelectedIdx, value);
+                // Clear Fields in XAML
+                if (_cBoxRightSelectedIdx == 1)
+                {
+                    RightData = directoryRight;
+                }
+                else if (_cBoxRightSelectedIdx == 2)
+                {
+                    RightData = ftpRight;
+                }
+            }
         }
 
         private void InitializeConfViewModels()
         {
             ftpLeft = new FTPConfViewModel();
             ftpRight = new FTPConfViewModel();
-            directoryLeft = new DirectoryConfVIewModel();
-            directoryRight = new DirectoryConfVIewModel();
+            directoryLeft = new DirectoryConfViewModel();
+            directoryRight = new DirectoryConfViewModel();
         }
 
         #region Reactive Commands and Binded Functions
@@ -142,249 +174,9 @@ namespace CoreBackup.ViewModels
 
         // FTP SERVER ACTION 
         private ReactiveCommand<Unit, Unit> RemoteServerActionCommand { get; }
-       
-        private async void BtnBrowseLocalFiles()
-        {
-            Path = await GetPath(false,false);
-        }
 
-        private async void BtnServerActionFiles()
-        {
-            if(_cBoxSelectedIdx == 0)
-                FtpPath = await GetPath(false, true);
-            else if(_cBoxSelectedIdx == 1)
-                FtpPath = await GetPath(true, false);
-        }
-
-        private async Task<string> GetPath(bool Upload, bool Download)
-        {
-            string[] resultReturn = null;
-            string fullPath = null;
-            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
-            {
-                
-                if (Download)
-                {
-                    OpenFolderDialog dialog = new OpenFolderDialog();
-                    string result = await dialog.ShowAsync(desktopLifetime.MainWindow);
-                    fullPath = result;
-                    Debug.WriteLine(fullPath);
-                }
-                else
-                {
-                    OpenFileDialog dialog = new OpenFileDialog();
-                    string[] result = await dialog.ShowAsync(desktopLifetime.MainWindow);
-                    resultReturn = result;
-                    fullPath = string.Join(" ", resultReturn);
-                    if (Upload)
-                    {
-                        dialog.AllowMultiple = true;
-                        string[] PathTreeSteps = fullPath.Split('\\');
-                        FtpClient.Path = fullPath;
-                        FtpClient.Upload_Filename = PathTreeSteps[PathTreeSteps.Length - 1];
-                    }
-                }
-                
-            }
-            return fullPath;
-        }
-        #endregion
-
-        // FTP SERVER CONFIGURATION //
-        #region FTP Configuration Fields
-
-        private FTP FtpClient = new FTP();
-
-        private string _username;
-        public string UsernameInput
-        {
-            get => _username;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _username, value);
-            }
-        }
-
-        private string _password;
-
-        public string PasswordInput
-        {
-            get => _password;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _password, value);
-            }
-        }
-
-        private string _server;
-
-        public string ServerInput
-        {
-            get => _server;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _server, value);
-            }
-        }
-
-
-        private int _cBoxLeftSelectedIdx;
-        public int CBoxLeftSelectedIdx
-        {
-            get => _cBoxLeftSelectedIdx;
-            set {
-                this.RaiseAndSetIfChanged(ref _cBoxLeftSelectedIdx, value);
-                // Clear Fields in XAML
-                FtpPath = "";
-                if (_cBoxLeftSelectedIdx == 0)
-                {
-                    LeftData = directoryLeft;
-                }
-                else if (_cBoxLeftSelectedIdx == 1)
-                {
-                    LeftData = ftpLeft;
-                }
-            }
-        }
-        private int _cBoxSelectedIdx;
-        public int CBoxSelectedIdx
-        {
-            get => _cBoxSelectedIdx;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _cBoxSelectedIdx, value);
-                // Clear Fields in XAML
-                FtpPath = "";
-                if (_cBoxSelectedIdx == 0)
-                {
-                    IsUpload = false;
-                    IsDownload = true;
-                    ListFiles();
-                } else if (_cBoxSelectedIdx == 1)
-                {
-                    IsUpload = true;
-                    IsDownload = false;
-                    ListFiles();
-                }
-            }
-        }
-
-        // True if Upload Option is a ComboBox's choice
-        private bool _isUpload;
-        public bool IsUpload
-        {
-            get => _isUpload;
-            set => this.RaiseAndSetIfChanged(ref _isUpload, value); 
-        }
-
-        // True if Download Option is a ComboBox's choice
-        private bool _isDownload = true;
-        public bool IsDownload
-        {
-            get => _isDownload;
-            set => this.RaiseAndSetIfChanged(ref _isDownload, value);
-        }
-
-        // Validation State
-        private bool _isLogged;
-        public bool IsLogged
-        {
-            get => _isLogged;
-            set => this.RaiseAndSetIfChanged(ref _isLogged, value);
-        }
-
-
-        // Name of the which is going to be Downloaded
-        private string _toDownloadFile;
-        public string ToDownloadFile
-        {
-            get => _toDownloadFile;
-            set => this.RaiseAndSetIfChanged(ref _toDownloadFile, value);
-        }
 
         #endregion
-
-        #region FTP Actions
-        // Collection contains the names of files on the server
-        private ObservableCollection<string> _ftpFiles;
-        public ObservableCollection<string> FtpFiles
-        {
-            get => _ftpFiles;
-            set => this.RaiseAndSetIfChanged(ref _ftpFiles, value);
-        }
-
-
-        // Get All files' names and inject them to local Collection
-        private void ListFiles()
-        {
-            _ftpFiles.Clear();
-            FtpClient.GetFileList();
-            foreach (var item in FtpClient.directories)
-            {
-                _ftpFiles.Add(item);
-            }
-        }
-
-        // Collection contains the validation failures
-        private BindingList<string> errors = new BindingList<string>();
-        private ObservableCollection<string> _errorMessages = new ObservableCollection<string>();
-
-        public ObservableCollection<string> ErrorMessages
-        {
-            get => _errorMessages;
-            set => this.RaiseAndSetIfChanged(ref _errorMessages, value);
-        }
-
-        private void FtpConnect()
-        {
-            errors.Clear();
-            ErrorMessages.Clear();
-            ConfigurationViewModelValidator validator = new ConfigurationViewModelValidator();
-            ValidationResult results = validator.Validate(this);
-
-            if (results.IsValid == false)
-            {
-                foreach (ValidationFailure failure in results.Errors)
-                {
-                    errors.Add($"{failure.PropertyName} : {failure.ErrorMessage}");
-                    ErrorMessages.Add($"{failure.ErrorMessage}");
-                }
-            }
-            else
-            {
-                FtpClient.Username = UsernameInput;
-                FtpClient.Password = PasswordInput;
-                FtpClient.Server = ServerInput;
-
-                try
-                {
-                    IsLogged = FtpClient.ValidateLogging();
-                    if (IsLogged)
-                    {
-                        ListFiles();
-                    }
-                    else
-                    {
-                        ErrorMessages.Add("Access denied - wrong Username / Password / IP");
-                    }
-
-                }
-                catch (NullReferenceException) { }
-                catch (Exception) { }
-            }
-        }
-
-        // Ftp Binded Action
-        private void FtpAction()
-        {
-            if (IsDownload)
-                FtpClient.Download(_toDownloadFile, FtpPath);
-            else if (IsUpload)
-                FtpClient.Upload();
-        }
-
-        #endregion
-
 
     }
 }
