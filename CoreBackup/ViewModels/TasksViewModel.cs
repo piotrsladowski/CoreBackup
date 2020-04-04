@@ -10,6 +10,8 @@ using DynamicData.Binding;
 using Avalonia;
 using System.Linq;
 using System.IO;
+using CoreBackup.Models.Tasks;
+using CoreBackup.Models.Config;
 
 namespace CoreBackup.ViewModels
 {
@@ -27,23 +29,23 @@ namespace CoreBackup.ViewModels
         public ObservableCollectionExtended<string> LocalFiles { get; }
         public ObservableCollectionExtended<FileInformation> RemoteFiles { get; }
 
-        public ReactiveCommand<Unit, Unit> SendToRemoteCommand { get; }
-        public ReactiveCommand<Unit, Unit> PauseCommand { get; }
+
+        public ReactiveCommand<Unit, Unit> SyncToLocalCommand { get; }
+        public ReactiveCommand<Unit, Unit> SyncToLocalOverrideCommand { get; }
+        public ReactiveCommand<Unit, Unit> SyncMirrorCommand { get; }
+        public ReactiveCommand<Unit, Unit> SyncToRemoteOverrideCommand { get; }
+        public ReactiveCommand<Unit, Unit> SyncToRemoteCommand { get; }
 
 
-        private string tekst;
-
-        public string Tekst
-        {
-            get => tekst;
-            set => this.RaiseAndSetIfChanged(ref tekst, value);
-        }
+        private SyncActions syncActions;
 
         public TasksViewModel()
         {
-            tekst = "TESTOWY";
-            SendToRemoteCommand = ReactiveCommand.Create(SendToRemote);
-            PauseCommand = ReactiveCommand.Create(Pause);
+            SyncToLocalCommand = ReactiveCommand.Create(SyncToLocal);
+            SyncToLocalOverrideCommand = ReactiveCommand.Create(SyncToLocalOverride);
+            SyncMirrorCommand = ReactiveCommand.Create(SyncMirror);
+            SyncToRemoteCommand = ReactiveCommand.Create(SyncToRemote);
+            SyncToRemoteOverrideCommand = ReactiveCommand.Create(SyncToRemoteOverride);
 
             LocalFiles = new ObservableCollectionExtended<string>();
             LocalFiles.ToObservableChangeSet()
@@ -63,6 +65,7 @@ namespace CoreBackup.ViewModels
            .Bind(out _derivedRemoteFiles)
            .Subscribe();
 
+            syncActions = new SyncActions();
 
             BasicIO bIO = new BasicIO();
             LocalFiles.Where(l => l.Length != 0).ToList().All(i => LocalFiles.Remove(i));
@@ -73,12 +76,11 @@ namespace CoreBackup.ViewModels
                 fi.Filename = f.Name;
                 fi.Size = f.Length;
                 RemoteFiles.Add(fi);
-                Tekst = "zmieniony";
             }
         }
 
 
-        private void SendToRemote()
+        private void SyncMirror()
         {
             BasicIO bIO = new BasicIO();
             LocalFiles.Where(l => l.Length != 0).ToList().All(i => LocalFiles.Remove(i));
@@ -89,13 +91,22 @@ namespace CoreBackup.ViewModels
                 fi.Filename = f.Name;
                 fi.Size = f.Length;
                 RemoteFiles.Add(fi);
-                Tekst = "zmieniony";
             }
         }
 
-        private void Pause()
+        private void SyncToLocal()
         {
-            LocalFiles.Add("test");
+
+        }
+        private void SyncToLocalOverride()
+        {
+
+        }
+        private void SyncToRemote()
+        {
+        }
+        private void SyncToRemoteOverride()
+        {
         }
     }
 }

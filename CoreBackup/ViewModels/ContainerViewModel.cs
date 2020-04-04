@@ -21,6 +21,7 @@ namespace CoreBackup.ViewModels
         #region Constructor
         ViewModelBase screen;
         ViewModelBase navbar;
+        ViewModelBase infoPanel;
         public ViewModelBase Screen
         {
             get => screen;
@@ -33,11 +34,18 @@ namespace CoreBackup.ViewModels
             private set => this.RaiseAndSetIfChanged(ref navbar, value);
         }
 
+        public ViewModelBase InfoPanel
+        {
+            get => infoPanel;
+            private set => this.RaiseAndSetIfChanged(ref infoPanel, value);
+        }
+
         public ContainerViewModel()
         {
             // Base ViewModels
             Screen = new HomeViewModel();
             Navbar = new NavbarViewModel();
+            InfoPanel = new InfoPanelViewModel();
 
             // Mutable ViewModels
             homeScreen = new HomeViewModel();

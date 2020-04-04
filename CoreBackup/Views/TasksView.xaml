@@ -7,19 +7,21 @@
 
   
   <Grid RowDefinitions="50,*" ShowGridLines="True" ClipToBounds="True">
-    <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*,*,*" ShowGridLines="True" ClipToBounds="True">
-      <TextBlock Text="{Binding Tekst}"/>
-      <Button Grid.Column="1" Background="Transparent">
+    <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*,*" ShowGridLines="True" ClipToBounds="True">
+      <Button Grid.Column="0" Background="Transparent" Command="{Binding SyncToLocalOverride}">
+        <Image Source="avares://CoreBackup/Assets/Icons/arrow_doubleLeft_90_blue.png"></Image>
+      </Button>
+      <Button Grid.Column="1" Background="Transparent" Command="{Binding SyncToLocal}">
         <Image Source="avares://CoreBackup/Assets/Icons/arrow_left_90_blue.png"></Image>
       </Button>
-      <Button Grid.Column="2" Background="Transparent" Command="{Binding Pause}">
-        <Image Source="avares://CoreBackup/Assets/Icons/pause_90_blue.png"></Image>
+      <Button Grid.Column="2" Background="Transparent" Command="{Binding SyncMirror}">
+        <Image Source="avares://CoreBackup/Assets/Icons/arrow_both_90_blue.png"></Image>
       </Button>
-      <Button Grid.Column="3" Background="Transparent">
-        <Image Source="avares://CoreBackup/Assets/Icons/play_90_blue.png"></Image>
-      </Button>
-      <Button Grid.Column="4" Background="Transparent" Command="{Binding SendToRemote}">
+      <Button Grid.Column="3" Background="Transparent" Command="{Binding SyncToRemote}">
         <Image Source="avares://CoreBackup/Assets/Icons/arrow_right_90_blue.png"></Image>
+      </Button>
+      <Button Grid.Column="4" Background="Transparent" Command="{Binding SyncToRemoteOverride}">
+        <Image Source="avares://CoreBackup/Assets/Icons/arrow_doubleRight_90_blue.png"></Image>
       </Button>
     </Grid>
       <Grid ShowGridLines="False" ClipToBounds="True" Grid.Row="1">
@@ -28,8 +30,8 @@
           <ColumnDefinition Width="10"/>
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ScrollViewer Grid.Column="0" ScrollViewer.HorizontalScrollBarVisibility="Auto">
-          <DataGrid Items="{Binding RemoteFiles}" CanUserReorderColumns="True" CanUserResizeColumns="True" IsReadOnly="True">
+        <ScrollViewer Grid.Column="0" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
+          <DataGrid Items="{Binding RemoteFiles}" CanUserReorderColumns="True" CanUserResizeColumns="True" IsReadOnly="True" RenderOptions.BitmapInterpolationMode="LowQuality">
           <DataGrid.Columns>
             <DataGridTextColumn Header="Filename"
                                 Binding="{Binding Filename}"
