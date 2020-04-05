@@ -19,6 +19,8 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 {
     class FTPConfViewModel : ViewModelBase
     {
+
+       
         /// <summary>
         /// SHORTCUTS FOR VARIABLES NAMES
         /// LD - Local Directory
@@ -44,14 +46,16 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             get => _downloadPath;
             set => this.RaiseAndSetIfChanged(ref _downloadPath, value);
         }
+        #endregion
 
+        // PATH SEEN BY USER 
         private string _ftpPath;
+
         public string FtpPath
         {
             get => _ftpPath;
             set => this.RaiseAndSetIfChanged(ref _ftpPath, value);
         }
-        #endregion
 
         public FTPConfViewModel()
         {
@@ -75,9 +79,17 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
         private async void BtnServerActionFiles()
         {
             if (_cBoxSelectedIdx == 0)
-                FtpPath = await GetPath(false, true);
+            {
+                DownloadPath = await GetPath(false, true);
+                // Export Path to User Interface
+                FtpPath = DownloadPath;
+            }
             else if (_cBoxSelectedIdx == 1)
-                FtpPath = await GetPath(true, false);
+            {
+                UploadPath = await GetPath(true, false);
+                // Export Path to User Interface
+                FtpPath = UploadPath;
+            }
         }
 
         private async Task<string> GetPath(bool Upload, bool Download)
@@ -92,7 +104,6 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
                     OpenFolderDialog dialog = new OpenFolderDialog();
                     string result = await dialog.ShowAsync(desktopLifetime.MainWindow);
                     fullPath = result;
-                    Debug.WriteLine(fullPath);
                 }
                 else
                 {
@@ -104,8 +115,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
                     {
                         dialog.AllowMultiple = true;
                         string[] PathTreeSteps = fullPath.Split('\\');
-                        FtpClient.Path = fullPath;
-                        FtpClient.Upload_Filename = PathTreeSteps[PathTreeSteps.Length - 1];
+                        ToUploadFile = PathTreeSteps[PathTreeSteps.Length - 1];
                     }
                 }
 
@@ -195,12 +205,21 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
         }
 
 
-        // Name of the which is going to be Downloaded
+        // Name of the file which is going to be Downloaded
         private string _toDownloadFile;
         public string ToDownloadFile
         {
             get => _toDownloadFile;
             set => this.RaiseAndSetIfChanged(ref _toDownloadFile, value);
+        }
+
+        // Name of the file which is going to be Uploaded
+        private string _toUploadFile;
+
+        public string ToUploadFile
+        {
+            get => _toUploadFile;
+            set => this.RaiseAndSetIfChanged(ref _toUploadFile, value);
         }
 
         #endregion
@@ -276,13 +295,17 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             }
         }
 
-        // Ftp Binded Action
+        // DOWNLOAD or UPLOAD Action
         private void FtpAction()
         {
             if (IsDownload)
-                FtpClient.Download(_toDownloadFile, FtpPath);
+            {
+                FtpClient.Download(ToDownloadFile, DownloadPath);
+            }
             else if (IsUpload)
-                FtpClient.Upload();
+            {
+                FtpClient.Upload(ToUploadFile, UploadPath);
+            }
         }
 
         #endregion

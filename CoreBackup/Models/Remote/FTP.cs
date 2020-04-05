@@ -5,8 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.Graph;
-using Renci.SshNet;
 using File = System.IO.File;
 
 namespace CoreBackup.Models.Remote
@@ -14,10 +12,8 @@ namespace CoreBackup.Models.Remote
     public partial class FTP
     {
         public string Username { get; set; }
-        public string Upload_Filename { get; set; }
         public string Server { get; set; }
         public string Password { get; set; }
-        public string Path { get; set; }
 
         public List<string> directories;
 
@@ -62,15 +58,15 @@ namespace CoreBackup.Models.Remote
         #endregion
 
         #region Upload
-        public void Upload()
+        public void Upload(string filename, string sourcePath)
         {
             try
             {
-                FtpWebRequest request = (FtpWebRequest) WebRequest.Create(new Uri(string.Format("{0}/{1}", "ftp://" + Server, Upload_Filename)));
+                FtpWebRequest request = (FtpWebRequest) WebRequest.Create(new Uri(string.Format("{0}/{1}", "ftp://" + Server, filename)));
                 request.Method = WebRequestMethods.Ftp.UploadFile;
                 request.Credentials = new NetworkCredential(Username, Password);
                 Stream ftpStream = request.GetRequestStream();
-                FileStream fs = File.OpenRead(Path);
+                FileStream fs = File.OpenRead(sourcePath);
                 byte[] buffer = new byte[1024];
                 double total = (double) fs.Length;
                 int byteRead = 0;

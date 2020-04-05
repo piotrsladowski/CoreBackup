@@ -12,7 +12,6 @@ using Avalonia.Controls.Templates;
 using Avalonia.Interactivity;
 using CoreBackup.ViewModels;
 using CoreBackup.Windows;
-using Microsoft.Graph;
 using ReactiveUI;
 
 namespace CoreBackup.Views

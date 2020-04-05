@@ -11,7 +11,6 @@
       <SubType>Designer</SubType>
     </AvaloniaResource>
     <AvaloniaResource Include="Assets\**" />
-    <Folder Include="Models\Crypto\" />
   </ItemGroup>
   <ItemGroup>
     <AvaloniaResource Remove="Views\ConfigurationViews\DirectoryConfView.xaml" />
@@ -52,8 +51,6 @@
     <PackageReference Include="Extended.Wpf.Toolkit" Version="3.8.1" />
     <PackageReference Include="FluentValidation" Version="8.6.2" />
     <PackageReference Include="MahApps.Metro" Version="1.6.5" />
-    <PackageReference Include="Microsoft.Graph" Version="3.1.0" />
-    <PackageReference Include="SSH.NET" Version="2016.1.0" />
     <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
     <PackageReference Include="ReactiveUI" Version="11.3.1" />
   </ItemGroup>
@@ -104,5 +101,8 @@
     <EmbeddedResource Include="Views\ConfigurationViews\DirectoryConfView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\Crypto\" />
   </ItemGroup>
 </Project>
