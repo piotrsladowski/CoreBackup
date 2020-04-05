@@ -20,11 +20,11 @@
       <!--Preferences open new window // theme // settings -->
       <Separator/>
       <MenuItem Header="_Exit" Command="{Binding ExitAppCommand}"/>
+    
     </MenuItem>
-
     <MenuItem Header="_Help">
       <MenuItem Header="_About CoreBackup" Command="{Binding OpenAboutWindowCommand}"/>
-      <MenuItem Header="_GitHub Page"/>
+      <MenuItem Header="_GitHub Page" Command="{Binding OpenGitWebsiteCommand}"/>
     </MenuItem>
   </Menu>
 </UserControl>
