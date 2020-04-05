@@ -12,6 +12,7 @@ using System.Linq;
 using System.IO;
 using CoreBackup.Models.Tasks;
 using CoreBackup.Models.Config;
+using System.Diagnostics;
 
 namespace CoreBackup.ViewModels
 {
@@ -20,13 +21,13 @@ namespace CoreBackup.ViewModels
 
         // https://reactiveui.net/docs/handbook/collections/
 
-        private readonly ReadOnlyObservableCollection<string> _derivedLocalFiles;
-        public ReadOnlyObservableCollection<string> DerivedLocalFiles => _derivedLocalFiles;
+        private readonly ReadOnlyObservableCollection<FileInformation> _derivedLocalFiles;
+        public ReadOnlyObservableCollection<FileInformation> DerivedLocalFiles => _derivedLocalFiles;
 
         private readonly ReadOnlyObservableCollection<FileInformation> _derivedRemoteFiles;
         public ReadOnlyObservableCollection<FileInformation> DerivedRemoteFiles => _derivedRemoteFiles;
 
-        public ObservableCollectionExtended<string> LocalFiles { get; }
+        public ObservableCollectionExtended<FileInformation> LocalFiles { get; }
         public ObservableCollectionExtended<FileInformation> RemoteFiles { get; }
 
 
@@ -47,7 +48,7 @@ namespace CoreBackup.ViewModels
             SyncToRemoteCommand = ReactiveCommand.Create(SyncToRemote);
             SyncToRemoteOverrideCommand = ReactiveCommand.Create(SyncToRemoteOverride);
 
-            LocalFiles = new ObservableCollectionExtended<string>();
+            LocalFiles = new ObservableCollectionExtended<FileInformation>();
             LocalFiles.ToObservableChangeSet()
             .Transform(value => value)
             // No need to use the .ObserveOn() operator here, as
@@ -66,31 +67,35 @@ namespace CoreBackup.ViewModels
            .Subscribe();
 
             syncActions = new SyncActions();
-
+            /*
             BasicIO bIO = new BasicIO();
-            LocalFiles.Where(l => l.Length != 0).ToList().All(i => LocalFiles.Remove(i));
+            LocalFiles.Where(l => l.Size != 0).ToList().All(i => LocalFiles.Remove(i));
             foreach (FileInfo f in bIO.getFilesInDirectory("C:\\"))
             {
-                LocalFiles.Add(f.ToString());
+                //LocalFiles.Add(f.ToString());
                 FileInformation fi = new FileInformation();
                 fi.Filename = f.Name;
                 fi.Size = f.Length;
                 RemoteFiles.Add(fi);
-            }
+                LocalFiles.Add(fi);
+            }*/
         }
 
 
         private void SyncMirror()
         {
             BasicIO bIO = new BasicIO();
-            LocalFiles.Where(l => l.Length != 0).ToList().All(i => LocalFiles.Remove(i));
+            LocalFiles.Where(l => l.Size != 0).ToList().All(i => LocalFiles.Remove(i)); //Clear LocalFiles
+            RemoteFiles.Where(l => l.Size != 0).ToList().All(i => RemoteFiles.Remove(i));
             foreach (FileInfo f in bIO.getFilesInDirectory("C:\\"))
             {
-                LocalFiles.Add(f.ToString());
+                Debug.WriteLine(f.ToString());
+                //LocalFiles.Add(f.ToString());
                 FileInformation fi = new FileInformation();
                 fi.Filename = f.Name;
                 fi.Size = f.Length;
                 RemoteFiles.Add(fi);
+                LocalFiles.Add(fi);
             }
         }
 

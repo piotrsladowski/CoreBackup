@@ -5,19 +5,17 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CoreBackup.Views.ConfigurationView">
 
-  
-
   <StackPanel>
     <Grid RowDefinitions="50,*,50">
       <!--Rectangle HorizontalAlignment="Stretch" Fill="#FF007ACC" Height="10" Grid.Column="0" Grid.Row="0"/>
       <Rectangle HorizontalAlignment="Stretch" Fill="DarkSlateBlue" Height="5" Grid.Column="0" Grid.Row="0"/>-->
-      <TextBlock Text="--- Select Backup Mode ---" TextAlignment="Center" FontSize="16" Margin="1" Grid.Row="0"/>
+      <TextBlock Text="--- Add configuration ---" TextAlignment="Center" FontSize="16" Margin="1" Grid.Row="0"/>
       <!--
       <Rectangle HorizontalAlignment="Stretch" Fill="#FF007ACC" Height="10" Grid.Column="0" Grid.Row="2"/>
       <Rectangle HorizontalAlignment="Stretch" Fill="DarkSlateBlue" Height="5" Grid.Column="0" Grid.Row="2"/>-->
       <Grid Grid.Row="1" ColumnDefinitions="*,*" RowDefinitions="40,*,*" ClipToBounds="True">
         <!--LEFT-->
-        <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Center">Select Data Source</TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Center">Select Left Data Source</TextBlock>
         <ComboBox Grid.Column="0" Grid.Row="1" SelectedIndex="{Binding CBoxLeftSelectedIdx}" Margin="10,0,5,0">
           <ComboBoxItem>Please select</ComboBoxItem>
           <ComboBoxItem>Local Directory</ComboBoxItem>
@@ -25,7 +23,7 @@
         </ComboBox>
         <UserControl Grid.Column="0" Grid.Row="2" Content="{Binding LeftData}"/>
         <!--RIGHT-->
-        <TextBlock Grid.Column="1" Grid.Row="0" TextAlignment="Center">Select Right Source</TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="0" TextAlignment="Center">Select Right Data Source</TextBlock>
         <ComboBox Grid.Column="1" Grid.Row="1" SelectedIndex="{Binding CBoxRightSelectedIdx}" Margin="5,0,10,0" >
           <ComboBoxItem>Please select</ComboBoxItem>
           <ComboBoxItem>Local Directory</ComboBoxItem>
@@ -33,10 +31,7 @@
         </ComboBox>
         <UserControl Grid.Column="1" Grid.Row="2" Content="{Binding RightData}"/>
       </Grid>
-    
     </Grid>
 
   </StackPanel>
-
-  
 </UserControl>

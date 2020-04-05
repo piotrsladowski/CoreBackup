@@ -19,6 +19,16 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 {
     class FTPConfViewModel : ViewModelBase
     {
+        /// <summary>
+        /// SHORTCUTS FOR VARIABLES NAMES
+        /// LD - Local Directory
+        /// RS - Remote Server
+        /// UF - Upload File
+        /// DF - Download File
+        /// </summary>
+        /// 
+
+        #region Paths
         // PATH TO FILE TO BE UPLOADED
         private string _uploadPath;
         public string UploadPath
@@ -41,6 +51,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             get => _ftpPath;
             set => this.RaiseAndSetIfChanged(ref _ftpPath, value);
         }
+        #endregion
 
         public FTPConfViewModel()
         {
@@ -49,6 +60,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             ConnectFtpCommand = ReactiveCommand.Create(FtpConnect);
             _ftpFiles = new ObservableCollection<string>();
         }
+        #region Reactive Commands
 
         // FTP SERVER FILE EXPLORER
         private ReactiveCommand<Unit, Unit> RemoteServerBrowseFileCommand { get; }
@@ -58,6 +70,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 
         // FTP SERVER ACTION 
         private ReactiveCommand<Unit, Unit> RemoteServerActionCommand { get; }
+        #endregion
 
         private async void BtnServerActionFiles()
         {

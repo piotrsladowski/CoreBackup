@@ -8,7 +8,6 @@ namespace CoreBackup.Models.Config
     {
         protected bool isEncrypted = false;
         protected DataSource dataSource;
-
     }
     public enum DataSource
     {
