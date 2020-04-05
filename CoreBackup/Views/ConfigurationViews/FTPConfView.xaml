@@ -4,27 +4,32 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CoreBackup.Views.ConfigurationViews.FTPConfView">
-  <Grid ColumnDefinitions="15*, 10*, 15*" RowDefinitions="20,30,30,40,30,30,30,30,30,30,*" Margin="10,0,0,0" ClipToBounds="True">
+  <Grid ColumnDefinitions="50*, 50*" RowDefinitions="30,30,30,30,30,30,30,30,30,30,*" Margin="10,0,0,0" ClipToBounds="True">
 
     <!-- REMOTE SERVER OPTIONS VISIBLE -->
 
     <!-- SERVER -->
-    <TextBlock Text="Type FTP Server IP Address" Grid.Column="0" Grid.Row="2" IsVisible="{Binding RemoteServerChoice}"
+    <TextBlock Text="Type FTP Server IP Address" Grid.Column="0" Grid.Row="1"
                Margin="50,0,0,0"/>
-    <TextBox Text="{Binding ServerInput}"  Watermark="IP.IP.IP.IP" Grid.Column="1" Grid.Row="2" MaxHeight="30"
-             IsVisible="{Binding RemoteServerChoice}" Width="300" Margin="-90,0,0,0"/>
+    <TextBox Text="{Binding ServerInput}"  Watermark="IP.IP.IP.IP" Grid.Column="1" Grid.Row="1" MaxHeight="30"
+              Width="300" Margin="-90,0,0,0"/>
     <!-- USERNAME -->
-    <TextBlock Text="Type FTP Server Username" Grid.Column="0" Grid.Row="3" IsVisible="{Binding RemoteServerChoice}"
+    <TextBlock Text="Type FTP Server Username" Grid.Column="0" Grid.Row="2"
                 Margin="50,0,0,0"/>
-    <TextBox Text="{Binding UsernameInput}" Watermark="Username" Grid.Column="1" Grid.Row="3" MaxHeight="30"
-             IsVisible="{Binding RemoteServerChoice}" Width="300" Margin="-90,0,0,0"/>
+    <TextBox Text="{Binding UsernameInput}" Watermark="Username" Grid.Column="1" Grid.Row="2" MaxHeight="30"
+              Width="300" Margin="-90,0,0,0"/>
     <!-- PASSWORD -->
-    <TextBlock Text="Type FTP Server Password" Grid.Column="0" Grid.Row="4" IsVisible="{Binding RemoteServerChoice}"
+    <TextBlock Text="Type FTP Server Password" Grid.Column="0" Grid.Row="3"
                 Margin="50,0,0,0"/>
-    <TextBox Text="{Binding PasswordInput}" PasswordChar="*" Watermark="Password" Grid.Column="1" Grid.Row="4" MaxHeight="30"
-             IsVisible="{Binding RemoteServerChoice}" Width="300" Margin="-90,0,0,0"/>
+    <TextBox Text="{Binding PasswordInput}" PasswordChar="*" Watermark="Password" Grid.Column="1" Grid.Row="3" MaxHeight="30"
+              Width="300" Margin="-90,0,0,0"/>
+    <!-- ERROR LIST BOX -->
+    <TextBlock Text="Notification Box" Grid.Column="0" Grid.Row="4" Margin="50,0,0,0"/>
+    <ListBox Items="{Binding ErrorMessages}" Grid.Column="1" Grid.Row="4"
+              Margin="-90,0,0,0" Focusable="False" Height="30" Width="300">
+    </ListBox>
     <!-- BUTTON CONNECT -->
-    <Button Content="Connect" Command="{Binding ConnectFtpCommand}" Grid.Column="1" Grid.Row="5" IsVisible="{Binding RemoteServerChoice}"
+    <Button Content="Connect" Command="{Binding ConnectFtpCommand}" Grid.Column="1" Grid.Row="5"
             Width="150" Margin="-90,5,0,5" Height="30" IsDefault="True"/>
     <!-- SELECT FTP ACTION -->
     <TextBlock Text="Select FTP Server Action" Grid.Column="0" Grid.Row="6" IsVisible="{Binding IsLogged}"
@@ -35,26 +40,22 @@
       <ComboBoxItem Name="upload_item">Upload</ComboBoxItem>
     </ComboBox>
     <!-- FILE TO DOWNLOAD FROM SERVER -->
-    <ComboBox Items="{Binding FtpFiles}" SelectedItem="{Binding ToDownloadFile}" Grid.Column="1" Grid.Row="7" Width="300" Margin="-90,0,0,0"
-              IsVisible="{Binding IsLogged}" IsEnabled="{Binding IsDownload}"/>
+    <ComboBox Items="{Binding FtpFiles}" SelectedItem="{Binding ToDownloadFile}" Grid.Column="1" Grid.Row="7" Width="300"
+              Margin="-90,0,0,0" IsVisible="{Binding IsLogged}" IsEnabled="{Binding IsDownload}"/>
     <!-- SELECT PATH -->
     <TextBlock Text="Select File / Directory Path" Grid.Column="0" Grid.Row="8" IsVisible="{Binding IsLogged}"
                Margin="60,0,0,0"/>
     <TextBox Text="{Binding FtpPath}" Grid.Column="1" IsReadOnly="True" Grid.Row="8"
              IsVisible="{Binding IsLogged}" TextWrapping="Wrap" Width="300"
              MinHeight="20" Margin="-90,0,0,0"/>
-    <Button Content="Browse" Command="{Binding RemoteServerBrowseFileCommand}" Grid.Column="2"
-              Grid.Row="8" IsVisible="{Binding IsLogged}" Width="70" Margin="-250,0,0,0"/>
+    <Button Content="Browse" Command="{Binding RemoteServerBrowseFileCommand}" Grid.Column="1"
+              Grid.Row="9" IsVisible="{Binding IsLogged}" Width="70" Margin="-90,5,0,0"/>
 
     <!-- ACTION and PROGRESS BAR -->
-    <Button Command="{Binding  RemoteServerActionCommand}" IsVisible="{Binding IsLogged}" Grid.Column="0" Grid.Row="9"
+    <Button Command="{Binding  RemoteServerActionCommand}" IsVisible="{Binding IsLogged}" Grid.Column="0" Grid.Row="10"
            Width="130" Margin="-80,5,0,0">Action</Button>
 
-    <ProgressBar x:Name="progressBar" Foreground="Green"  IsVisible="{Binding IsLogged}" IsEnabled="True" Grid.Column="1" Grid.Row="9" Margin="-90,5,0,0"
-                 Width="300"/>
-    <!-- ERROR LIST BOX -->
-    <ListBox Items="{Binding ErrorMessages}" IsVisible="{Binding RemoteServerChoice}" Grid.Column="1" Grid.Row="10"
-             Margin="30,0,0,0" Focusable="False">
-    </ListBox>
+    <ProgressBar x:Name="progressBar" Foreground="Green"  IsVisible="{Binding IsLogged}" IsEnabled="True" Grid.Column="1"
+                 Grid.Row="10" Margin="-90,5,0,0" Width="300"/>
   </Grid>
 </UserControl>

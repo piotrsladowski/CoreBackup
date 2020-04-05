@@ -7,6 +7,7 @@ namespace CoreBackup.ViewModels
 {
     public partial class ConfigurationViewModel : ViewModelBase
     {
+        #region Combobox Configuration Fields
         ViewModelBase directoryLeft;
         ViewModelBase ftpLeft;
         ViewModelBase directoryRight;
@@ -28,8 +29,8 @@ namespace CoreBackup.ViewModels
         public ConfigurationViewModel()
         {
             InitializeConfViewModels();
-
         }
+#endregion
 
         #region Combobox
         private int _cBoxLeftSelectedIdx;
@@ -75,7 +76,6 @@ namespace CoreBackup.ViewModels
                 }
             }
         }
-        #endregion
         private void InitializeConfViewModels()
         {
             ftpLeft = new FTPConfViewModel();
@@ -83,10 +83,8 @@ namespace CoreBackup.ViewModels
             directoryLeft = new DirectoryConfViewModel();
             directoryRight = new DirectoryConfViewModel();
         }
+        #endregion  
 
-        #region Reactive Commands and Binded Functions
-
-        #endregion
 
     }
 }

@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reactive;
 using System.Text;
+using System.Threading.Tasks;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
 
 namespace CoreBackup.ViewModels.ConfigurationViewModels
 {
     class DirectoryConfViewModel : ViewModelBase
     {
-        private bool _localDirectoryChoice;
-
-        public bool LocalDirectoryChoice
-        {
-            get => _localDirectoryChoice;
-            set => this.RaiseAndSetIfChanged(ref _localDirectoryChoice, value);
-        }
+        private ReactiveCommand<Unit, Unit> FileExplorerCommand { get; }
 
         private string _path;
         public string Path
@@ -23,23 +22,29 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             set => this.RaiseAndSetIfChanged(ref _path, value);
         }
 
-
-        private ReactiveCommand<Unit, Unit> LocalDirectoryCommand { get; }
-        private ReactiveCommand<Unit, Unit> FileExplorerCommand { get; }
         public DirectoryConfViewModel()
         {
             FileExplorerCommand = ReactiveCommand.Create(BtnBrowseLocalFiles);
-            LocalDirectoryCommand = ReactiveCommand.Create(LocalRadioBox);
         }
 
         private async void BtnBrowseLocalFiles()
         {
-            //Path = await GetPath(false, false);
+            Path = await GetPath();
         }
-        private void LocalRadioBox()
+
+        private async Task<string> GetPath()
         {
-            //RemoteServerChoice = false;
-            //LocalDirectoryChoice = true;
+            string[] resultReturn = null;
+            string fullPath = null;
+            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            {
+                OpenFileDialog dialog = new OpenFileDialog();
+                string[] result = await dialog.ShowAsync(desktopLifetime.MainWindow);
+                resultReturn = result;
+                fullPath = string.Join(" ", resultReturn);
+            }
+
+            return fullPath;
         }
     }
 }
