@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using CoreBackup.Models.Config;
 
-namespace CoreBackup.Models.Config
+namespace CoreBackup.Models.Tasks
 {
     static class CoreTask
     {
         //Dictionary<taskName, configuration>
-        private static Dictionary<string, ConfigHub> tasksList = new Dictionary<string, ConfigHub>();
+        public static Dictionary<string, ConfigHub> tasksList = new Dictionary<string, ConfigHub>();
 
         public static void RemoveTaskEntry(string taskName)
         {

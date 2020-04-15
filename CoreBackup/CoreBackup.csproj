@@ -48,7 +48,6 @@
     <PackageReference Include="Avalonia.Controls.DataGrid" Version="0.9.7" />
     <PackageReference Include="Avalonia.Desktop" Version="0.9.7" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.7" />
-    <PackageReference Include="Extended.Wpf.Toolkit" Version="3.8.1" />
     <PackageReference Include="FluentValidation" Version="8.6.2" />
     <PackageReference Include="MahApps.Metro" Version="1.6.5" />
     <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />

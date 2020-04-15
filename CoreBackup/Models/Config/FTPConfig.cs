@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoreBackup.Models.IO;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -25,6 +26,10 @@ namespace CoreBackup.Models.Config
         {
             return credentials;
         }
-      
+
+        public override List<FileInformation> GetFiles()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
