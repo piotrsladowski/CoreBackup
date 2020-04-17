@@ -6,6 +6,7 @@ namespace CoreBackup.Views
 {
     public class ContainerView : UserControl
     {
+      
         public ContainerView()
         {
             this.InitializeComponent();
@@ -15,5 +16,8 @@ namespace CoreBackup.Views
         {
             AvaloniaXamlLoader.Load(this);
         }
+
+       
+
     }
 }
