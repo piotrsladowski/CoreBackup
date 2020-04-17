@@ -17,6 +17,7 @@ namespace CoreBackup.ViewModels
         ViewModelBase homeScreen;
         ViewModelBase fileExplorerScreen;
         ViewModelBase eventLogScreen;
+        ViewModelBase cryptoScreen;
 
         #region Constructor
         ViewModelBase screen;
@@ -53,6 +54,7 @@ namespace CoreBackup.ViewModels
             configScreen = new ConfigurationViewModel();
             fileExplorerScreen = new FileExplorerViewModel();
             eventLogScreen = new EventLogViewModel();
+            cryptoScreen = new CryptographyViewModel();
 
             // Internet Connection Check - Timer
             SetupTimer();
@@ -71,6 +73,12 @@ namespace CoreBackup.ViewModels
         {
             get => configScreen;
             private set => this.RaiseAndSetIfChanged(ref configScreen, value);
+        }
+
+        public ViewModelBase CryptoScreen
+        {
+            get => cryptoScreen;
+            private set => this.RaiseAndSetIfChanged(ref cryptoScreen, value);
         }
 
         public ViewModelBase HomeScreen
@@ -113,6 +121,11 @@ namespace CoreBackup.ViewModels
         public void ChangeScreenFileExplorer()
         {          
                 Screen = fileExplorerScreen;
+        }
+
+        public void ChangeScreenCryptography()
+        {
+            Screen = cryptoScreen;
         }
         #endregion
 

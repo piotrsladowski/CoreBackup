@@ -86,7 +86,7 @@
           </Expander.Header>
           <StackPanel>
             <Button Content="Configuration" HorizontalContentAlignment="Center" Classes="SubmenuButton" Command="{Binding ChangeScreenConfiguration}" Padding="8"/>
-            <Button Content="Crypto" HorizontalContentAlignment="Center" Classes="SubmenuButton" Padding="8"/>
+            <Button Content="Crypto" HorizontalContentAlignment="Center" Command="{Binding ChangeScreenCryptography}" Classes="SubmenuButton" Padding="8"/>
           </StackPanel>
         </Expander>
        
