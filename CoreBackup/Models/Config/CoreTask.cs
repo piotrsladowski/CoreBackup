@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Threading;
 
 namespace CoreBackup.Models.Config
 {
@@ -8,6 +11,13 @@ namespace CoreBackup.Models.Config
     {
         //Dictionary<taskName, configuration>
         private static Dictionary<string, ConfigHub> tasksList = new Dictionary<string, ConfigHub>();
+        private static string jsonConfig;
+       
+        
+        public static string jsonConfigPath;
+        public static string configFilename;
+        
+
 
         public static void RemoveTaskEntry(string taskName)
         {
@@ -19,6 +29,34 @@ namespace CoreBackup.Models.Config
         {
             tasksList.Add(taskName, configuration);
         }
-        
+
+
+        public static void saveConfigToJsonFile()
+        {
+            try
+            {
+                jsonConfig = JsonConvert.SerializeObject(tasksList, Formatting.Indented);
+                using (var writer = new StreamWriter(jsonConfigPath + "\\" + configFilename))
+                {
+                    writer.Write(jsonConfig);
+                }
+            }
+            catch (IOException e) { }
+            
+        }
+
+        public static void readConfigFromJsonFile()
+        {
+            try
+            {
+                string jsonFromFile;
+                using (var reader = new StreamReader(jsonConfigPath + "/" + configFilename))
+                {
+                    jsonFromFile = reader.ReadToEnd();
+                }
+                tasksList = JsonConvert.DeserializeObject<Dictionary<string, ConfigHub>>(jsonFromFile);
+            }
+            catch (Exception e) { }
+        }
     }
 }
