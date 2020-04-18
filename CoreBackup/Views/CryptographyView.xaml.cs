@@ -4,10 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace CoreBackup.Views
 {
-    public class ContainerView : UserControl
+    public class CryptographyView : UserControl
     {
-      
-        public ContainerView()
+        public CryptographyView()
         {
             this.InitializeComponent();
         }
@@ -16,8 +15,5 @@ namespace CoreBackup.Views
         {
             AvaloniaXamlLoader.Load(this);
         }
-
-       
-
     }
 }

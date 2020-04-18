@@ -15,13 +15,10 @@
         <Setter Property = "Background" Value = "#FF3399F2" />
         <Setter Property = "BorderBrush" Value = "#FFFFFFFF" />
         <Setter Property = "FontSize" Value = "13"/>
-        
       </Style>
       <Style Selector = "Button.MenuButton:pointerover">
         <Setter Property = "BorderBrush" Value = "#FFDD4812" />
         <Setter Property= "Background" Value="#FF442353"/>
-        <Setter Property = "FontSize" Value = "14"/>
-        <Setter Property= "Padding" Value = "18"/>
         <Setter Property="Opacity" Value="1"/>
         <Setter Property="Transitions">
           <Transitions>
@@ -32,15 +29,45 @@
       <Style Selector = "Button.MenuButton:focus">
         <Setter Property = "BorderBrush" Value = "#FFDD4812" />
         <Setter Property= "Background" Value="#FF0E70C2"/>
-        <Setter Property = "FontSize" Value = "14"/>
-        <Setter Property= "Padding" Value = "17"/>
-        <!--<Setter Property="IsEnabled" Value="False"/>-->
       </Style>
     </Styles>
     <!-- Sidebar Menu Buttons End -->
+
+    <!-- Expander Styling -->
+    <Styles>
+      <Style Selector = "Expander.Expander">
+        <Setter Property = "Foreground" Value = "#FFFFFFFF" />
+        <Setter Property = "BorderThickness" Value = "0.1" />
+        <Setter Property = "Background" Value = "#FF3399F2" />
+        <Setter Property = "BorderBrush" Value = "#FFFFFFFF"/>
+      </Style>
+      <Style Selector ="Expander.Expander:pointerover">
+        <Setter Property = "BorderBrush" Value = "#FFDD4812" />
+        <Setter Property= "Background" Value="#FF442353"/>
+        <Setter Property="Opacity" Value="1"/>
+      </Style>
+    </Styles>
+
+    <!-- Submenu Buttons styling -->
+    <Styles>
+      <Style Selector="Button.SubmenuButton">
+        <Setter Property = "Foreground" Value = "#FFFFFF" />
+        <Setter Property = "BorderThickness" Value = "0.1" />
+        <Setter Property = "BorderBrush" Value = "#FFFFFF" />
+        <Setter Property = "Background" Value = "#FF3399F2" />
+      </Style>
+      <Style Selector ="Button.SubmenuButton:pointerover">
+        <Setter Property = "BorderBrush" Value = "#FFDD4812" />
+        <Setter Property= "Background" Value="#0093ff"/>
+        <Setter Property="Opacity" Value="1"/>
+      </Style>
+      <Style Selector = "Button.SubmenuButton:focus">
+        <Setter Property = "BorderBrush" Value = "#FFDD4812" />
+        <Setter Property= "Background" Value="#FF0E70C2"/>
+      </Style>
+    </Styles>
   </UserControl.Styles>
   <!-- STYLIZATION END -->
-
   <Grid RowDefinitions="30, *, 30" ShowGridLines="True">
     <!-- Top Navbar -->
     <UserControl Content="{Binding Navbar}" Grid.Row="0"></UserControl>
@@ -49,14 +76,24 @@
       <!-- Sidebar -->
       <StackPanel Grid.Column="0">
         <Image  MaxHeight="40" ClipToBounds="True" Source="/Assets/avalonia-logo.ico" Margin="30"></Image>
-        <Button Classes="MenuButton" Command="{Binding ChangeScreenTasks}" Padding="20">Tasks</Button>
-        <Button Classes="MenuButton" Command="{Binding ChangeScreenFileExplorer}" Padding="20">File explorer</Button>
-        <Button Classes="MenuButton" Command="{Binding ChangeScreenConfiguration}" Padding="20">Configuration</Button>
-        <Button Classes="MenuButton" Command="{Binding ChangeScreenEventLog}" Padding="20">Event log</Button>
-        <Button Classes="MenuButton" Command="{Binding ChangeScreenHome}" Padding="20">Home (To remove)</Button>
+        <Button Content="Tasks" HorizontalContentAlignment="Center" Classes="MenuButton" Command="{Binding ChangeScreenTasks}" Padding="15"/>
+        <Button Content="File Explorer" HorizontalContentAlignment="Center" Classes="MenuButton" Command="{Binding ChangeScreenFileExplorer}" Padding="15"/>
+        
+        <!-- Dropdown submenu -->
+        <Expander Classes="Expander" HorizontalAlignment="Stretch" VerticalAlignment="Top" ExpandDirection="Down">
+          <Expander.Header>
+            <TextBlock Text="Settings" Margin="100,10,0,10" FontSize="13"/>
+          </Expander.Header>
+          <StackPanel>
+            <Button Content="Configuration" HorizontalContentAlignment="Center" Classes="SubmenuButton" Command="{Binding ChangeScreenConfiguration}" Padding="8"/>
+            <Button Content="Crypto" HorizontalContentAlignment="Center" Command="{Binding ChangeScreenCryptography}" Classes="SubmenuButton" Padding="8"/>
+          </StackPanel>
+        </Expander>
+       
+        <Button Content="Event Log" HorizontalContentAlignment="Center" Classes="MenuButton" Command="{Binding ChangeScreenEventLog}" Padding="15"/>
+        <Button Content="Home(Remove)" HorizontalContentAlignment="Center" Classes="MenuButton" Command="{Binding ChangeScreenHome}" Padding="15"/>
         <UserControl Content="{Binding InfoPanel}" Grid.Column="1"/>
       </StackPanel>
-
       <!-- Container -->
       <UserControl Content="{Binding Screen}" Grid.Column="1"/>
     </Grid>
@@ -66,8 +103,6 @@
       <TextBlock Text="Connection Status:" Margin="7,0,10,0"></TextBlock>
       <TextBlock Text="{Binding ConnectionStatus}" Margin="7,0,10,0"></TextBlock>
       <TextBlock Text=""></TextBlock>
-
-
     </WrapPanel>
 
   </Grid>
