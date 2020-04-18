@@ -4,9 +4,13 @@ using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reactive;
 using System.Runtime.InteropServices;
 using System.Text;
+using Avalonia.Controls;
+using CoreBackup.Models.Config;
+using DynamicData;
 
 namespace CoreBackup.ViewModels
 {
@@ -42,6 +46,7 @@ namespace CoreBackup.ViewModels
             }
         }
 
+        public ReactiveCommand<Unit, Unit> SaveAsConfigCommand { get; }
 
         public ReactiveCommand<Unit, Unit> OpenSettingsWindowCommand { get; }
         //public ReactiveCommand<Unit, Unit> ExitAppCommand { get; }
@@ -53,6 +58,8 @@ namespace CoreBackup.ViewModels
             OpenAboutWindowCommand = ReactiveCommand.Create(OpenAboutWindow);
             ExitAppCommand = ReactiveCommand.Create(ExitApp);
             OpenGitWebsiteCommand = ReactiveCommand.Create(OpenGitWebsite);
+
+            SaveAsConfigCommand = ReactiveCommand.Create(SaveAs);
         }
 
      
@@ -77,5 +84,22 @@ namespace CoreBackup.ViewModels
             } 
         }
 
+        private async void SaveAs()
+        {
+            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            {
+                SaveFileDialog dialog = new SaveFileDialog();
+                dialog.Filters.Add(new FileDialogFilter(){Name= "Json files (*.json)|Text files (*.txt)", Extensions = {"json","txt"}});
+                string result = await dialog.ShowAsync(desktopLifetime.MainWindow);
+                string[] resultArray = result.Split("\\");
+                CoreTask.configFilename = resultArray[resultArray.Length - 1];
+                resultArray = resultArray.Where((source, index) => index != (resultArray.Length - 1)).ToArray();
+                CoreTask.jsonConfigPath = string.Join("\\", resultArray);
+
+                Debug.WriteLine(CoreTask.configFilename);
+                Debug.WriteLine(CoreTask.jsonConfigPath);
+            }
+            CoreTask.saveConfigToJsonFile();
+        }
     }
 }

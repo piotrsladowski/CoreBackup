@@ -15,7 +15,7 @@
     <MenuItem Header="_File">
       <MenuItem Header="_Open"/>
       <MenuItem Header="_Save"/>
-      <MenuItem Header="_Save As"/>
+      <MenuItem Command="{Binding SaveAsConfigCommand}" Header="_Save As"/>
       <MenuItem Header="_Settings" Command="{Binding OpenSettingsWindowCommand}"/>
       <!--Preferences open new window // theme // settings -->
       <Separator/>
