@@ -13,8 +13,8 @@
     </Menu.Styles>
     
     <MenuItem Header="_File">
-      <MenuItem Header="_Open"/>
-      <MenuItem Header="_Save"/>
+      <MenuItem Command="{Binding OpenConfigCommand}" Header="_Open"/>
+      <MenuItem Command="{Binding SaveConfigCommand}" Header="_Save"/>
       <MenuItem Command="{Binding SaveAsConfigCommand}" Header="_Save As"/>
       <MenuItem Header="_Settings" Command="{Binding OpenSettingsWindowCommand}"/>
       <!--Preferences open new window // theme // settings -->
