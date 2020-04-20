@@ -47,6 +47,8 @@ namespace CoreBackup.ViewModels
         }
 
         public ReactiveCommand<Unit, Unit> SaveAsConfigCommand { get; }
+        public ReactiveCommand<Unit, Unit> SaveConfigCommand { get; }
+        public ReactiveCommand<Unit, Unit> OpenConfigCommand { get; }
 
         public ReactiveCommand<Unit, Unit> OpenSettingsWindowCommand { get; }
         //public ReactiveCommand<Unit, Unit> ExitAppCommand { get; }
@@ -60,6 +62,8 @@ namespace CoreBackup.ViewModels
             OpenGitWebsiteCommand = ReactiveCommand.Create(OpenGitWebsite);
 
             SaveAsConfigCommand = ReactiveCommand.Create(SaveAs);
+            SaveConfigCommand = ReactiveCommand.Create(Save);
+            OpenConfigCommand = ReactiveCommand.Create(Open);
         }
 
      
@@ -91,15 +95,48 @@ namespace CoreBackup.ViewModels
                 SaveFileDialog dialog = new SaveFileDialog();
                 dialog.Filters.Add(new FileDialogFilter(){Name= "Json files (*.json)|Text files (*.txt)", Extensions = {"json","txt"}});
                 string result = await dialog.ShowAsync(desktopLifetime.MainWindow);
-                string[] resultArray = result.Split("\\");
-                CoreTask.configFilename = resultArray[resultArray.Length - 1];
-                resultArray = resultArray.Where((source, index) => index != (resultArray.Length - 1)).ToArray();
-                CoreTask.jsonConfigPath = string.Join("\\", resultArray);
-
-                Debug.WriteLine(CoreTask.configFilename);
-                Debug.WriteLine(CoreTask.jsonConfigPath);
+                if (!string.IsNullOrEmpty(result))
+                {
+                    string[] resultArray = result.Split("\\");
+                    CoreTask.configFilename = resultArray[resultArray.Length - 1];
+                    resultArray = resultArray.Where((source, index) => index != (resultArray.Length - 1)).ToArray();
+                    CoreTask.jsonConfigPath = string.Join("\\", resultArray);
+                    CoreTask.saveConfigToJsonFile();
+                }
             }
-            CoreTask.saveConfigToJsonFile();
         }
+
+        private async void Save()
+        {
+            if (string.IsNullOrEmpty(CoreTask.configFilename) || string.IsNullOrEmpty(CoreTask.jsonConfigPath))
+            {
+
+            }
+            else
+            {
+                CoreTask.saveConfigToJsonFile();
+            }
+        }
+
+        private async void Open()
+        {
+            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            {
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.Filters.Add(new FileDialogFilter() { Name = "Json files (*.json)|Text files (*.txt)", Extensions = { "json", "txt" } });
+                string[] result = await dialog.ShowAsync(desktopLifetime.MainWindow);
+                string fullPath = string.Join(" ", result);
+                if (!string.IsNullOrEmpty(fullPath))
+                {
+                    string[] resultArray = fullPath.Split("\\");
+                    CoreTask.configFilename = resultArray[resultArray.Length - 1];
+                    resultArray = resultArray.Where((source, index) => index != (resultArray.Length - 1)).ToArray();
+                    CoreTask.jsonConfigPath = string.Join("\\", resultArray);
+                    CoreTask.readConfigFromJsonFile();
+                }
+            }
+        }
+
+
     }
 }

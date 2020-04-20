@@ -171,5 +171,48 @@ namespace CoreBackup.Models.Remote
         }
         #endregion
 
+        #region
+        public long GetFileSize(string filename)
+        {
+            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + Server + "//" + filename);
+            ftpRequest.Method = WebRequestMethods.Ftp.GetFileSize;
+            ftpRequest.Credentials = new NetworkCredential(Username, Password);
+            try
+            {
+                using (FtpWebResponse response =
+                    (FtpWebResponse)ftpRequest.GetResponse())
+                {
+                    return response.ContentLength;
+                }
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("File unavailable")) return -1;
+                    throw;
+            }
+        }
+        #endregion
+
+        public Int32 GetDateTimestamp(string filename)
+        {
+            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + Server + "//" + filename);
+            ftpRequest.Method = WebRequestMethods.Ftp.GetDateTimestamp;
+            ftpRequest.Credentials = new NetworkCredential(Username, Password);
+            try
+            {
+                using (FtpWebResponse response =
+                    (FtpWebResponse)ftpRequest.GetResponse())
+                {
+                    return (Int32)(DateTime.UtcNow.Subtract(response.LastModified)).TotalSeconds;
+                }
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("File unavailable"))
+                    return (Int32)(DateTime.UtcNow.Subtract(new DateTime(2020, 1, 1))).TotalSeconds;
+                throw;
+            }
+        }
+
     }
 }
