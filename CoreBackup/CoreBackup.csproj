@@ -105,9 +105,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\Crypto\" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Views\CryptographyView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
