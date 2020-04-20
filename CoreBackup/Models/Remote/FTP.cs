@@ -193,7 +193,7 @@ namespace CoreBackup.Models.Remote
         }
         #endregion
 
-        public DateTime GetDateTimestamp(string filename)
+        public Int32 GetDateTimestamp(string filename)
         {
             FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + Server + "//" + filename);
             ftpRequest.Method = WebRequestMethods.Ftp.GetDateTimestamp;
@@ -203,13 +203,13 @@ namespace CoreBackup.Models.Remote
                 using (FtpWebResponse response =
                     (FtpWebResponse)ftpRequest.GetResponse())
                 {
-                    return response.LastModified;
+                    return (Int32)(DateTime.UtcNow.Subtract(response.LastModified)).TotalSeconds;
                 }
             }
             catch (Exception e)
             {
                 if (e.Message.Contains("File unavailable"))
-                    return new DateTime(3000, 1, 1);
+                    return (Int32)(DateTime.UtcNow.Subtract(new DateTime(2020, 1, 1))).TotalSeconds;
                 throw;
             }
         }
