@@ -4,13 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CoreBackup.Views.ConfigurationViews.DirectoryConfView">
-  <Grid ColumnDefinitions="50*,50*" RowDefinitions="30,30,30,30,30,30,30,30,30,30" Margin="10,0,0,20">
+  <Grid ColumnDefinitions="50*,50*" RowDefinitions="30,Auto,40" Margin="10,0,0,20">
     <!-- LOCAL DIRECTORY OPTION VISIBLE -->
-    <TextBox Text="{Binding Path}" Grid.Column="0" IsReadOnly="True" Grid.Row="1"
+    <TextBox Text="{Binding Path}" Grid.Column="0" IsReadOnly="True" Grid.Row="0"
              TextWrapping="Wrap" MinWidth="300"
              MinHeight="20" Margin="30,0,0,0"/>
     <Button Content="Browse" Command="{Binding FileExplorerCommand}" Grid.Column="1"
-              Grid.Row="1"  MaxWidth="130" Margin="-70,0,0,0"/>
+              Grid.Row="0"  MaxWidth="130" Margin="-70,0,0,0"/>
+    <!-- Additional paths -->
+    <Grid Grid.Row="1" DataContext="{Binding AdditionalItems}">
+      <Grid.DataTemplates>
+
+      </Grid.DataTemplates>
+    </Grid>
+    <Button Content="Add next" Command="{Binding AddNextEntryCommand}" Grid.Column="0" Grid.Row="2" MaxWidth="130" Margin="0,10,0,0"/>
     <!--IsVisible="{Binding LocalDirectoryChoice}"-->
   </Grid>
 </UserControl>

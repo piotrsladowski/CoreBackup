@@ -11,7 +11,7 @@ namespace CoreBackup.Models.Tasks
     static class CoreTask
     {
         //Dictionary<taskName, configuration>
-        private static Dictionary<string, ConfigHub> tasksList = new Dictionary<string, ConfigHub>();
+        public static Dictionary<string, ConfigHub> tasksList = new Dictionary<string, ConfigHub>();
         private static string jsonConfig;
        
         

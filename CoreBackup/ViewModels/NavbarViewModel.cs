@@ -11,6 +11,7 @@ using System.Text;
 using Avalonia.Controls;
 using CoreBackup.Models.Config;
 using DynamicData;
+using CoreBackup.Models.Tasks;
 
 namespace CoreBackup.ViewModels
 {

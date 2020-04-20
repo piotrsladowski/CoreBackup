@@ -31,7 +31,9 @@
         </ComboBox>
         <UserControl Grid.Column="1" Grid.Row="2" Content="{Binding RightData}"/>
       </Grid>
+      <StackPanel Grid.Row="2" VerticalAlignment="Bottom">
+        <Button MaxWidth="100" IsEnabled="{Binding IsEnabled}" Command="{Binding SaveCommand}">Save</Button>
+      </StackPanel>
     </Grid>
-
   </StackPanel>
 </UserControl>

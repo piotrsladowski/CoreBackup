@@ -26,11 +26,13 @@ namespace CoreBackup.ViewModels
             get => rightData;
             private set => this.RaiseAndSetIfChanged(ref rightData, value);
         }
+        #endregion
+
         public ConfigurationViewModel()
         {
             InitializeConfViewModels();
+            SaveCommand = ReactiveCommand.Create(Save);
         }
-#endregion
 
         #region Combobox
         private int _cBoxLeftSelectedIdx;
@@ -83,8 +85,13 @@ namespace CoreBackup.ViewModels
             directoryLeft = new DirectoryConfViewModel();
             directoryRight = new DirectoryConfViewModel();
         }
-        #endregion  
+        #endregion
 
+        public ReactiveCommand<Unit, Unit> SaveCommand { get; }
 
+        private void Save()
+        {
+
+        }
     }
 }
