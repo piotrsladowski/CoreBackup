@@ -276,7 +276,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
                 FtpClient.Username = UsernameInput;
                 FtpClient.Password = PasswordInput;
                 FtpClient.Server = ServerInput;
-
+                
                 try
                 {
                     IsLogged = FtpClient.ValidateLogging();
