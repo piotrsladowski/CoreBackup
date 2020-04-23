@@ -2,6 +2,8 @@
 using Avalonia.Controls;
 using ReactiveUI;
 using CoreBackup.ViewModels.ConfigurationViewModels;
+using System.Diagnostics;
+using CoreBackup.Models.Config;
 
 namespace CoreBackup.ViewModels
 {
@@ -34,7 +36,7 @@ namespace CoreBackup.ViewModels
             SaveCommand = ReactiveCommand.Create(Save);
         }
 
-        #region Combobox
+        #region BoomBox
         private int _cBoxLeftSelectedIdx;
         public int CBoxLeftSelectedIdx
         {
@@ -91,7 +93,9 @@ namespace CoreBackup.ViewModels
 
         private void Save()
         {
-
+            ConfigHub configHub = new ConfigHub();
+            configHub.AddConfigHubEntry();
+            Debug.WriteLine("Save");
         }
     }
 }
