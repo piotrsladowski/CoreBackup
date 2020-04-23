@@ -18,13 +18,13 @@ namespace CoreBackup.Models.Crypto
         private static string AES256IVString;
 
 
-        private static void CreateAESKey()
+        public static void CreateAESKey()
         {
             AES256Key = CreateByteArray(AES256KEYSIZE);
             AES256KeySTRING = Convert.ToBase64String(AES256Key);
         }
 
-        private static void CreateAESIV()
+        public static void CreateAESIV()
         {
             AES256IV = CreateByteArray(AES256BLOCKSIZE);
             AES256IVString = Convert.ToBase64String(AES256IV);
@@ -40,12 +40,12 @@ namespace CoreBackup.Models.Crypto
             }
         }
 
-        private static void LoadAES_KeyIV_FromFile()
+        public static void LoadAES_KeyIV_FromFile()
         {
             //TODO: Import Key and IV from same file
         }
 
-        private static void SaveAES_KeyIV_ToFile()
+        public static void SaveAES_KeyIV_ToFile()
         {
             //TODO: Export Key and IV to same file
         }
