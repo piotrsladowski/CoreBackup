@@ -45,7 +45,6 @@ namespace CoreBackup.ViewModels
         {
             SaveConfigurationCommand = ReactiveCommand.Create(SaveConfiguration);
             InitializeConfViewModels();
-            SaveCommand = ReactiveCommand.Create(Save);
         }
 
         #endregion

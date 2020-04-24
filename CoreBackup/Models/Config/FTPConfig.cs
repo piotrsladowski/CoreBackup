@@ -38,5 +38,9 @@ namespace CoreBackup.Models.Config
             return result;
         }
 
+        public override List<FileInformation> GetFiles()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
