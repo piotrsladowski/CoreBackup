@@ -58,8 +58,10 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 
         #endregion
 
-        public FTPConfViewModel()
+        private FTP FtpClient;
+        public FTPConfViewModel(ref FTP ftpClient)
         {
+            this.FtpClient = ftpClient;
             BrowseDownloadDirectoryCommand = ReactiveCommand.Create(BrowseDownloadDirectory);
             BrowseUploadDirectoryCommand = ReactiveCommand.Create(BrowseUploadDirectory);
             BrowseDisposableFileUploadCommand = ReactiveCommand.Create(BrowseDisposableFileUpload);
@@ -67,6 +69,8 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             ConnectFtpCommand = ReactiveCommand.Create(FtpConnect);
             _ftpFiles = new ObservableCollection<string>();
         }
+
+        
 
         private async void BrowseDownloadDirectory()
         {
@@ -115,7 +119,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
         // FTP SERVER CONFIGURATION //
         #region FTP Configuration Fields
 
-        private FTP FtpClient = new FTP();
+        
 
         private string _username;
         public string UsernameInput

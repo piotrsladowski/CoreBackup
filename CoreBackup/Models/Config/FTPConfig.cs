@@ -15,7 +15,7 @@ namespace CoreBackup.Models.Config
         }
 
         public void provideCredentials(string username, string password, string url)
-        {
+        { 
             credentials["username"] = username;
             credentials["password"] = password;
             credentials["url"] = url;
