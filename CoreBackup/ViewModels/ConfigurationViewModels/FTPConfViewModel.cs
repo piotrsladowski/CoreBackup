@@ -10,6 +10,7 @@ using CoreBackup.Models.Remote;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using CoreBackup.Models.Config;
 using CoreBackup.Validators;
 using FluentValidation;
 using FluentValidation.Results;
@@ -59,9 +60,11 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
         #endregion
 
         private FTP FtpClient;
-        public FTPConfViewModel(ref FTP ftpClient)
+        private FTPConfig FtpConfig;
+        public FTPConfViewModel(ref FTP ftpClient, ref FTPConfig ftpConfig)
         {
             this.FtpClient = ftpClient;
+            this.FtpConfig = ftpConfig;
             BrowseDownloadDirectoryCommand = ReactiveCommand.Create(BrowseDownloadDirectory);
             BrowseUploadDirectoryCommand = ReactiveCommand.Create(BrowseUploadDirectory);
             BrowseDisposableFileUploadCommand = ReactiveCommand.Create(BrowseDisposableFileUpload);
@@ -274,6 +277,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
                     IsLogged = FtpClient.ValidateLogging();
                     if (IsLogged)
                     {
+                        FtpConfig.provideCredentials(UsernameInput, PasswordInput, ServerInput);
                         ListFiles();
                     }
                     else

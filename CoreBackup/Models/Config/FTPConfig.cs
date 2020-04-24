@@ -14,17 +14,28 @@ namespace CoreBackup.Models.Config
             credentials = new Dictionary<string, string>();
         }
 
-        public void provideCredentials(string username, string password, string url)
+        public void provideCredentials(string username, string password, string server)
         { 
             credentials["username"] = username;
             credentials["password"] = password;
-            credentials["url"] = url;
+            credentials["server"] = server;
         }
 
         public Dictionary<string, string> GetCredentials()
         {
             return credentials;
         }
-      
+
+        public string Get(string key)
+        {
+            string result = null;
+
+            if (credentials.ContainsKey(key))
+            {
+                result = credentials[key];
+            }
+            return result;
+        }
+
     }
 }

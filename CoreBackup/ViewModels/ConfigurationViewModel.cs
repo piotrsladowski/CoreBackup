@@ -1,8 +1,13 @@
-﻿using System.Reactive;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Reactive;
 using Avalonia.Controls;
+using CoreBackup.Models.Config;
 using CoreBackup.Models.Remote;
 using ReactiveUI;
 using CoreBackup.ViewModels.ConfigurationViewModels;
+using Xceed.Wpf.Toolkit.PropertyGrid;
 
 namespace CoreBackup.ViewModels
 {
@@ -20,6 +25,9 @@ namespace CoreBackup.ViewModels
         private FTP ftpLeft;
         private FTP ftpRight;
 
+        private FTPConfig ftpLeftConfig;
+        private FTPConfig ftpRightConfig;
+
 
         public ViewModelBase LeftData
         {
@@ -32,11 +40,15 @@ namespace CoreBackup.ViewModels
             get => rightData;
             private set => this.RaiseAndSetIfChanged(ref rightData, value);
         }
+
+        public ReactiveCommand<Unit,Unit> SaveConfigurationCommand { get; }
         public ConfigurationViewModel()
         {
+            SaveConfigurationCommand = ReactiveCommand.Create(SaveConfiguration);
             InitializeConfViewModels();
         }
-#endregion
+
+        #endregion
 
         #region Combobox
         private int _cBoxLeftSelectedIdx;
@@ -82,18 +94,26 @@ namespace CoreBackup.ViewModels
                 }
             }
         }
+
+        
         private void InitializeConfViewModels()
         {
             ftpLeft = new FTP();
             ftpRight = new FTP();
 
-            ftpLeftView = new FTPConfViewModel(ref ftpLeft);
-            ftpRightView = new FTPConfViewModel(ref ftpRight);
+            ftpLeftConfig = new FTPConfig();
+            ftpRightConfig = new FTPConfig();
+
+            ftpLeftView = new FTPConfViewModel(ref ftpLeft, ref ftpLeftConfig);
+            ftpRightView = new FTPConfViewModel(ref ftpRight, ref ftpRightConfig);
             directoryLeftView = new DirectoryConfViewModel();
             directoryRightView = new DirectoryConfViewModel();
         }
-        #endregion  
+        #endregion
 
-
+        private async void SaveConfiguration()
+        {
+            //Debug.WriteLine(ftpLeftConfig.Get("username"));
+        }
     }
 }
