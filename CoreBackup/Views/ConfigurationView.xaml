@@ -6,7 +6,7 @@
              x:Class="CoreBackup.Views.ConfigurationView">
 
   <StackPanel>
-    <Grid RowDefinitions="50,*,50">
+    <Grid RowDefinitions="50,*,50,10">
       <!--Rectangle HorizontalAlignment="Stretch" Fill="#FF007ACC" Height="10" Grid.Column="0" Grid.Row="0"/>
       <Rectangle HorizontalAlignment="Stretch" Fill="DarkSlateBlue" Height="5" Grid.Column="0" Grid.Row="0"/>-->
       <TextBlock Text="--- Add configuration ---" TextAlignment="Center" FontSize="16" Margin="1" Grid.Row="0"/>
@@ -31,6 +31,8 @@
         </ComboBox>
         <UserControl Grid.Column="1" Grid.Row="2" Content="{Binding RightData}"/>
       </Grid>
+      <Button Grid.Row="4" Width="150" Height="30" Content="Save Configuration" HorizontalContentAlignment="Center"
+              Margin="0,-38,0,0" VerticalContentAlignment="Center" Command="{Binding SaveConfigurationCommand}"/>
     </Grid>
 
   </StackPanel>
