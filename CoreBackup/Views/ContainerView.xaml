@@ -75,7 +75,7 @@
     <Grid ClipToBounds="True" Grid.Row="1" RowDefinitions="*" ColumnDefinitions="300,*" ShowGridLines="True">
       <!-- Sidebar -->
       <StackPanel Grid.Column="0">
-        <Image  MaxHeight="40" ClipToBounds="True" Source="/Assets/avalonia-logo.ico" Margin="30"></Image>
+        <Image  MaxHeight="40" ClipToBounds="True" Source="/Assets/CoreBackup_logo_clipped.png" Margin="10"></Image>
         <Button Content="Tasks" HorizontalContentAlignment="Center" Classes="MenuButton" Command="{Binding ChangeScreenTasks}" Padding="15"/>
         <Button Content="File Explorer" HorizontalContentAlignment="Center" Classes="MenuButton" Command="{Binding ChangeScreenFileExplorer}" Padding="15"/>
         

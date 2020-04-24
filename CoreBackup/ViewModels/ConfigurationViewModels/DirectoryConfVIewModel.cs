@@ -34,12 +34,14 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 
         private async Task<string> GetPath()
         {
-            string[] resultReturn = null;
+            string resultReturn = null;
             string fullPath = null;
             if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
             {
-                OpenFileDialog dialog = new OpenFileDialog();
-                string[] result = await dialog.ShowAsync(desktopLifetime.MainWindow);
+                OpenFolderDialog dialog = new OpenFolderDialog();
+                //string result = await d.ShowAsync(desktopLifetime.MainWindow);
+                //OpenFileDialog dialog = new OpenFileDialog();
+                string result = await dialog.ShowAsync(desktopLifetime.MainWindow);
                 resultReturn = result;
                 fullPath = string.Join(" ", resultReturn);
             }

@@ -4,19 +4,23 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
+using CoreBackup.Models.Config;
 
-namespace CoreBackup.Models.Config
+namespace CoreBackup.Models.Tasks
 {
     static class CoreTask
     {
         //Dictionary<taskName, configuration>
-        private static Dictionary<string, ConfigHub> tasksList = new Dictionary<string, ConfigHub>();
+        public static Dictionary<string, ConfigHub> tasksList = new Dictionary<string, ConfigHub>();
         private static string jsonConfig;
        
         
         public static string jsonConfigPath;
         public static string configFilename;
         
+        static List<FTPConfig> ftpConf;
+        static DirectoryConfig directoryConf;
+
 
 
         public static void RemoveTaskEntry(string taskName)

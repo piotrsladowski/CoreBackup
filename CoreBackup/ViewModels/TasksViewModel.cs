@@ -38,7 +38,6 @@ namespace CoreBackup.ViewModels
         public ReactiveCommand<Unit, Unit> SyncToRemoteCommand { get; }
 
 
-        private SyncActions syncActions;
 
         public TasksViewModel()
         {
@@ -65,8 +64,6 @@ namespace CoreBackup.ViewModels
            // ObservableCollectionExtended is single-threaded.
            .Bind(out _derivedRemoteFiles)
            .Subscribe();
-
-            syncActions = new SyncActions();
             /*
             BasicIO bIO = new BasicIO();
             LocalFiles.Where(l => l.Size != 0).ToList().All(i => LocalFiles.Remove(i));
@@ -101,6 +98,20 @@ namespace CoreBackup.ViewModels
 
         private void SyncToLocal()
         {
+            Debug.WriteLine("test");
+            FTPConfig ftpconf = new FTPConfig();
+            ftpconf.provideCredentials("user", "pass", "urll");
+            ftpconf.dataSource = DataSource.FTP;
+            FTPConfig ftpconf2 = new FTPConfig();
+            ftpconf2.provideCredentials("user2", "pass2", "urll2");
+            ConfigHub confHub = new ConfigHub();
+            confHub.AddConfigHubEntry(ftpconf, ftpconf2);
+            confHub.isActive = true;
+            CoreTask.AddTaskEntry("zad2", confHub);
+            SyncActions.GetFilesList();
+            // to wyżej da się w await
+            // następnie pobierze się kolekcje i wleci update
+            // Compare()
 
         }
         private void SyncToLocalOverride()

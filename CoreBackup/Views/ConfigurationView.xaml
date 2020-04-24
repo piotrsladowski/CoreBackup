@@ -34,6 +34,5 @@
       <Button Grid.Row="4" Width="150" Height="30" Content="Save Configuration" HorizontalContentAlignment="Center"
               Margin="0,-38,0,0" VerticalContentAlignment="Center" Command="{Binding SaveConfigurationCommand}"/>
     </Grid>
-
   </StackPanel>
 </UserControl>

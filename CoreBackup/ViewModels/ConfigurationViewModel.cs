@@ -7,7 +7,6 @@ using CoreBackup.Models.Config;
 using CoreBackup.Models.Remote;
 using ReactiveUI;
 using CoreBackup.ViewModels.ConfigurationViewModels;
-using Xceed.Wpf.Toolkit.PropertyGrid;
 
 namespace CoreBackup.ViewModels
 {
@@ -46,11 +45,12 @@ namespace CoreBackup.ViewModels
         {
             SaveConfigurationCommand = ReactiveCommand.Create(SaveConfiguration);
             InitializeConfViewModels();
+            SaveCommand = ReactiveCommand.Create(Save);
         }
 
         #endregion
 
-        #region Combobox
+        #region BoomBox
         private int _cBoxLeftSelectedIdx;
         public int CBoxLeftSelectedIdx
         {
