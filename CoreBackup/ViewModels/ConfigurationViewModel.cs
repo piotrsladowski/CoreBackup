@@ -94,7 +94,7 @@ namespace CoreBackup.ViewModels
         private void Save()
         {
             ConfigHub configHub = new ConfigHub();
-            configHub.AddConfigHubEntry();
+            //configHub.AddConfigHubEntry();
             Debug.WriteLine("Save");
         }
     }
