@@ -19,19 +19,8 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 {
     class FTPConfViewModel : ViewModelBase
     {
-
-       
-        /// <summary>
-        /// SHORTCUTS FOR VARIABLES NAMES
-        /// LD - Local Directory
-        /// RS - Remote Server
-        /// UF - Upload File
-        /// DF - Download File
-        /// </summary>
-        /// 
-
         #region Paths
-        // PATH TO FILE TO BE UPLOADED
+        // SOURCE DIRECTORY PATH - UPLOAD
         private string _uploadPath;
         public string UploadPath
         {
@@ -39,67 +28,70 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             set => this.RaiseAndSetIfChanged(ref _uploadPath, value);
         }
 
-        // DESTINATION DIRECTORY PATH - DOWNLOADED FILE
+        // DESTINATION DIRECTORY PATH - DOWNLOAD
         private string _downloadPath;
         public string DownloadPath
         {
             get => _downloadPath;
             set => this.RaiseAndSetIfChanged(ref _downloadPath, value);
         }
+
+        // DISPOSABLE UPLOAD - SOURCE FILE PATH
+        private string _disposableUploadPath;
+
+        public string DisposableUploadPath
+        {
+            get => _disposableUploadPath;
+            set => this.RaiseAndSetIfChanged(ref _disposableUploadPath, value);
+        }
+
         #endregion
 
-        // PATH SEEN BY USER 
-        private string _ftpPath;
+        #region Reactive Commands
+        
+        private ReactiveCommand<Unit, Unit> BrowseDownloadDirectoryCommand { get; }
+        private ReactiveCommand<Unit, Unit> BrowseUploadDirectoryCommand { get; }
+        private ReactiveCommand<Unit, Unit> BrowseDisposableFileUploadCommand { get; }
 
-        public string FtpPath
-        {
-            get => _ftpPath;
-            set => this.RaiseAndSetIfChanged(ref _ftpPath, value);
-        }
+        private ReactiveCommand<Unit, Unit> ConnectFtpCommand { get; }
+        private ReactiveCommand<Unit, Unit> RemoteServerActionCommand { get; }
+
+        #endregion
 
         public FTPConfViewModel()
         {
-            RemoteServerBrowseFileCommand = ReactiveCommand.Create(BtnServerActionFiles);
+            BrowseDownloadDirectoryCommand = ReactiveCommand.Create(BrowseDownloadDirectory);
+            BrowseUploadDirectoryCommand = ReactiveCommand.Create(BrowseUploadDirectory);
+            BrowseDisposableFileUploadCommand = ReactiveCommand.Create(BrowseDisposableFileUpload);
             RemoteServerActionCommand = ReactiveCommand.Create(FtpAction);
             ConnectFtpCommand = ReactiveCommand.Create(FtpConnect);
             _ftpFiles = new ObservableCollection<string>();
         }
-        #region Reactive Commands
 
-        // FTP SERVER FILE EXPLORER
-        private ReactiveCommand<Unit, Unit> RemoteServerBrowseFileCommand { get; }
-
-        // CONNECT TO FTP SERVER
-        private ReactiveCommand<Unit, Unit> ConnectFtpCommand { get; }
-
-        // FTP SERVER ACTION 
-        private ReactiveCommand<Unit, Unit> RemoteServerActionCommand { get; }
-        #endregion
-
-        private async void BtnServerActionFiles()
+        private async void BrowseDownloadDirectory()
         {
-            if (_cBoxSelectedIdx == 0)
-            {
-                DownloadPath = await GetPath(false, true);
-                // Export Path to User Interface
-                FtpPath = DownloadPath;
-            }
-            else if (_cBoxSelectedIdx == 1)
-            {
-                UploadPath = await GetPath(true, false);
-                // Export Path to User Interface
-                FtpPath = UploadPath;
-            }
+            DownloadPath = await GetPath(false);
         }
 
-        private async Task<string> GetPath(bool Upload, bool Download)
+        private async void BrowseUploadDirectory()
+        {
+            UploadPath = await GetPath(false);
+        }
+
+        private async void BrowseDisposableFileUpload()
+        {
+            DisposableUploadPath = await GetPath(true);
+        }
+
+        
+        private async Task<string> GetPath(bool DisposableUploadFile)
         {
             string[] resultReturn = null;
             string fullPath = null;
             if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
             {
 
-                if (Download)
+                if (!DisposableUploadFile)
                 {
                     OpenFolderDialog dialog = new OpenFolderDialog();
                     string result = await dialog.ShowAsync(desktopLifetime.MainWindow);
@@ -111,12 +103,9 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
                     string[] result = await dialog.ShowAsync(desktopLifetime.MainWindow);
                     resultReturn = result;
                     fullPath = string.Join(" ", resultReturn);
-                    if (Upload)
-                    {
-                        dialog.AllowMultiple = true;
-                        string[] PathTreeSteps = fullPath.Split('\\');
-                        ToUploadFile = PathTreeSteps[PathTreeSteps.Length - 1];
-                    }
+                    dialog.AllowMultiple = true;
+                    string[] PathTreeSteps = fullPath.Split('\\');
+                    ToUploadFile = PathTreeSteps[PathTreeSteps.Length - 1];
                 }
 
             }
@@ -164,7 +153,6 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             set {
                 this.RaiseAndSetIfChanged(ref _cBoxSelectedIdx, value);
                 // Clear Fields in XAML
-                FtpPath = "";
                 if (_cBoxSelectedIdx == 0)
                 {
                     IsUpload = false;
@@ -295,7 +283,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             }
         }
 
-        // DOWNLOAD or UPLOAD Action
+        // DISPOSABLE  DOWNLOAD or UPLOAD Action
         private void FtpAction()
         {
             if (IsDownload)
@@ -304,7 +292,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             }
             else if (IsUpload)
             {
-                FtpClient.Upload(ToUploadFile, UploadPath);
+                FtpClient.Upload(ToUploadFile, DisposableUploadPath);
             }
         }
 
