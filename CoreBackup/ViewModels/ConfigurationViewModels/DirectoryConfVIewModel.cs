@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using CoreBackup.Models.Local;
 using ReactiveUI;
 
 namespace CoreBackup.ViewModels.ConfigurationViewModels
@@ -25,6 +28,15 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
         public DirectoryConfViewModel()
         {
             FileExplorerCommand = ReactiveCommand.Create(BtnBrowseLocalFiles);
+
+            var sampledata = Enumerable.Range(0, 1)
+                .Select(x => new LocalPath()
+                {
+                    Path = "Sample Text" + x.ToString()
+                });
+
+            Data = new ObservableCollection<LocalPath>(sampledata);
+            AddNewRowCommand = new Command(AddNewRow);
         }
 
         private async void BtnBrowseLocalFiles()
@@ -48,5 +60,16 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 
             return fullPath;
         }
+
+
+        public ObservableCollection<LocalPath> Data { get; set; }
+
+        public Command AddNewRowCommand { get; set; }
+
+        private void AddNewRow()
+        {
+            Data.Add(new LocalPath() { Path = "Path Address" });
+        }
+
     }
 }
