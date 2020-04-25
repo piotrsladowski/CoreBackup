@@ -18,8 +18,8 @@ namespace CoreBackup.Models.Tasks
         public static string jsonConfigPath;
         public static string configFilename;
         
-        static List<FTPConfig> ftpConf;
-        static DirectoryConfig directoryConf;
+        public static List<FTPConfig> ftpConf;
+        public static DirectoryConfig directoryConf;
 
 
 

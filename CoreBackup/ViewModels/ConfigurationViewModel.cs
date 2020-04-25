@@ -5,6 +5,7 @@ using System.Reactive;
 using Avalonia.Controls;
 using CoreBackup.Models.Config;
 using CoreBackup.Models.Remote;
+using CoreBackup.Models.Tasks;
 using ReactiveUI;
 using CoreBackup.ViewModels.ConfigurationViewModels;
 
@@ -111,7 +112,15 @@ namespace CoreBackup.ViewModels
 
         private async void SaveConfiguration()
         {
-           
+            if (ftpLeftConfig.GetCredentials().Count == 3 && ftpLeftConfig.GetPaths().Count == 2)
+            {
+                CoreTask.ftpConf.Add(ftpLeftConfig);
+            }
+            if (ftpRightConfig.GetCredentials().Count == 3 && ftpRightConfig.GetPaths().Count == 2)
+            {
+                CoreTask.ftpConf.Add(ftpRightConfig);
+            }
+
         }
     }
 }
