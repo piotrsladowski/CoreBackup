@@ -27,7 +27,6 @@ namespace CoreBackup.ViewModels
         private FTPConfig ftpLeftConfig;
         private FTPConfig ftpRightConfig;
 
-
         public ViewModelBase LeftData
         {
             get => leftData;
@@ -112,7 +111,7 @@ namespace CoreBackup.ViewModels
 
         private async void SaveConfiguration()
         {
-            //Debug.WriteLine(ftpLeftConfig.Get("username"));
+           
         }
     }
 }

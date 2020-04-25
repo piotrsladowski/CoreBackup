@@ -101,7 +101,7 @@ namespace CoreBackup.ViewModels
             Debug.WriteLine("test");
             FTPConfig ftpconf = new FTPConfig();
             ftpconf.provideCredentials("user", "pass", "urll");
-            ftpconf.dataSource = DataSource.FTP;
+            ftpconf.dataSource = DataSource.FTP;    
             FTPConfig ftpconf2 = new FTPConfig();
             ftpconf2.provideCredentials("user2", "pass2", "urll2");
             ConfigHub confHub = new ConfigHub();

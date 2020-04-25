@@ -26,7 +26,11 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
         public string UploadPath
         {
             get => _uploadPath;
-            set => this.RaiseAndSetIfChanged(ref _uploadPath, value);
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _uploadPath, value);
+                FtpConfig.provideUploadPath(value);
+            }
         }
 
         // DESTINATION DIRECTORY PATH - DOWNLOAD
@@ -34,7 +38,11 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
         public string DownloadPath
         {
             get => _downloadPath;
-            set => this.RaiseAndSetIfChanged(ref _downloadPath, value);
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _downloadPath, value);
+                FtpConfig.provideDownloadPath(value);
+            }
         }
 
         // DISPOSABLE UPLOAD - SOURCE FILE PATH
@@ -278,6 +286,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
                     if (IsLogged)
                     {
                         FtpConfig.provideCredentials(UsernameInput, PasswordInput, ServerInput);
+                       
                         ListFiles();
                     }
                     else
