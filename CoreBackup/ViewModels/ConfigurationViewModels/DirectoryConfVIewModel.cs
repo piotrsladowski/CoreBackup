@@ -16,19 +16,17 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 {
     class DirectoryConfViewModel : ViewModelBase
     {
-        private ReactiveCommand<Unit, Unit> FileExplorerCommand { get; }
+        public ReactiveCommand<Unit, Unit> FileExplorerCommand { get; }
 
-        private string _path;
-        public string Path
+        private string _paths;
+        public string Paths
         {
-            get => _path;
-            set => this.RaiseAndSetIfChanged(ref _path, value);
+            get => _paths;
+            set => this.RaiseAndSetIfChanged(ref _paths, value);
         }
 
         public DirectoryConfViewModel()
         {
-            FileExplorerCommand = ReactiveCommand.Create(BtnBrowseLocalFiles);
-
             var sampledata = Enumerable.Range(0, 1)
                 .Select(x => new LocalPath()
                 {
@@ -37,11 +35,13 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 
             Data = new ObservableCollection<LocalPath>(sampledata);
             AddNewRowCommand = new Command(AddNewRow);
+            FileExplorerCommand = ReactiveCommand.Create(BtnBrowseLocalFiles);
+
         }
 
         private async void BtnBrowseLocalFiles()
         {
-            Path = await GetPath();
+            Paths = await GetPath();
         }
 
         private async Task<string> GetPath()

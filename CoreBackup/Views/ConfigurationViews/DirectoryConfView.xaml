@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CoreBackup.Views.ConfigurationViews.DirectoryConfView">
- 
+
+  
    <DockPanel>   
     <Button Content="Add New Row" Command="{Binding AddNewRowCommand}" Width="100"
             DockPanel.Dock="Bottom"/>
@@ -12,7 +13,6 @@
       <ItemsControl.ItemTemplate>
         <DataTemplate>
           <Border BorderThickness="0" Margin="2">
-            <!-- This is the Inner Grid for each element, which is represented in Brown color in your picture -->
             <Grid>
               <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -26,9 +26,13 @@
               </Grid.ColumnDefinitions>
 
          
-              <TextBlock Text="{Binding Path}"
-                            Grid.Row="1" Grid.ColumnSpan="2"
+              <TextBox Text="{Binding Path}"
+                            Grid.Row="1" Grid.ColumnSpan="1" 
                             Margin="30,0,0,0"/>
+
+              <Button Content="Browse" Command="{Binding FileExplorerCommand}" Grid.Column="3"
+              Grid.Row="1"  MaxWidth="130" Margin="-70,0,0,0" IsEnabled="True"/>
+              
             </Grid>
           </Border>
         </DataTemplate>
