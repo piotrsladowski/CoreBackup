@@ -19,6 +19,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
         public ReactiveCommand<Unit, Unit> FileExplorerCommand { get; }
 
         private string _paths;
+
         public string Paths
         {
             get => _paths;
@@ -30,7 +31,8 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             var sampledata = Enumerable.Range(0, 1)
                 .Select(x => new LocalPath()
                 {
-                    Path = "Sample Text" + x.ToString()
+                    Path = "Sample Text" + x.ToString(),
+                    FileExplorerCommand = ReactiveCommand.Create(BtnBrowseLocalFiles)
                 });
 
             Data = new ObservableCollection<LocalPath>(sampledata);
@@ -68,7 +70,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 
         private void AddNewRow()
         {
-            Data.Add(new LocalPath() { Path = "Path Address" });
+            Data.Add(new LocalPath() { Path = Paths, FileExplorerCommand = ReactiveCommand.Create(BtnBrowseLocalFiles) });
         }
 
     }
