@@ -101,8 +101,9 @@ namespace CoreBackup.ViewModels
             private set => this.RaiseAndSetIfChanged(ref eventLogScreen, value);
         }
 
-        public delegate void OpenedTasksViewEventHandler(object o, EventArgs e);
-        public event OpenedTasksViewEventHandler OpenedTasksView;
+        //public delegate void OpenedTasksViewEventHandler(object o, EventArgs e);
+        //public event OpenedTasksViewEventHandler OpenedTasksView;
+        public event EventHandler<EventArgs> OpenedTasksView;
 
         protected virtual void OnOpenedTasksViewEvent()
         {
@@ -113,28 +114,27 @@ namespace CoreBackup.ViewModels
         #region ChangeScreen on Click Actions
         public void ChangeScreenHome()
         {
-                Screen = homeScreen;
+            Screen = homeScreen;
         }
 
         public void ChangeScreenConfiguration()
         {           
-                Screen = configScreen;
+            Screen = configScreen;
         }
 
         public void ChangeScreenEventLog()
         {          
-                Screen = eventLogScreen;           
+            Screen = eventLogScreen;           
         }
 
         public void ChangeScreenTasks()
         {
-            //OpenedTasksView += tasksScreen.OnOpenedTasksView;
             Screen = tasksScreen;
             OnOpenedTasksViewEvent();
         }
         public void ChangeScreenFileExplorer()
         {          
-                Screen = fileExplorerScreen;
+            Screen = fileExplorerScreen;
         }
 
         public void ChangeScreenCryptography()

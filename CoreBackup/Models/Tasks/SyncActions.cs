@@ -15,6 +15,7 @@ namespace CoreBackup.Models.Tasks
 
         public static void GetFilesList()
         {
+            /*
             foreach (KeyValuePair<string, ConfigHub> entry in CoreTask.tasksList)
             {
                 Debug.WriteLine("E1");
@@ -31,7 +32,7 @@ namespace CoreBackup.Models.Tasks
 
                     }
                 }
-            }
+            }*/
         }
 
         public static void SyncMirror()

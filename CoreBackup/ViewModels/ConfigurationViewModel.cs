@@ -8,6 +8,7 @@ using CoreBackup.Models.Remote;
 using CoreBackup.Models.Tasks;
 using ReactiveUI;
 using CoreBackup.ViewModels.ConfigurationViewModels;
+using System.Threading;
 
 namespace CoreBackup.ViewModels
 {
@@ -45,6 +46,7 @@ namespace CoreBackup.ViewModels
         {
             SaveConfigurationCommand = ReactiveCommand.Create(SaveConfiguration);
             InitializeConfViewModels();
+            SubscribeToEvents();
         }
 
         #endregion
@@ -109,6 +111,30 @@ namespace CoreBackup.ViewModels
             directoryRightView = new DirectoryConfViewModel();
         }
 
+        private void SubscribeToEvents()
+        {
+            SavedConfigurationLeftEvent += ftpLeftView.OnSavedConfigurationEvent;
+            SavedConfigurationLeftEvent += directoryLeftView.OnSavedConfigurationEvent;
+            SavedConfigurationRightEvent += ftpRightView.OnSavedConfigurationEvent;
+            SavedConfigurationRightEvent += directoryRightView.OnSavedConfigurationEvent;
+        }
+
+        #region Events
+        public event EventHandler<ConfigurationEventArgs> SavedConfigurationLeftEvent;
+
+        protected virtual void OnSavedConfigurationLeftEvent(ConfigHub configHub, int dataType, int side)
+        {
+            SavedConfigurationLeftEvent(this, new ConfigurationEventArgs() { ConfigHub = configHub, DataType = dataType, Side = side});
+        }
+
+        public event EventHandler<ConfigurationEventArgs> SavedConfigurationRightEvent;
+
+        protected virtual void OnSavedConfigurationRightEvent(ConfigHub configHub, int dataType, int side)
+        {
+            SavedConfigurationRightEvent(this, new ConfigurationEventArgs() { ConfigHub = configHub, DataType = dataType, Side = side });
+        }
+        #endregion
+
         private string _configurationName;
 
         public string ConfigurationName
@@ -119,18 +145,14 @@ namespace CoreBackup.ViewModels
 
         private async void SaveConfiguration()
         {
+            ConfigHub configHub = new ConfigHub();
+            OnSavedConfigurationLeftEvent(configHub, _cBoxLeftSelectedIdx, 0);
+            OnSavedConfigurationRightEvent(configHub, _cBoxRightSelectedIdx, 1);
 
+            Thread.Sleep(100); // TODO add notify after events complete
+            CoreTask.AddTaskEntry(_configurationName, configHub);
 
             Debug.WriteLine(_configurationName);
-            if (ftpLeftConfig.GetCredentials().Count == 3 && ftpLeftConfig.GetPaths().Count == 2)
-            {
-                CoreTask.ftpConf.Add(ftpLeftConfig);
-            }
-            if (ftpRightConfig.GetCredentials().Count == 3 && ftpRightConfig.GetPaths().Count == 2)
-            {
-                CoreTask.ftpConf.Add(ftpRightConfig);
-            }
-
         }
     }
 }

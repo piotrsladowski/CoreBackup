@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using CoreBackup.Models.Config;
 using CoreBackup.Models.Local;
 using ReactiveUI;
 
@@ -41,6 +42,23 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 
             Data = new ObservableCollection<LocalPath>(sampledata);
             AddNewRowCommand = new Command(AddNewRow);
+        }
+
+        public void OnSavedConfigurationEvent(object o, ConfigurationEventArgs e)
+        {
+            Debug.WriteLine("OnSavedConfiguration event successfully raised");
+            if (e.DataType == 1)
+            {
+                Debug.WriteLine("DataType: " + e.DataType + ", Side: " + e.Side);
+                if (e.Side == 0)
+                {
+                    //e.ConfigHub.AddLeftSources(FtpConfig);
+                }
+                else if (e.Side == 1)
+                {
+                    //e.ConfigHub.AddRightSources(FtpConfig);
+                }
+            }
         }
 
         private async void BtnBrowseLocalFiles()

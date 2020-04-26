@@ -108,6 +108,7 @@ namespace CoreBackup.ViewModels
 
         private void SyncToLeft()
         {
+            /*
             Debug.WriteLine("test");
             FTPConfig ftpconf = new FTPConfig();
             ftpconf.provideCredentials("user", "pass", "urll");
@@ -119,6 +120,7 @@ namespace CoreBackup.ViewModels
             confHub.isActive = true;
             CoreTask.AddTaskEntry("zad2", confHub);
             SyncActions.GetFilesList();
+            */
             // to wyżej da się w await
             // następnie pobierze się kolekcje i wleci update
             // Compare()

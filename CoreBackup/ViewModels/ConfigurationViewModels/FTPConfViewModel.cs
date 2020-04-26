@@ -81,7 +81,23 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             _ftpFiles = new ObservableCollection<string>();
         }
 
-        
+        public void OnSavedConfigurationEvent(object o, ConfigurationEventArgs e)
+        {
+            Debug.WriteLine("OnSavedConfiguration event successfully raised");
+            if(e.DataType == 2)
+            {
+                Debug.WriteLine("DataType: " + e.DataType + ", Side: " + e.Side);
+                if (e.Side == 0)
+                {
+                    e.ConfigHub.AddLeftSources(FtpConfig);
+                }
+                else if (e.Side == 1)
+                {
+                    e.ConfigHub.AddRightSources(FtpConfig);
+                }
+            }
+        }
+
 
         private async void BrowseDownloadDirectory()
         {

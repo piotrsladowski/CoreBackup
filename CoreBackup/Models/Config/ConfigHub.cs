@@ -4,10 +4,10 @@ using System.Text;
 
 namespace CoreBackup.Models.Config
 {
-    class ConfigHub
+    public class ConfigHub
     {
-        public List<Configuration> LeftSources { get; set; }
-        public List<Configuration> RightSources { get; set; }
+        internal List<Configuration> LeftSources { get; set; }
+        internal List<Configuration> RightSources { get; set; }
         public bool isActive { get; set; }
 
         public ConfigHub()
@@ -17,13 +17,25 @@ namespace CoreBackup.Models.Config
             isActive = false;
         }
 
-        public void AddConfigHubEntry(List<Configuration> leftSources, List<Configuration> rightSources)
+        internal void AddLeftSources(Configuration leftSources)
+        {
+            LeftSources.Clear();
+            LeftSources.Add(leftSources);
+        }
+
+        internal void AddRightSources(Configuration rightSources)
+        {
+            RightSources.Clear();
+            RightSources.Add(rightSources);
+        }
+
+        void AddConfigHubEntry(List<Configuration> leftSources, List<Configuration> rightSources)
         {
             LeftSources = leftSources;
             RightSources = rightSources;
         }
 
-        public void AddConfigHubEntry(Configuration leftConfiguration, Configuration rightConfiguration)
+        void AddConfigHubEntry(Configuration leftConfiguration, Configuration rightConfiguration)
         {
             LeftSources.Add(leftConfiguration);
             RightSources.Add(rightConfiguration);
