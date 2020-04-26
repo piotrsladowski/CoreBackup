@@ -22,7 +22,6 @@ namespace CoreBackup.Models.Tasks
         public static DirectoryConfig directoryConf;
 
 
-
         public static void RemoveTaskEntry(string taskName)
         {
             tasksList.Remove(taskName);

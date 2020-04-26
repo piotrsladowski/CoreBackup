@@ -13,7 +13,7 @@
       <!--
       <Rectangle HorizontalAlignment="Stretch" Fill="#FF007ACC" Height="10" Grid.Column="0" Grid.Row="2"/>
       <Rectangle HorizontalAlignment="Stretch" Fill="DarkSlateBlue" Height="5" Grid.Column="0" Grid.Row="2"/>-->
-      <Grid Grid.Row="1" ColumnDefinitions="*,*" RowDefinitions="40,*,*" ClipToBounds="True">
+      <Grid Grid.Row="1" ColumnDefinitions="*,*" RowDefinitions="40,*,*,*" ClipToBounds="True">
         <!--LEFT-->
         <TextBlock Grid.Column="0" Grid.Row="0" TextAlignment="Center">Select Left Data Source</TextBlock>
         <ComboBox Grid.Column="0" Grid.Row="1" SelectedIndex="{Binding CBoxLeftSelectedIdx}" Margin="10,0,5,0">
@@ -31,8 +31,11 @@
         </ComboBox>
         <UserControl Grid.Column="1" Grid.Row="2" Content="{Binding RightData}"/>
       </Grid>
-      <Button Grid.Row="4" Width="150" Height="30" Content="Save Configuration" HorizontalContentAlignment="Center"
-              Margin="0,-38,0,0" VerticalContentAlignment="Center" Command="{Binding SaveConfigurationCommand}"/>
+      <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+        <TextBox Text="{Binding ConfigurationName}" Watermark="Type configuration name" Height="30" Margin="0,0,5,0"/>
+        <Button Width="150" Height="30" Content="Save Configuration" HorizontalContentAlignment="Center"
+              Margin="5,0,0,0" VerticalContentAlignment="Center" Command="{Binding SaveConfigurationCommand}"/>
+     </StackPanel>
     </Grid>
   </StackPanel>
 </UserControl>
