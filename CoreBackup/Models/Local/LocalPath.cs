@@ -7,9 +7,15 @@ using ReactiveUI;
 
 namespace CoreBackup.Models.Local
 {
-    public class LocalPath
+    public class LocalPath : ReactiveObject
     {
-        public string Path { get; set; }
-        public ReactiveCommand<Unit,Unit> FileExplorerCommand { get; set; }
+        public int NumericID { get; set; }
+        private string path;
+        public string Path
+        {
+            get => path;
+            set => this.RaiseAndSetIfChanged(ref path, value);
+        }
+        public ReactiveCommand<Unit,Unit> ExplorerCommand { get; set; }
     }
 }
