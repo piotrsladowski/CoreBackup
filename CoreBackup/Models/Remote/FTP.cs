@@ -16,8 +16,7 @@ namespace CoreBackup.Models.Remote
         public string Password { get; set; }
 
         public List<string> directories;
-
-        
+                
         #region Validate Logging Process
         /// <summary>
         /// User Login Validation

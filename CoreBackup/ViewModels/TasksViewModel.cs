@@ -18,85 +18,95 @@ namespace CoreBackup.ViewModels
 {
     class TasksViewModel : ViewModelBase
     {
-
         // https://reactiveui.net/docs/handbook/collections/
 
-        private readonly ReadOnlyObservableCollection<FileInformation> _derivedLocalFiles;
-        public ReadOnlyObservableCollection<FileInformation> DerivedLocalFiles => _derivedLocalFiles;
+        private readonly ReadOnlyObservableCollection<FileInformation> _derivedLeftFiles;
+        public ReadOnlyObservableCollection<FileInformation> DerivedLeftFiles => _derivedLeftFiles;
 
-        private readonly ReadOnlyObservableCollection<FileInformation> _derivedRemoteFiles;
-        public ReadOnlyObservableCollection<FileInformation> DerivedRemoteFiles => _derivedRemoteFiles;
+        private readonly ReadOnlyObservableCollection<FileInformation> _derivedRightFiles;
+        public ReadOnlyObservableCollection<FileInformation> DerivedRightFiles => _derivedRightFiles;
 
-        public ObservableCollectionExtended<FileInformation> LocalFiles { get; }
-        public ObservableCollectionExtended<FileInformation> RemoteFiles { get; }
+        public ObservableCollectionExtended<FileInformation> LeftFiles { get; }
+        public ObservableCollectionExtended<FileInformation> RightFiles { get; }
 
 
-        public ReactiveCommand<Unit, Unit> SyncToLocalCommand { get; }
-        public ReactiveCommand<Unit, Unit> SyncToLocalOverrideCommand { get; }
+        public ReactiveCommand<Unit, Unit> SyncToLeftCommand { get; }
+        public ReactiveCommand<Unit, Unit> SyncToLeftOverrideCommand { get; }
         public ReactiveCommand<Unit, Unit> SyncMirrorCommand { get; }
-        public ReactiveCommand<Unit, Unit> SyncToRemoteOverrideCommand { get; }
-        public ReactiveCommand<Unit, Unit> SyncToRemoteCommand { get; }
+        public ReactiveCommand<Unit, Unit> SyncToRightOverrideCommand { get; }
+        public ReactiveCommand<Unit, Unit> SyncToRightCommand { get; }
 
 
 
         public TasksViewModel()
         {
-            SyncToLocalCommand = ReactiveCommand.Create(SyncToLocal);
-            SyncToLocalOverrideCommand = ReactiveCommand.Create(SyncToLocalOverride);
+            SyncToLeftCommand = ReactiveCommand.Create(SyncToLeft);
+            SyncToLeftOverrideCommand = ReactiveCommand.Create(SyncToLeftOverride);
             SyncMirrorCommand = ReactiveCommand.Create(SyncMirror);
-            SyncToRemoteCommand = ReactiveCommand.Create(SyncToRemote);
-            SyncToRemoteOverrideCommand = ReactiveCommand.Create(SyncToRemoteOverride);
+            SyncToRightCommand = ReactiveCommand.Create(SyncToRight);
+            SyncToRightOverrideCommand = ReactiveCommand.Create(SyncToRightOverride);
 
-            LocalFiles = new ObservableCollectionExtended<FileInformation>();
-            LocalFiles.ToObservableChangeSet()
+            LeftFiles = new ObservableCollectionExtended<FileInformation>();
+            LeftFiles.ToObservableChangeSet()
             .Transform(value => value)
             // No need to use the .ObserveOn() operator here, as
             // ObservableCollectionExtended is single-threaded.
-            .Bind(out _derivedLocalFiles)
+            .Bind(out _derivedLeftFiles)
             .Subscribe();
             // Update the source collection and the derived
             // collection will update as well.
 
-            RemoteFiles = new ObservableCollectionExtended<FileInformation>();
-            RemoteFiles.ToObservableChangeSet()
+            RightFiles = new ObservableCollectionExtended<FileInformation>();
+            RightFiles.ToObservableChangeSet()
            .Transform(value => value)
            // No need to use the .ObserveOn() operator here, as
            // ObservableCollectionExtended is single-threaded.
-           .Bind(out _derivedRemoteFiles)
+           .Bind(out _derivedRightFiles)
            .Subscribe();
             /*
             BasicIO bIO = new BasicIO();
-            LocalFiles.Where(l => l.Size != 0).ToList().All(i => LocalFiles.Remove(i));
+            LeftFiles.Where(l => l.Size != 0).ToList().All(i => LeftFiles.Remove(i));
             foreach (FileInfo f in bIO.getFilesInDirectory("C:\\"))
             {
-                //LocalFiles.Add(f.ToString());
+                //LeftFiles.Add(f.ToString());
                 FileInformation fi = new FileInformation();
                 fi.Filename = f.Name;
                 fi.Size = f.Length;
-                RemoteFiles.Add(fi);
-                LocalFiles.Add(fi);
+                RightFiles.Add(fi);
+                LeftFiles.Add(fi);
             }*/
         }
 
 
+        public void OnOpenedTasksView(object o, EventArgs e)
+        {
+            Debug.WriteLine("OnOpenedTasksView event successfully raised");
+            GetAllFiles();
+        }
+    
+        private void GetAllFiles()
+        {
+
+        }
+
         private void SyncMirror()
         {
             BasicIO bIO = new BasicIO();
-            LocalFiles.Where(l => l.Size != 0).ToList().All(i => LocalFiles.Remove(i)); //Clear LocalFiles
-            RemoteFiles.Where(l => l.Size != 0).ToList().All(i => RemoteFiles.Remove(i));
+            LeftFiles.Where(l => l.Size != 0).ToList().All(i => LeftFiles.Remove(i)); //Clear LeftFiles
+            RightFiles.Where(l => l.Size != 0).ToList().All(i => RightFiles.Remove(i));
             foreach (FileInfo f in bIO.getFilesInDirectory("C:\\"))
             {
                 Debug.WriteLine(f.ToString());
-                //LocalFiles.Add(f.ToString());
+                //LeftFiles.Add(f.ToString());
                 FileInformation fi = new FileInformation();
                 fi.Filename = f.Name;
                 fi.Size = f.Length;
-                RemoteFiles.Add(fi);
-                LocalFiles.Add(fi);
+                RightFiles.Add(fi);
+                LeftFiles.Add(fi);
             }
         }
 
-        private void SyncToLocal()
+        private void SyncToLeft()
         {
             Debug.WriteLine("test");
             FTPConfig ftpconf = new FTPConfig();
@@ -114,14 +124,14 @@ namespace CoreBackup.ViewModels
             // Compare()
 
         }
-        private void SyncToLocalOverride()
+        private void SyncToLeftOverride()
         {
 
         }
-        private void SyncToRemote()
+        private void SyncToRight()
         {
         }
-        private void SyncToRemoteOverride()
+        private void SyncToRightOverride()
         {
         }
     }

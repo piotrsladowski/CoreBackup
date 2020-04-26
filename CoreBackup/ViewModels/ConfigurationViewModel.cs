@@ -14,10 +14,10 @@ namespace CoreBackup.ViewModels
     public partial class ConfigurationViewModel : ViewModelBase
     {
         #region Combobox Configuration Fields
-        ViewModelBase directoryLeftView;
-        ViewModelBase ftpLeftView;
-        ViewModelBase directoryRightView;
-        ViewModelBase ftpRightView;
+        DirectoryConfViewModel directoryLeftView;
+        FTPConfViewModel ftpLeftView;
+        DirectoryConfViewModel directoryRightView;
+        FTPConfViewModel ftpRightView;
 
         ViewModelBase leftData;
         ViewModelBase rightData;
@@ -93,8 +93,8 @@ namespace CoreBackup.ViewModels
                 }
             }
         }
+        #endregion
 
-        
         private void InitializeConfViewModels()
         {
             ftpLeft = new FTP();
@@ -108,10 +108,20 @@ namespace CoreBackup.ViewModels
             directoryLeftView = new DirectoryConfViewModel();
             directoryRightView = new DirectoryConfViewModel();
         }
-        #endregion
+
+        private string _configurationName;
+
+        public string ConfigurationName
+        {
+            get => _configurationName;
+            set => this.RaiseAndSetIfChanged(ref _configurationName, value);
+        }
 
         private async void SaveConfiguration()
         {
+
+
+            Debug.WriteLine(_configurationName);
             if (ftpLeftConfig.GetCredentials().Count == 3 && ftpLeftConfig.GetPaths().Count == 2)
             {
                 CoreTask.ftpConf.Add(ftpLeftConfig);

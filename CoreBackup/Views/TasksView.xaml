@@ -8,19 +8,19 @@
   
   <Grid RowDefinitions="50,*" ShowGridLines="True" ClipToBounds="True">
     <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*,*" ShowGridLines="True" ClipToBounds="True">
-      <Button Grid.Column="0" Background="Transparent" Command="{Binding SyncToLocalOverride}">
+      <Button Grid.Column="0" Background="Transparent" Command="{Binding SyncToLeftOverride}">
         <Image Source="avares://CoreBackup/Assets/Icons/arrow_doubleLeft_90_blue.png"></Image>
       </Button>
-      <Button Grid.Column="1" Background="Transparent" Command="{Binding SyncToLocal}">
+      <Button Grid.Column="1" Background="Transparent" Command="{Binding SyncToLeft}">
         <Image Source="avares://CoreBackup/Assets/Icons/arrow_left_90_blue.png"></Image>
       </Button>
       <Button Grid.Column="2" Background="Transparent" Command="{Binding SyncMirror}">
         <Image Source="avares://CoreBackup/Assets/Icons/arrow_both_90_blue.png"></Image>
       </Button>
-      <Button Grid.Column="3" Background="Transparent" Command="{Binding SyncToRemote}">
+      <Button Grid.Column="3" Background="Transparent" Command="{Binding SyncToRight}">
         <Image Source="avares://CoreBackup/Assets/Icons/arrow_right_90_blue.png"></Image>
       </Button>
-      <Button Grid.Column="4" Background="Transparent" Command="{Binding SyncToRemoteOverride}">
+      <Button Grid.Column="4" Background="Transparent" Command="{Binding SyncToRightOverride}">
         <Image Source="avares://CoreBackup/Assets/Icons/arrow_doubleRight_90_blue.png"></Image>
       </Button>
     </Grid>

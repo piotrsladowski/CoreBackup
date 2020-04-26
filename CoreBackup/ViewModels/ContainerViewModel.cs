@@ -5,14 +5,14 @@ using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Timers;
-using MahApps.Metro.Controls.Dialogs;
 using ReactiveUI;
 
 namespace CoreBackup.ViewModels
 {
     class ContainerViewModel : ViewModelBase
     {
-        ViewModelBase tasksScreen;
+        //ViewModelBase tasksScreen;
+        TasksViewModel tasksScreen;
         ViewModelBase configScreen;
         ViewModelBase homeScreen;
         ViewModelBase fileExplorerScreen;
@@ -56,13 +56,15 @@ namespace CoreBackup.ViewModels
             eventLogScreen = new EventLogViewModel();
             cryptoScreen = new CryptographyViewModel();
 
+            OpenedTasksView += tasksScreen.OnOpenedTasksView;
+            
             // Internet Connection Check - Timer
             SetupTimer();
         }
         #endregion
 
         #region ViewModel tasks
-        public ViewModelBase TasksScreen
+        public TasksViewModel TasksScreen
         {
             get => tasksScreen;
             private set => this.RaiseAndSetIfChanged(ref tasksScreen, value);
@@ -98,6 +100,15 @@ namespace CoreBackup.ViewModels
             get => eventLogScreen;
             private set => this.RaiseAndSetIfChanged(ref eventLogScreen, value);
         }
+
+        public delegate void OpenedTasksViewEventHandler(object o, EventArgs e);
+        public event OpenedTasksViewEventHandler OpenedTasksView;
+
+        protected virtual void OnOpenedTasksViewEvent()
+        {
+            OpenedTasksView(this, EventArgs.Empty);
+        }
+
         #endregion
         #region ChangeScreen on Click Actions
         public void ChangeScreenHome()
@@ -114,9 +125,12 @@ namespace CoreBackup.ViewModels
         {          
                 Screen = eventLogScreen;           
         }
+
         public void ChangeScreenTasks()
-        {           
-                Screen = tasksScreen;
+        {
+            //OpenedTasksView += tasksScreen.OnOpenedTasksView;
+            Screen = tasksScreen;
+            OnOpenedTasksViewEvent();
         }
         public void ChangeScreenFileExplorer()
         {          
