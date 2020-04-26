@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Text;
@@ -16,34 +17,35 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 {
     class DirectoryConfViewModel : ViewModelBase
     {
-        public ReactiveCommand<Unit, Unit> FileExplorerCommand { get; }
+        private int pathNumber = 0;
+        private int slotLimit = 14;
 
-        private string _paths;
 
-        public string Paths
-        {
-            get => _paths;
-            set => this.RaiseAndSetIfChanged(ref _paths, value);
-        }
+        public ObservableCollection<String> localPaths;
+        public ObservableCollection<LocalPath> Data { get; set; }
 
         public DirectoryConfViewModel()
         {
+            localPaths = new ObservableCollection<string>();
+            for (int i = 0; i < 10; i++)
+            {
+                localPaths.Add("");
+            }
+
             var sampledata = Enumerable.Range(0, 1)
                 .Select(x => new LocalPath()
                 {
-                    Path = "Sample Text" + x.ToString(),
-                    FileExplorerCommand = ReactiveCommand.Create(BtnBrowseLocalFiles)
+                    ExplorerCommand = ReactiveCommand.Create(BtnBrowseLocalFiles)
+                    
                 });
 
             Data = new ObservableCollection<LocalPath>(sampledata);
             AddNewRowCommand = new Command(AddNewRow);
-            FileExplorerCommand = ReactiveCommand.Create(BtnBrowseLocalFiles);
-
         }
 
         private async void BtnBrowseLocalFiles()
         {
-            Paths = await GetPath();
+            Data[pathNumber].Path = await GetPath();
         }
 
         private async Task<string> GetPath()
@@ -64,14 +66,15 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
         }
 
 
-        public ObservableCollection<LocalPath> Data { get; set; }
-
         public Command AddNewRowCommand { get; set; }
 
         private void AddNewRow()
         {
-            Data.Add(new LocalPath() { Path = Paths, FileExplorerCommand = ReactiveCommand.Create(BtnBrowseLocalFiles) });
+            if (pathNumber + 1 < slotLimit)
+            {
+                pathNumber += 1;
+                Data.Add(new LocalPath() { NumericID = pathNumber, ExplorerCommand = ReactiveCommand.Create(BtnBrowseLocalFiles) });
+            }
         }
-
     }
 }
