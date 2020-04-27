@@ -24,9 +24,11 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
         public Command AddNewRowCommand { get; set; }
         public ReactiveCommand<Unit, Unit>[] commandsArray;
         public ObservableCollection<LocalPath> Data { get; set; }
+        private DirectoryConfig directoryConfig;
 
-        public DirectoryConfViewModel()
+        public DirectoryConfViewModel(ref DirectoryConfig directoryConfig)
         {
+            this.directoryConfig = directoryConfig;
             Data = new ObservableCollection<LocalPath>();
             commandsArray = new ReactiveCommand<Unit, Unit>[10];
             commandsArray[0] = ReactiveCommand.Create(Btn0BrowseLocalFiles);
@@ -46,51 +48,61 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
         private async void Btn0BrowseLocalFiles()
         {
             Data[0].Path = await GetPath();
+            directoryConfig.ProvideLocalPath(0, Data[0].Path);
         }
 
         private async void Btn1BrowseLocalFiles()
         {
             Data[1].Path = await GetPath();
+            directoryConfig.ProvideLocalPath(1, Data[1].Path);
         }
 
         private async void Btn2BrowseLocalFiles()
         {
             Data[2].Path = await GetPath();
+            directoryConfig.ProvideLocalPath(2, Data[2].Path);
         }
 
         private async void Btn3BrowseLocalFiles()
         {
             Data[3].Path = await GetPath();
+            directoryConfig.ProvideLocalPath(3, Data[3].Path);
         }
 
         private async void Btn4BrowseLocalFiles()
         {
             Data[4].Path = await GetPath();
+            directoryConfig.ProvideLocalPath(4, Data[4].Path);
         }
 
         private async void Btn5BrowseLocalFiles()
         {
             Data[5].Path = await GetPath();
+            directoryConfig.ProvideLocalPath(5, Data[5].Path);
         }
 
         private async void Btn6BrowseLocalFiles()
         {
             Data[6].Path = await GetPath();
+            directoryConfig.ProvideLocalPath(6, Data[6].Path);
         }
 
         private async void Btn7BrowseLocalFiles()
         {
             Data[7].Path = await GetPath();
+            directoryConfig.ProvideLocalPath(7, Data[7].Path);
         }
 
         private async void Btn8BrowseLocalFiles()
         {
             Data[8].Path = await GetPath();
+            directoryConfig.ProvideLocalPath(8, Data[8].Path);
         }
 
         private async void Btn9BrowseLocalFiles()
         {
             Data[9].Path = await GetPath();
+            directoryConfig.ProvideLocalPath(9, Data[9].Path);
         }
         #endregion
 

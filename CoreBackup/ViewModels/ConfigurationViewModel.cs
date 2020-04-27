@@ -29,6 +29,9 @@ namespace CoreBackup.ViewModels
         private FTPConfig ftpLeftConfig;
         private FTPConfig ftpRightConfig;
 
+        private DirectoryConfig directoryLeftConfig;
+        private DirectoryConfig directoryRightConfig;
+
         public ViewModelBase LeftData
         {
             get => leftData;
@@ -105,10 +108,13 @@ namespace CoreBackup.ViewModels
             ftpLeftConfig = new FTPConfig();
             ftpRightConfig = new FTPConfig();
 
+            directoryLeftConfig = new DirectoryConfig();
+            directoryRightConfig = new DirectoryConfig();
+
             ftpLeftView = new FTPConfViewModel(ref ftpLeft, ref ftpLeftConfig);
             ftpRightView = new FTPConfViewModel(ref ftpRight, ref ftpRightConfig);
-            directoryLeftView = new DirectoryConfViewModel();
-            directoryRightView = new DirectoryConfViewModel();
+            directoryLeftView = new DirectoryConfViewModel(ref directoryLeftConfig);
+            directoryRightView = new DirectoryConfViewModel(ref directoryRightConfig);
         }
 
         private void SubscribeToEvents()
