@@ -18,53 +18,81 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 {
     class DirectoryConfViewModel : ViewModelBase
     {
-        private int pathNumber = 0;
-        private int slotLimit = 14;
-
-
-        public ObservableCollection<String> localPaths;
+        private int counter = 0;
+        private int slotLimits = 10;
+        
+        public Command AddNewRowCommand { get; set; }
+        public ReactiveCommand<Unit, Unit>[] commandsArray;
         public ObservableCollection<LocalPath> Data { get; set; }
 
         public DirectoryConfViewModel()
         {
-            localPaths = new ObservableCollection<string>();
-            for (int i = 0; i < 10; i++)
-            {
-                localPaths.Add("");
-            }
-
-            var sampledata = Enumerable.Range(0, 1)
-                .Select(x => new LocalPath()
-                {
-                    ExplorerCommand = ReactiveCommand.Create(BtnBrowseLocalFiles)
-                    
-                });
-
-            Data = new ObservableCollection<LocalPath>(sampledata);
+            Data = new ObservableCollection<LocalPath>();
+            commandsArray = new ReactiveCommand<Unit, Unit>[10];
+            commandsArray[0] = ReactiveCommand.Create(Btn0BrowseLocalFiles);
+            commandsArray[1] = ReactiveCommand.Create(Btn1BrowseLocalFiles);
+            commandsArray[2] = ReactiveCommand.Create(Btn2BrowseLocalFiles);
+            commandsArray[3] = ReactiveCommand.Create(Btn3BrowseLocalFiles);
+            commandsArray[4] = ReactiveCommand.Create(Btn4BrowseLocalFiles);
+            commandsArray[5] = ReactiveCommand.Create(Btn5BrowseLocalFiles);
+            commandsArray[6] = ReactiveCommand.Create(Btn6BrowseLocalFiles);
+            commandsArray[7] = ReactiveCommand.Create(Btn7BrowseLocalFiles);
+            commandsArray[8] = ReactiveCommand.Create(Btn8BrowseLocalFiles);
+            commandsArray[9] = ReactiveCommand.Create(Btn9BrowseLocalFiles);
             AddNewRowCommand = new Command(AddNewRow);
         }
 
-        public void OnSavedConfigurationEvent(object o, ConfigurationEventArgs e)
+        #region Buttons Binded Functions
+        private async void Btn0BrowseLocalFiles()
         {
-            Debug.WriteLine("OnSavedConfiguration event successfully raised");
-            if (e.DataType == 1)
-            {
-                Debug.WriteLine("DataType: " + e.DataType + ", Side: " + e.Side);
-                if (e.Side == 0)
-                {
-                    //e.ConfigHub.AddLeftSources(FtpConfig);
-                }
-                else if (e.Side == 1)
-                {
-                    //e.ConfigHub.AddRightSources(FtpConfig);
-                }
-            }
+            Data[0].Path = await GetPath();
         }
 
-        private async void BtnBrowseLocalFiles()
+        private async void Btn1BrowseLocalFiles()
         {
-            Data[pathNumber].Path = await GetPath();
+            Data[1].Path = await GetPath();
         }
+
+        private async void Btn2BrowseLocalFiles()
+        {
+            Data[2].Path = await GetPath();
+        }
+
+        private async void Btn3BrowseLocalFiles()
+        {
+            Data[3].Path = await GetPath();
+        }
+
+        private async void Btn4BrowseLocalFiles()
+        {
+            Data[4].Path = await GetPath();
+        }
+
+        private async void Btn5BrowseLocalFiles()
+        {
+            Data[5].Path = await GetPath();
+        }
+
+        private async void Btn6BrowseLocalFiles()
+        {
+            Data[6].Path = await GetPath();
+        }
+
+        private async void Btn7BrowseLocalFiles()
+        {
+            Data[7].Path = await GetPath();
+        }
+
+        private async void Btn8BrowseLocalFiles()
+        {
+            Data[8].Path = await GetPath();
+        }
+
+        private async void Btn9BrowseLocalFiles()
+        {
+            Data[9].Path = await GetPath();
+        }
+        #endregion
 
         private async Task<string> GetPath()
         {
@@ -83,15 +111,29 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             return fullPath;
         }
 
-
-        public Command AddNewRowCommand { get; set; }
-
         private void AddNewRow()
         {
-            if (pathNumber + 1 < slotLimit)
+            if (counter + 1 <= slotLimits)
             {
-                pathNumber += 1;
-                Data.Add(new LocalPath() { NumericID = pathNumber, ExplorerCommand = ReactiveCommand.Create(BtnBrowseLocalFiles) });
+                Data.Add(new LocalPath() { NumericID = counter, ExplorerCommand = commandsArray[counter] });
+                counter = counter + 1;
+            }
+        }
+
+        public void OnSavedConfigurationEvent(object o, ConfigurationEventArgs e)
+        {
+            Debug.WriteLine("OnSavedConfiguration event successfully raised");
+            if (e.DataType == 1)
+            {
+                Debug.WriteLine("DataType: " + e.DataType + ", Side: " + e.Side);
+                if (e.Side == 0)
+                {
+                    //e.ConfigHub.AddLeftSources(FtpConfig);
+                }
+                else if (e.Side == 1)
+                {
+                    //e.ConfigHub.AddRightSources(FtpConfig);
+                }
             }
         }
     }
