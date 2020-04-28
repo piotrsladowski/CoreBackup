@@ -119,7 +119,7 @@ namespace CoreBackup.ViewModels
             directoryLeftView = new DirectoryConfViewModel(ref directoryLeftConfig);
             directoryRightView = new DirectoryConfViewModel(ref directoryRightConfig);
         }
-
+        #region Events
         private void SubscribeToEvents()
         {
             SavedConfigurationLeftEvent += ftpLeftView.OnSavedConfigurationEvent;
@@ -128,7 +128,7 @@ namespace CoreBackup.ViewModels
             SavedConfigurationRightEvent += directoryRightView.OnSavedConfigurationEvent;
         }
 
-        #region Events
+
         public event EventHandler<ConfigurationEventArgs> SavedConfigurationLeftEvent;
 
         protected virtual void OnSavedConfigurationLeftEvent(ConfigHub configHub, int dataType, int side)

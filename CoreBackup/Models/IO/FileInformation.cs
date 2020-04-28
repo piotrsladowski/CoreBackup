@@ -7,6 +7,7 @@ namespace CoreBackup.Models.IO
     public class FileInformation
     {
         public string Filename { get; set; }
+        public string Extension { get; set; }
         public long Size { get; set; }
         private long _modificationTime;
         public long ModificationTime {
