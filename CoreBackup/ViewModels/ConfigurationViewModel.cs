@@ -9,6 +9,9 @@ using CoreBackup.Models.Tasks;
 using ReactiveUI;
 using CoreBackup.ViewModels.ConfigurationViewModels;
 using System.Threading;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
 
 namespace CoreBackup.ViewModels
 {
@@ -155,9 +158,11 @@ namespace CoreBackup.ViewModels
             OnSavedConfigurationLeftEvent(configHub, _cBoxLeftSelectedIdx, 0);
             OnSavedConfigurationRightEvent(configHub, _cBoxRightSelectedIdx, 1);
 
+
             Thread.Sleep(100); // TODO add notify after events complete
             CoreTask.AddTaskEntry(_configurationName, configHub);
-
+            //Serializer serializer = new Serializer(CoreTask.tasksList);
+            //serializer.Serialze();
             Debug.WriteLine(_configurationName);
         }
     }

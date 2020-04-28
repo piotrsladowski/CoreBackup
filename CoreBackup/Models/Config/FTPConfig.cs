@@ -5,6 +5,7 @@ using System.Text;
 
 namespace CoreBackup.Models.Config
 {
+    [Serializable]
     class FTPConfig : Configuration
     {
         private Dictionary<string, string> credentials;
@@ -14,7 +15,7 @@ namespace CoreBackup.Models.Config
             return credentials;
         }
 
-        private Dictionary<string, string> paths;
+        public Dictionary<string, string> paths { get; set; }
 
         public Dictionary<string, string> GetPaths()
         {

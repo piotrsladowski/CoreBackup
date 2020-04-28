@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using CoreBackup.Models.Config;
+using System.Runtime.Serialization.Json;
 
 namespace CoreBackup.Models.Tasks
 {
@@ -38,7 +39,7 @@ namespace CoreBackup.Models.Tasks
         {
             try
             {
-                jsonConfig = JsonConvert.SerializeObject(tasksList, Formatting.Indented);
+                jsonConfig = JsonConvert.SerializeObject(CoreTask.tasksList, Formatting.Indented);
                 using (var writer = new StreamWriter(jsonConfigPath + "\\" + configFilename))
                 {
                     writer.Write(jsonConfig);
@@ -60,6 +61,11 @@ namespace CoreBackup.Models.Tasks
                 tasksList = JsonConvert.DeserializeObject<Dictionary<string, ConfigHub>>(jsonFromFile);
             }
             catch (Exception e) { }
+        }
+
+        public static Dictionary<string, ConfigHub> Clone<T>(this T obj)
+        {
+            return (Dictionary<string, ConfigHub>)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(tasksList));
         }
     }
 }

@@ -140,11 +140,11 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
                 Debug.WriteLine("DataType: " + e.DataType + ", Side: " + e.Side);
                 if (e.Side == 0)
                 {
-                    //e.ConfigHub.AddLeftSources(FtpConfig);
+                    e.ConfigHub.AddLeftSources(directoryConfig);
                 }
                 else if (e.Side == 1)
                 {
-                    //e.ConfigHub.AddRightSources(FtpConfig);
+                    e.ConfigHub.AddRightSources(directoryConfig);
                 }
             }
         }

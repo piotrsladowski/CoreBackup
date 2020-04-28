@@ -4,12 +4,12 @@ using System.Text;
 
 namespace CoreBackup.Models.Config
 {
+    [Serializable]
     public class ConfigHub
     {
-        internal List<Configuration> LeftSources { get; set; }
-        internal List<Configuration> RightSources { get; set; }
+        public List<Configuration> LeftSources { get; set; }
+        public List<Configuration> RightSources { get; set; }
         public bool isActive { get; set; }
-
         public ConfigHub()
         {
             LeftSources = new List<Configuration>();

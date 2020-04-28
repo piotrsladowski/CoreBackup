@@ -6,10 +6,11 @@ using System.Text;
 
 namespace CoreBackup.Models.Config
 {
+    [Serializable]
     class DirectoryConfig : Configuration
     {
-        private DataSource dataSource;
-        private Dictionary<int, string> localPaths;
+        public DataSource dataSource { get; set; }
+        public Dictionary<int, string> localPaths { get; set; }
 
         public Dictionary<int, string> GetLocalPaths()
         {

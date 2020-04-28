@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CoreBackup.Models.IO
 {
-    class FileInformation
+    public class FileInformation
     {
         public string Filename { get; set; }
         public long Size { get; set; }
