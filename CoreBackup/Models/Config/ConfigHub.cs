@@ -4,7 +4,6 @@ using System.Text;
 
 namespace CoreBackup.Models.Config
 {
-    [Serializable]
     public class ConfigHub
     {
         public List<Configuration> LeftSources { get; set; }

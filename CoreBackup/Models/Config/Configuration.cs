@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 using CoreBackup.Models.IO;
+using Newtonsoft.Json;
 
 namespace CoreBackup.Models.Config
 {
-    [Serializable]
+    [JsonConverter(typeof(ConfigurationConverter))]
     public abstract class Configuration
     {
-        protected bool isEncrypted = false;
-        //public DataSource dataSource;
+        public bool isEncrypted { get; set; }
+        public DataSource dataSource;
         public abstract List<FileInformation> GetFiles();
     }
     public enum DataSource
