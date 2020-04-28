@@ -4,5 +4,34 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CoreBackup.Views.EventLogView">
-  <TextBlock TextAlignment="Center">Event Log</TextBlock>
+
+  <DockPanel>
+    <TextBlock Text="--- Notifications and Events ---" TextAlignment="Center" FontSize="16" Margin="1" Grid.Row="0" DockPanel.Dock="Top"/>
+    <ItemsControl Items="{Binding LogsData}">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <Border BorderThickness="0" Margin="2">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+              </Grid.ColumnDefinitions>
+
+
+              <TextBox Text="{Binding Content}"
+                            Grid.Row="1" IsEnabled="False"
+                            Margin="30,0,0,0"/>
+          
+            </Grid>
+          </Border>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </DockPanel>
 </UserControl>
