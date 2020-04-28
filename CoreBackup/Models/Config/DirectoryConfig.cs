@@ -6,7 +6,6 @@ using System.Text;
 
 namespace CoreBackup.Models.Config
 {
-    [Serializable]
     class DirectoryConfig : Configuration
     {
         public DataSource dataSource { get; set; }
@@ -39,6 +38,7 @@ namespace CoreBackup.Models.Config
             return result;
         }
 
+        
         public override List<FileInformation> GetFiles()
         {
             throw new NotImplementedException();

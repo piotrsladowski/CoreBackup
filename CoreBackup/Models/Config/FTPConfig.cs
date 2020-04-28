@@ -5,10 +5,9 @@ using System.Text;
 
 namespace CoreBackup.Models.Config
 {
-    [Serializable]
     class FTPConfig : Configuration
     {
-        private Dictionary<string, string> credentials;
+        public Dictionary<string, string> credentials { get; set; }
 
         public Dictionary<string, string> GetCredentials()
         {
@@ -22,7 +21,7 @@ namespace CoreBackup.Models.Config
             return paths;
         }
 
-        private DataSource dataSource;
+        public DataSource dataSource { get; set; }
         public FTPConfig()
         {
             dataSource = DataSource.FTP;
@@ -69,7 +68,7 @@ namespace CoreBackup.Models.Config
             }
             return result;
         }
-
+        
         public override List<FileInformation> GetFiles()
         {
             throw new NotImplementedException();

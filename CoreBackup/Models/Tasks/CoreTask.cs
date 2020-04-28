@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using CoreBackup.Models.Config;
 using System.Runtime.Serialization.Json;
+using System.Diagnostics;
 
 namespace CoreBackup.Models.Tasks
 {
@@ -37,31 +38,24 @@ namespace CoreBackup.Models.Tasks
 
         public static void saveConfigToJsonFile()
         {
-            try
-            {
                 jsonConfig = JsonConvert.SerializeObject(CoreTask.tasksList, Formatting.Indented);
                 using (var writer = new StreamWriter(jsonConfigPath + "\\" + configFilename))
                 {
                     writer.Write(jsonConfig);
                 }
-            }
-            catch (IOException e) { }
             
         }
 
         public static void readConfigFromJsonFile()
         {
-            try
-            {
                 string jsonFromFile;
                 using (var reader = new StreamReader(jsonConfigPath + "/" + configFilename))
                 {
                     jsonFromFile = reader.ReadToEnd();
                 }
                 tasksList = JsonConvert.DeserializeObject<Dictionary<string, ConfigHub>>(jsonFromFile);
-            }
-            catch (Exception e) { }
-        }
+                Debug.WriteLine("test");
+         }
 
         public static Dictionary<string, ConfigHub> Clone<T>(this T obj)
         {
