@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reactive;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
@@ -128,6 +129,8 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             if (counter + 1 <= slotLimits)
             {
                 Data.Add(new LocalPath() { NumericID = counter, ExplorerCommand = commandsArray[counter] });
+                EventLogViewModel.AddNewRegistry("Local Path Slot Added",
+                    DateTime.Now, this.GetType().Name, "LOW");
                 counter = counter + 1;
             }
         }
@@ -141,10 +144,12 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
                 if (e.Side == 0)
                 {
                     e.ConfigHub.AddLeftSources(directoryConfig);
+                    EventLogViewModel.AddNewRegistry("DataType: " + e.DataType + ", Side: " + e.Side + "Config Saved", DateTime.Now, this.GetType().Name, "MEDIUM");
                 }
                 else if (e.Side == 1)
                 {
                     e.ConfigHub.AddRightSources(directoryConfig);
+                    EventLogViewModel.AddNewRegistry("DataType: " + e.DataType + ", Side: " + e.Side + "Config Saved", DateTime.Now, this.GetType().Name, "MEDIUM");
                 }
             }
         }

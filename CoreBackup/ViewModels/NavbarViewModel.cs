@@ -24,6 +24,8 @@ namespace CoreBackup.ViewModels
             try
             {
                 Process.Start(url);
+                EventLogViewModel.AddNewRegistry("CoreBackup GitHub Page visited",
+                    DateTime.Now, "Git Hub", "Low");
             }
             catch
             {
@@ -103,6 +105,9 @@ namespace CoreBackup.ViewModels
                     resultArray = resultArray.Where((source, index) => index != (resultArray.Length - 1)).ToArray();
                     CoreTask.jsonConfigPath = string.Join("\\", resultArray);
                     CoreTask.saveConfigToJsonFile();
+                    EventLogViewModel.AddNewRegistry("Configuration has been saved to JSON",
+                        DateTime.Now, "Git Hub", "Low");
+
                 }
             }
         }
@@ -116,6 +121,9 @@ namespace CoreBackup.ViewModels
             else
             {
                 CoreTask.saveConfigToJsonFile();
+                EventLogViewModel.AddNewRegistry("Configuration has been updated in JSON",
+                    DateTime.Now, "Git Hub", "Low");
+
             }
         }
 
@@ -134,6 +142,8 @@ namespace CoreBackup.ViewModels
                     resultArray = resultArray.Where((source, index) => index != (resultArray.Length - 1)).ToArray();
                     CoreTask.jsonConfigPath = string.Join("\\", resultArray);
                     CoreTask.readConfigFromJsonFile();
+                    EventLogViewModel.AddNewRegistry("Configuration has been loaded from JSON",
+                        DateTime.Now, "Git Hub", "Low");
                 }
             }
         }
