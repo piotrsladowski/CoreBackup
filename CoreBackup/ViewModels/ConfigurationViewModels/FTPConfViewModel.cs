@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Application = Avalonia.Application;
 using CoreBackup.Models.Remote;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using CoreBackup.Models.Config;
@@ -15,6 +16,7 @@ using CoreBackup.Validators;
 using FluentValidation;
 using FluentValidation.Results;
 using CoreBackup.ViewModels.ConfigurationViewModels;
+using CoreBackup.Models.IO;
 
 namespace CoreBackup.ViewModels.ConfigurationViewModels
 {
@@ -302,7 +304,6 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
                     if (IsLogged)
                     {
                         FtpConfig.provideCredentials(UsernameInput, PasswordInput, ServerInput);
-                       
                         ListFiles();
                     }
                     else

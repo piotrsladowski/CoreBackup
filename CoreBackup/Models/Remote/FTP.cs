@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using CoreBackup.Models.IO;
 using File = System.IO.File;
 
 namespace CoreBackup.Models.Remote
@@ -192,11 +195,11 @@ namespace CoreBackup.Models.Remote
         }
         #endregion
 
-        public Int32 GetDateTimestamp(string filename)
+        public Int32 GetDateTimestamp(string filename, string ip, string username, string password)
         {
-            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + Server + "//" + filename);
+            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + ip + "//" + filename);
             ftpRequest.Method = WebRequestMethods.Ftp.GetDateTimestamp;
-            ftpRequest.Credentials = new NetworkCredential(Username, Password);
+            ftpRequest.Credentials = new NetworkCredential(username, password);
             try
             {
                 using (FtpWebResponse response =
@@ -213,5 +216,68 @@ namespace CoreBackup.Models.Remote
             }
         }
 
+
+        public long GetFileSize(string filename, string ip, string username, string password)
+        {
+            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + ip + "//" + filename);
+            ftpRequest.Method = WebRequestMethods.Ftp.GetFileSize;
+            ftpRequest.Credentials = new NetworkCredential(username, password);
+            try
+            {
+                using (FtpWebResponse response =
+                    (FtpWebResponse)ftpRequest.GetResponse())
+                {
+                    return (long)response.ContentLength;
+                }
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("File unavailable"))
+                    return 0;
+                throw;
+            }
+
+        }
+
+        public static void GetAllInformationsAboutFiles(string ip, string username, string password, ref List<FileInformation> listFiles)
+        {
+            FTP ftp = new FTP();
+            var url = "ftp://" + ip;
+            var request = (FtpWebRequest)WebRequest.Create(url);
+            request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
+            request.Credentials = new NetworkCredential(username, password);
+
+            try
+            {
+                using (var response = (FtpWebResponse)request.GetResponse())
+                {
+                    using (var responseStream = response.GetResponseStream())
+                    {
+                        var reader = new StreamReader(responseStream);
+                        while (!reader.EndOfStream)
+                        {
+                            var line = reader.ReadLine();
+                            if (string.IsNullOrWhiteSpace(line) == false)
+                            {
+                                FileInformation fi = new FileInformation();
+                                var fullFileName = line.Split(new[] {' ', '\t'}).Last();
+                                string[] fullFileNameSplitted = fullFileName.Split(".");
+                                fi.Filename = fullFileNameSplitted[0];
+                                fi.Extension = fullFileNameSplitted[1];
+                                fi.ModificationTime = ftp.GetDateTimestamp(fi.Filename, ip, username, password);
+                                fi.Size = ftp.GetFileSize(fi.Filename, ip, username, password);
+                                listFiles.Add(fi);
+                                //Debug.WriteLine(fi.Filename + " " + fi.Extension + " " + fi.ModificationTime + " " +  fi.Size);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using CoreBackup.Models.Remote;
 
 namespace CoreBackup.Models.Config
 {
@@ -71,7 +72,16 @@ namespace CoreBackup.Models.Config
         
         public override List<FileInformation> GetFiles()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var filesList = new List<FileInformation>();
+                FTP.GetAllInformationsAboutFiles(credentials["server"], credentials["username"], credentials["password"], ref filesList);
+                return filesList;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
     }
 }
