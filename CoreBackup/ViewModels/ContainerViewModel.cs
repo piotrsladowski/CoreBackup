@@ -43,7 +43,6 @@ namespace CoreBackup.ViewModels
 
         public ContainerViewModel()
         {
-            
             // Base ViewModels
             Screen = new HomeViewModel();
             Navbar = new NavbarViewModel();
@@ -61,9 +60,6 @@ namespace CoreBackup.ViewModels
             
             // Internet Connection Check - Timer
             SetupTimer();
-
-            EventLogViewModel.AddNewRegistry("Welcome to CoreBackup! Enjoy and Keep your data safe!",
-                DateTime.Now, "CoreBackup", "LOW");
         }
         #endregion
 

@@ -92,14 +92,10 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
                 if (e.Side == 0)
                 {
                     e.ConfigHub.AddLeftSources(FtpConfig);
-                    EventLogViewModel.AddNewRegistry("DataType: " + e.DataType + ", Side: " + e.Side + "Config Saved",
-                        DateTime.Now, this.GetType().Name, "MEDIUM");
                 }
                 else if (e.Side == 1)
                 {
                     e.ConfigHub.AddRightSources(FtpConfig);
-                    EventLogViewModel.AddNewRegistry("DataType: " + e.DataType + ", Side: " + e.Side + "Config Saved",
-                        DateTime.Now, this.GetType().Name, "MEDIUM");
                 }
             }
         }
@@ -108,25 +104,19 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
         private async void BrowseDownloadDirectory()
         {
             DownloadPath = await GetPath(false);
-            EventLogViewModel.AddNewRegistry("FTP Download Path Correctly Assigned",
-                DateTime.Now, this.GetType().Name, "LOW");
         }
 
         private async void BrowseUploadDirectory()
         {
             UploadPath = await GetPath(false);
-            EventLogViewModel.AddNewRegistry("FTP Upload Path Correctly Assigned",
-                DateTime.Now, this.GetType().Name, "LOW");
         }
 
         private async void BrowseDisposableFileUpload()
         {
             DisposableUploadPath = await GetPath(true);
-            EventLogViewModel.AddNewRegistry("FTP Disponsable Upload Path Correctly Assigned",
-                DateTime.Now, this.GetType().Name, "LOW");
-
         }
 
+        
         private async Task<string> GetPath(bool DisposableUploadFile)
         {
             string[] resultReturn = null;
@@ -314,13 +304,11 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
                     if (IsLogged)
                     {
                         FtpConfig.provideCredentials(UsernameInput, PasswordInput, ServerInput);
-                        EventLogViewModel.AddNewRegistry("Successful login to the FTP server", DateTime.Now, this.GetType().Name, "HIGH");
                         ListFiles();
                     }
                     else
                     {
                         ErrorMessages.Add("Access denied - wrong Username / Password / IP");
-                        EventLogViewModel.AddNewRegistry("Access to FTP Server denied - wrong Username / Password / IP", DateTime.Now, this.GetType().Name, "HIGH");
                     }
 
                 }
@@ -335,12 +323,10 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             if (IsDownload)
             {
                 FtpClient.Download(ToDownloadFile, DownloadPath);
-                EventLogViewModel.AddNewRegistry("Disponsable Download Action from FTP Server", DateTime.Now, this.GetType().Name, "LOW");
             }
             else if (IsUpload)
             {
                 FtpClient.Upload(ToUploadFile, DisposableUploadPath);
-                EventLogViewModel.AddNewRegistry("Disponsable Upload Action from FTP Server", DateTime.Now, this.GetType().Name, "LOW");
             }
         }
 

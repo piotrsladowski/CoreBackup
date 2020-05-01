@@ -54,33 +54,24 @@ namespace CoreBackup.ViewModels
         { 
             Encryption.CreateAESKey();
             CheckKeyAndIVStatus();
-            EventLogViewModel.AddNewRegistry("AES Key has been generated",
-                DateTime.Now, this.GetType().Name, "HIGH");
         }
 
         private void GenerateIV()
         {
             Encryption.CreateAESIV();
             CheckKeyAndIVStatus();
-            EventLogViewModel.AddNewRegistry("AES IV has been generated",
-                DateTime.Now, this.GetType().Name, "HIGH");
         }
 
         private void SaveKeyAndIV()
         {
             Encryption.SaveAES_KeyIV_ToFile();
             CheckKeyAndIVStatus();
-            EventLogViewModel.AddNewRegistry("AES Key and IV has been saved to external file",
-                DateTime.Now, this.GetType().Name, "HIGH");
         }
 
         private void LoadKeyAndIV()
         {
             Encryption.LoadAES_KeyIV_FromFile();
             CheckKeyAndIVStatus();
-            EventLogViewModel.AddNewRegistry("AES Key and IV has been loaded from external file",
-                DateTime.Now, this.GetType().Name, "HIGH");
-
         }
 
         private void CheckKeyAndIVStatus()

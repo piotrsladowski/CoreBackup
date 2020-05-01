@@ -6,34 +6,32 @@
              x:Class="CoreBackup.Views.EventLogView">
 
   <DockPanel>
-    <TextBlock Text="--- Notifications and Events ---" TextAlignment="Center" FontSize="16" Margin="1,1,1,10" Grid.Row="0" DockPanel.Dock="Top"/>
-    <Grid>
-      <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
-        <DataGrid x:Name="EventLogsDataGrid"
-                  AutoGenerateColumns="False"
-                  Items="{Binding LogsData}"
-                  CanUserReorderColumns="True"
-                  CanUserResizeColumns="True"
-                  IsReadOnly="True">
-          <DataGrid.Columns>
-            <DataGridTextColumn Binding="{Binding Id}"
-                                Header="ID"
-                                Width="100"/>
-            <DataGridTextColumn Binding="{Binding Content}"
-                                Header="Content"
-                                Width="400"/>
-            <DataGridTextColumn Binding="{Binding CreationDate}"
-                                Header="Date Time"
-                                Width="200"/>
-            <DataGridTextColumn Binding="{Binding Source}"
-                                Header="Source"
-                                Width="250"/>
-            <DataGridTextColumn Binding="{Binding Importance}"
-                                Header="Priority"
-                                Width="100"/>
-          </DataGrid.Columns>
-        </DataGrid>
-      </ScrollViewer>
-    </Grid>
+    <TextBlock Text="--- Notifications and Events ---" TextAlignment="Center" FontSize="16" Margin="1" Grid.Row="0" DockPanel.Dock="Top"/>
+    <ItemsControl Items="{Binding LogsData}">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <Border BorderThickness="0" Margin="2">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+              </Grid.ColumnDefinitions>
+
+
+              <TextBox Text="{Binding Content}"
+                            Grid.Row="1" IsEnabled="False"
+                            Margin="30,0,0,0"/>
+          
+            </Grid>
+          </Border>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
   </DockPanel>
 </UserControl>

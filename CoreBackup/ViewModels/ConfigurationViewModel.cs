@@ -164,8 +164,6 @@ namespace CoreBackup.ViewModels
             //Serializer serializer = new Serializer(CoreTask.tasksList);
             //serializer.Serialze();
             Debug.WriteLine(_configurationName);
-            EventLogViewModel.AddNewRegistry("Custom Configuration "+ _configurationName + "has been Saved",
-                DateTime.Now, this.GetType().Name, "MEDIUM");
         }
     }
 }

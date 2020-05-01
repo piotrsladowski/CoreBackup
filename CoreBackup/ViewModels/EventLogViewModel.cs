@@ -16,14 +16,23 @@ namespace CoreBackup.ViewModels
        
         public EventLogViewModel()
         {
+            
             LogsData = new ObservableCollection<LogRegistry>();
+            //AddRegistry(rg);
+            AddNewRegistry("OKOKOKO", "OKOKOKO");
+           
+
         }
 
-        public static void AddNewRegistry(string content, DateTime creationDate, string source, string priority)
+        public void AddRegistry()
+        {
+            //LogsData.Add();
+        }
+
+        private static void AddNewRegistry(string content, string source)
         {
             id += 1;
-            LogsData.Add(new LogRegistry(){Id = id, Content = content, CreationDate = creationDate,
-                Source  = source, Importance = priority});
+            LogsData.Add(new LogRegistry(){Id = id, Content = content});
         }
     }
 }
