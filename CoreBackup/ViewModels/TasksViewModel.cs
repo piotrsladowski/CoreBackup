@@ -83,47 +83,39 @@ namespace CoreBackup.ViewModels
             Debug.WriteLine("OnOpenedTasksView event successfully raised");
             GetAllFiles();
         }
-    
+
         private void GetAllFiles()
         {
+            List<FileInformation> allLeftFiles = new List<FileInformation>();
+            List<FileInformation> allRightFiles = new List<FileInformation>();
+            Debug.WriteLine("dupa");
+            LeftFiles.Where(l => l.Size != 0).ToList().All(i => LeftFiles.Remove(i)); //Clear LeftFiles
+            RightFiles.Where(l => l.Size != 0).ToList().All(i => RightFiles.Remove(i));
 
+            foreach (KeyValuePair<string, ConfigHub> entry in CoreTask.tasksList)
+            {
+
+                foreach (Configuration leftConf in entry.Value.LeftSources)
+                {
+                    allLeftFiles.AddRange(leftConf.GetFiles());
+                }
+
+                foreach (Configuration rightConf in entry.Value.RightSources)
+                {
+                    allRightFiles.AddRange(rightConf.GetFiles());
+                }
+            }
+            LeftFiles.AddRange(allLeftFiles);
+            RightFiles.AddRange(allRightFiles);
         }
 
         private void SyncMirror()
         {
-            BasicIO bIO = new BasicIO();
-            LeftFiles.Where(l => l.Size != 0).ToList().All(i => LeftFiles.Remove(i)); //Clear LeftFiles
-            RightFiles.Where(l => l.Size != 0).ToList().All(i => RightFiles.Remove(i));
-            foreach (FileInfo f in bIO.getFilesInDirectory("C:\\"))
-            {
-                Debug.WriteLine(f.ToString());
-                //LeftFiles.Add(f.ToString());
-                FileInformation fi = new FileInformation();
-                fi.Filename = f.Name;
-                fi.Size = f.Length;
-                RightFiles.Add(fi);
-                LeftFiles.Add(fi);
-            }
+
         }
 
         private void SyncToLeft()
         {
-            /*
-            Debug.WriteLine("test");
-            FTPConfig ftpconf = new FTPConfig();
-            ftpconf.provideCredentials("user", "pass", "urll");
-            ftpconf.dataSource = DataSource.FTP;    
-            FTPConfig ftpconf2 = new FTPConfig();
-            ftpconf2.provideCredentials("user2", "pass2", "urll2");
-            ConfigHub confHub = new ConfigHub();
-            confHub.AddConfigHubEntry(ftpconf, ftpconf2);
-            confHub.isActive = true;
-            CoreTask.AddTaskEntry("zad2", confHub);
-            SyncActions.GetFilesList();
-            */
-            // to wyżej da się w await
-            // następnie pobierze się kolekcje i wleci update
-            // Compare()
 
         }
         private void SyncToLeftOverride()

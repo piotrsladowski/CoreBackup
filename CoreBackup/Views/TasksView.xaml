@@ -30,34 +30,51 @@
           <ColumnDefinition Width="10"/>
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ScrollViewer Grid.Column="0" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
-          <DataGrid Items="{Binding LocalFiles}" CanUserReorderColumns="True" CanUserResizeColumns="True" IsReadOnly="True" RenderOptions.BitmapInterpolationMode="LowQuality">
+        <ScrollViewer Grid.Column="0"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto">
+          <DataGrid Items="{Binding LeftFiles}"
+                    CanUserReorderColumns="True"
+                    CanUserResizeColumns="True"
+                    IsReadOnly="True"
+                    RenderOptions.BitmapInterpolationMode="LowQuality">
           <DataGrid.Columns>
             <DataGridTextColumn Header="Filename"
                                 Binding="{Binding Filename}"
                                 Width="Auto"/>
             <DataGridTextColumn Header="Modification Date"
-                        Binding="{Binding ModificationTime}"
-                        Width="Auto"/>
+                                Binding="{Binding ModificationTime}"
+                                Width="Auto"/>
             <DataGridTextColumn Header="Size"
-                        Binding="{Binding Size}"
-                       Width="Auto" />
+                                Binding="{Binding Size}"
+                                Width="Auto" />
+            <DataGridTextColumn Header="Extension"
+                                Binding="{Binding Extension}"
+                                Width="Auto"/>
           </DataGrid.Columns>
         </DataGrid>
         </ScrollViewer>
         <GridSplitter Grid.Column="1"/>
-        <ScrollViewer Grid.Column="2" ScrollViewer.HorizontalScrollBarVisibility="Auto">
-        <DataGrid Items="{Binding RemoteFiles}" CanUserReorderColumns="True" CanUserResizeColumns="True" IsReadOnly="True">
+        <ScrollViewer Grid.Column="2"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto">
+        <DataGrid Items="{Binding RightFiles}"
+                  CanUserReorderColumns="True"
+                  CanUserResizeColumns="True"
+                  IsReadOnly="True"
+                  RenderOptions.BitmapInterpolationMode="LowQuality">
           <DataGrid.Columns>
             <DataGridTextColumn Header="Filename"
                                 Binding="{Binding Filename}"
                                 Width="Auto"/>
             <DataGridTextColumn Header="Modification Date"
-                        Binding="{Binding ModificationTime}"
-                        Width="Auto"/>
+                                Binding="{Binding ModificationTime}"
+                                Width="Auto"/>
             <DataGridTextColumn Header="Size"
-                        Binding="{Binding Size}"
-                        Width="Auto"/>
+                                Binding="{Binding Size}"
+                                Width="Auto"/>
+            <DataGridTextColumn Header="Extension"
+                                Binding="{Binding Extension}"
+                                Width="Auto"/>
           </DataGrid.Columns>
         </DataGrid>
         </ScrollViewer>
