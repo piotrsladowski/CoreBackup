@@ -25,6 +25,8 @@ namespace CoreBackup.Models.Crypto
 
         private static byte[] AES256IV;
         private static string AES256IVString;
+        
+        public static bool IsKeyLoaded = false;
 
         public static void CreateAESKey()
         {
@@ -74,6 +76,7 @@ namespace CoreBackup.Models.Crypto
                     AES256IV = buffer.Skip(32).Take(16).ToArray();
                     //Debug.WriteLine(Convert.ToBase64String(AES256Key));
                     //Debug.WriteLine(Convert.ToBase64String(AES256IV));
+                    IsKeyLoaded = true;
                 }
 
             } catch (IOException ex)
@@ -110,9 +113,7 @@ namespace CoreBackup.Models.Crypto
 
         public static bool AESEncryptFile(string filePath, bool deletePlainFile)
         {
-            bool KeyCondition = AES256Key != null && AES256Key.Length > 0;
-            bool IVCondition = AES256IV != null && AES256IV.Length > 0;
-            if (KeyCondition && IVCondition)
+            if (true)
             {
                 byte[] salt = CreateByteArray(2);
                 // FileStream for Creating Encrypted File
@@ -120,7 +121,6 @@ namespace CoreBackup.Models.Crypto
                 {
                     using (Aes aes = new AesManaged())
                     {
-                        aes.KeySize = AES256KEYSIZE;
                         aes.Key = AES256Key;
                         aes.IV = AES256IV;
                         aes.Padding = PaddingMode.ISO10126;
@@ -172,9 +172,7 @@ namespace CoreBackup.Models.Crypto
 
         public static bool AESDecryptFile(string filePath, bool keepEncryptedFile)
         {
-            bool KeyCondition = AES256Key != null && AES256Key.Length > 0;
-            bool IVCondition = AES256IV != null && AES256IV.Length > 0;
-            if (KeyCondition && IVCondition)
+            if (true)
             {
                 byte[] salt = CreateByteArray(2);
                 int offset = 0;
@@ -183,7 +181,6 @@ namespace CoreBackup.Models.Crypto
                     fsIn.Read(salt, offset, salt.Length);
                     using (Aes aes = new AesManaged())
                     {
-                        aes.KeySize = AES256KEYSIZE;
                         aes.Key = AES256Key;
                         aes.IV = AES256IV;
                         aes.Padding = PaddingMode.ISO10126;
