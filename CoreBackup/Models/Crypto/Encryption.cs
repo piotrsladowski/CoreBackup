@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia;
 using System.Diagnostics;
+using System.Linq;
 
 namespace CoreBackup.Models.Crypto
 {
@@ -17,7 +18,7 @@ namespace CoreBackup.Models.Crypto
         private static string KeyIVFilePath;
 
         private const int AES256KEYSIZE = 32;
-        private const int AES256BLOCKSIZE = 32;
+        private const int AES256IVSIZE = 16;
         
         private static byte[] AES256Key;
         private static string AES256KeySTRING;
@@ -29,13 +30,15 @@ namespace CoreBackup.Models.Crypto
         {
             AES256Key = CreateByteArray(AES256KEYSIZE);
             AES256KeySTRING = Convert.ToBase64String(AES256Key);
+            Debug.WriteLine(AES256KeySTRING);
             isKeySet = true;
         }
 
         public static void CreateAESIV()
         {
-            AES256IV = CreateByteArray(AES256BLOCKSIZE);
+            AES256IV = CreateByteArray(AES256IVSIZE);
             AES256IVString = Convert.ToBase64String(AES256IV);
+            Debug.WriteLine(AES256IVString);
             isIVSet = true;
         }
 
@@ -59,16 +62,19 @@ namespace CoreBackup.Models.Crypto
                 string[] result = await dialog.ShowAsync(desktopLifetime.MainWindow);
                 resultReturn = result[0];
                 fullPath = string.Join(" ", resultReturn);
+                Debug.WriteLine(fullPath);
             }
             try
             {
-                // This code is somehow corrupted
-                /*
-                Stream file = File.OpenRead(resultReturn);
-                file.Read(AES256Key, 0, 32);
-                file.Read(AES256IV, 32, 32);
-                file.Close();
-                */
+                if (!String.IsNullOrEmpty(resultReturn))
+                {
+                    byte[] buffer = File.ReadAllBytes(fullPath);
+                    Debug.WriteLine(buffer.Length);
+                    AES256Key = buffer.Take(32).ToArray();
+                    AES256IV = buffer.Skip(32).Take(16).ToArray();
+                    //Debug.WriteLine(Convert.ToBase64String(AES256Key));
+                    //Debug.WriteLine(Convert.ToBase64String(AES256IV));
+                }
 
             } catch (IOException ex)
             {
@@ -92,11 +98,14 @@ namespace CoreBackup.Models.Crypto
                 resultReturn = result;
                 Debug.WriteLine(resultReturn);
             }
-            // TODO try/catch
-            byte[] concat = new byte[64];
-            AES256Key.CopyTo(concat, 0);
-            AES256IV.CopyTo(concat, 32);
-            File.WriteAllBytes(resultReturn, concat);
+
+            if (!String.IsNullOrEmpty(resultReturn))
+            {
+                byte[] concat = new byte[48];
+                AES256Key.CopyTo(concat, 0);
+                AES256IV.CopyTo(concat, 32);
+                File.WriteAllBytes(resultReturn, concat);
+            }
         }
 
         public static bool AESEncryptFile(string filePath, bool deletePlainFile)
@@ -105,7 +114,7 @@ namespace CoreBackup.Models.Crypto
             bool IVCondition = AES256IV != null && AES256IV.Length > 0;
             if (KeyCondition && IVCondition)
             {
-                byte[] salt = CreateByteArray(16);
+                byte[] salt = CreateByteArray(2);
                 // FileStream for Creating Encrypted File
                 using (FileStream fs = new FileStream(filePath + ".enc", FileMode.Create))
                 {
@@ -167,7 +176,7 @@ namespace CoreBackup.Models.Crypto
             bool IVCondition = AES256IV != null && AES256IV.Length > 0;
             if (KeyCondition && IVCondition)
             {
-                byte[] salt = CreateByteArray(16);
+                byte[] salt = CreateByteArray(2);
                 int offset = 0;
                 using (FileStream fsIn = new FileStream(filePath, FileMode.Open))
                 {
