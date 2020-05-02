@@ -13,7 +13,7 @@ namespace CoreBackup.Models.Config
         {
             LeftSources = new List<Configuration>();
             RightSources = new List<Configuration>();
-            isActive = false;
+            isActive = true;
         }
 
         internal void AddLeftSources(Configuration leftSources)

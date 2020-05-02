@@ -8,6 +8,7 @@ namespace CoreBackup.Models.IO
     {
         public string Filename { get; set; }
         public string Extension { get; set; }
+        public bool IsChecked { get; set; }
         public long Size { get; set; }
         private long _modificationTime;
         public long ModificationTime {

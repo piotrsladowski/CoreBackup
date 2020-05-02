@@ -1,10 +1,40 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="CoreBackup.Views.InfoPanelView">
-  <StackPanel>
-    <ListBox Items="{Binding ActiveTasks}"></ListBox>
-  </StackPanel>
+						 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+						 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+						 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+						 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+						 x:Class="CoreBackup.Views.InfoPanelView">
+	<DataGrid Items="{Binding InfoConfigsList}"
+						CanUserReorderColumns="True"
+						CanUserResizeColumns="True"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch">
+		<DataGrid.Columns>
+      <DataGridTextColumn
+      Header="ID"
+      Binding="{Binding ID}"
+      IsReadOnly="True"/>
+      <DataGridTemplateColumn MinWidth="20" IsReadOnly="True" >
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <CheckBox HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      IsChecked="{Binding IsActive, Mode=TwoWay}"/>
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
+			<DataGridTextColumn 
+						Header="Name"
+            Binding="{Binding Name}"/>
+      <DataGridTemplateColumn MinWidth="20" >
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <Button Content="Remove"
+                    Command="{Binding RemoveConfigurationCommand}"
+                    CommandParameter="{Binding Name}"/>
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
+		</DataGrid.Columns>
+	</DataGrid>
 </UserControl>

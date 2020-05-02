@@ -32,16 +32,29 @@
         </Grid.ColumnDefinitions>
         <ScrollViewer Grid.Column="0"
                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                      ScrollViewer.VerticalScrollBarVisibility="Auto">
+                      ScrollViewer.VerticalScrollBarVisibility="Disabled">
           <DataGrid Items="{Binding LeftFiles}"
                     CanUserReorderColumns="True"
                     CanUserResizeColumns="True"
-                    IsReadOnly="True"
-                    RenderOptions.BitmapInterpolationMode="LowQuality">
+                    IsReadOnly="False"
+                    RenderOptions.BitmapInterpolationMode="LowQuality"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    SelectionMode="Extended">
           <DataGrid.Columns>
+          <DataGridTemplateColumn MinWidth="20" >
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <CheckBox HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
             <DataGridTextColumn Header="Filename"
                                 Binding="{Binding Filename}"
-                                Width="Auto"/>
+                                Width="Auto"
+                                IsReadOnly="True"/>
             <DataGridTextColumn Header="Modification Date"
                                 Binding="{Binding ModificationTime}"
                                 Width="Auto"/>
@@ -56,13 +69,25 @@
         </ScrollViewer>
         <GridSplitter Grid.Column="1"/>
         <ScrollViewer Grid.Column="2"
-                      ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                      ScrollViewer.VerticalScrollBarVisibility="Disabled">
         <DataGrid Items="{Binding RightFiles}"
                   CanUserReorderColumns="True"
                   CanUserResizeColumns="True"
-                  IsReadOnly="True"
-                  RenderOptions.BitmapInterpolationMode="LowQuality">
+                  IsReadOnly="False"
+                  RenderOptions.BitmapInterpolationMode="LowQuality"
+                  HorizontalAlignment="Stretch"
+                  SelectionMode="Extended">
           <DataGrid.Columns>
+          <DataGridTemplateColumn MinWidth="20" >
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <CheckBox HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
             <DataGridTextColumn Header="Filename"
                                 Binding="{Binding Filename}"
                                 Width="Auto"/>

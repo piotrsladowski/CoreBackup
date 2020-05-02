@@ -9,7 +9,6 @@ using System.Collections.ObjectModel;
 using DynamicData.Binding;
 using Avalonia;
 using System.Linq;
-using System.IO;
 using CoreBackup.Models.Tasks;
 using CoreBackup.Models.Config;
 using System.Diagnostics;
@@ -63,18 +62,6 @@ namespace CoreBackup.ViewModels
            // ObservableCollectionExtended is single-threaded.
            .Bind(out _derivedRightFiles)
            .Subscribe();
-            /*
-            BasicIO bIO = new BasicIO();
-            LeftFiles.Where(l => l.Size != 0).ToList().All(i => LeftFiles.Remove(i));
-            foreach (FileInfo f in bIO.getFilesInDirectory("C:\\"))
-            {
-                //LeftFiles.Add(f.ToString());
-                FileInformation fi = new FileInformation();
-                fi.Filename = f.Name;
-                fi.Size = f.Length;
-                RightFiles.Add(fi);
-                LeftFiles.Add(fi);
-            }*/
         }
 
 
@@ -88,8 +75,8 @@ namespace CoreBackup.ViewModels
         {
             List<FileInformation> allLeftFiles = new List<FileInformation>();
             List<FileInformation> allRightFiles = new List<FileInformation>();
-            Debug.WriteLine("dupa");
-            LeftFiles.Where(l => l.Size != 0).ToList().All(i => LeftFiles.Remove(i)); //Clear LeftFiles
+            LeftFiles.Where(l => l.Size != 0).ToList().All(i => LeftFiles.Remove(i));
+            // Clear LeftFiles.
             RightFiles.Where(l => l.Size != 0).ToList().All(i => RightFiles.Remove(i));
 
             foreach (KeyValuePair<string, ConfigHub> entry in CoreTask.tasksList)
@@ -98,11 +85,13 @@ namespace CoreBackup.ViewModels
                 foreach (Configuration leftConf in entry.Value.LeftSources)
                 {
                     allLeftFiles.AddRange(leftConf.GetFiles());
+                    allLeftFiles.All(c => { c.IsChecked = true; return true; });
                 }
 
                 foreach (Configuration rightConf in entry.Value.RightSources)
                 {
                     allRightFiles.AddRange(rightConf.GetFiles());
+                    allLeftFiles.All(c => { c.IsChecked = false; return true; });
                 }
             }
             LeftFiles.AddRange(allLeftFiles);

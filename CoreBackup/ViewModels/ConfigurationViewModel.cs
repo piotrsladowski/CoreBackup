@@ -9,9 +9,6 @@ using CoreBackup.Models.Tasks;
 using ReactiveUI;
 using CoreBackup.ViewModels.ConfigurationViewModels;
 using System.Threading;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.IO;
 
 namespace CoreBackup.ViewModels
 {
@@ -142,6 +139,15 @@ namespace CoreBackup.ViewModels
         {
             SavedConfigurationRightEvent(this, new ConfigurationEventArgs() { ConfigHub = configHub, DataType = dataType, Side = side });
         }
+
+        public event EventHandler<EventArgs> SavedConfiguration;
+
+        protected virtual void OnSavedConfigurationEvent()
+        {
+            SavedConfiguration(this, EventArgs.Empty);
+        }
+
+
         #endregion
 
         private string _configurationName;
@@ -163,6 +169,7 @@ namespace CoreBackup.ViewModels
             CoreTask.AddTaskEntry(_configurationName, configHub);
             //Serializer serializer = new Serializer(CoreTask.tasksList);
             //serializer.Serialze();
+            OnSavedConfigurationEvent();
             Debug.WriteLine(_configurationName);
             EventLogViewModel.AddNewRegistry("Custom Configuration "+ _configurationName + "has been Saved",
                 DateTime.Now, this.GetType().Name, "MEDIUM");

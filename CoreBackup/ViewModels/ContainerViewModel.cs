@@ -13,37 +13,36 @@ namespace CoreBackup.ViewModels
     {
         //ViewModelBase tasksScreen;
         TasksViewModel tasksScreen;
-        ViewModelBase configScreen;
-        ViewModelBase homeScreen;
-        ViewModelBase fileExplorerScreen;
-        ViewModelBase eventLogScreen;
+        ConfigurationViewModel configScreen;
+        HomeViewModel homeScreen;
+        FileExplorerViewModel fileExplorerScreen;
+        EventLogViewModel eventLogScreen;
         ViewModelBase cryptoScreen;
 
         #region Constructor
         ViewModelBase screen;
-        ViewModelBase navbar;
-        ViewModelBase infoPanel;
+        NavbarViewModel navbar;
+        InfoPanelViewModel infoPanel;
         public ViewModelBase Screen
         {
             get => screen;
             private set => this.RaiseAndSetIfChanged(ref screen, value);
         }
 
-        public ViewModelBase Navbar
+        public NavbarViewModel Navbar
         {
             get => navbar;
             private set => this.RaiseAndSetIfChanged(ref navbar, value);
         }
 
-        public ViewModelBase InfoPanel
+        public InfoPanelViewModel InfoPanel
         {
             get => infoPanel;
             private set => this.RaiseAndSetIfChanged(ref infoPanel, value);
         }
 
         public ContainerViewModel()
-        {
-            
+        {     
             // Base ViewModels
             Screen = new HomeViewModel();
             Navbar = new NavbarViewModel();
@@ -58,7 +57,9 @@ namespace CoreBackup.ViewModels
             cryptoScreen = new CryptographyViewModel();
 
             OpenedTasksView += tasksScreen.OnOpenedTasksView;
-            
+            configScreen.SavedConfiguration += OnSavedConfiguration;
+            SavedConfigurationNotified += InfoPanel.OnSavedConfigurationNotified;
+
             // Internet Connection Check - Timer
             SetupTimer();
 
@@ -75,7 +76,7 @@ namespace CoreBackup.ViewModels
         }
 
 
-        public ViewModelBase ConfigScreen
+        public ConfigurationViewModel ConfigScreen
         {
             get => configScreen;
             private set => this.RaiseAndSetIfChanged(ref configScreen, value);
@@ -87,34 +88,49 @@ namespace CoreBackup.ViewModels
             private set => this.RaiseAndSetIfChanged(ref cryptoScreen, value);
         }
 
-        public ViewModelBase HomeScreen
+        public HomeViewModel HomeScreen
         {
             get => homeScreen;
             private set => this.RaiseAndSetIfChanged(ref homeScreen, value);
         }
 
-        public ViewModelBase FileExplorerScreen
+        public FileExplorerViewModel FileExplorerScreen
         {
             get => fileExplorerScreen;
             private set => this.RaiseAndSetIfChanged(ref fileExplorerScreen, value);
         }
 
-        public ViewModelBase EventLogScreen
+        public EventLogViewModel EventLogScreen
         {
             get => eventLogScreen;
             private set => this.RaiseAndSetIfChanged(ref eventLogScreen, value);
         }
+        #endregion
 
+        #region Events
         //public delegate void OpenedTasksViewEventHandler(object o, EventArgs e);
         //public event OpenedTasksViewEventHandler OpenedTasksView;
         public event EventHandler<EventArgs> OpenedTasksView;
+        public event EventHandler<EventArgs> SavedConfigurationNotified;
 
         protected virtual void OnOpenedTasksViewEvent()
         {
             OpenedTasksView(this, EventArgs.Empty);
         }
 
+        protected virtual void OnSavedConfigurationNotified()
+        {
+            SavedConfigurationNotified(this, EventArgs.Empty);
+        }
+
+        public void OnSavedConfiguration(object o, EventArgs e)
+        {
+            Debug.WriteLine("OnSavedConfiguration event successfully raised");
+            OnSavedConfigurationNotified();
+        }
+
         #endregion
+
         #region ChangeScreen on Click Actions
         public void ChangeScreenHome()
         {

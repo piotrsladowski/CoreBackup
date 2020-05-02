@@ -18,19 +18,19 @@
           <DataGrid.Columns>
             <DataGridTextColumn Binding="{Binding Id}"
                                 Header="ID"
-                                Width="100"/>
+                                Width="Auto"/>
             <DataGridTextColumn Binding="{Binding Content}"
                                 Header="Content"
-                                Width="400"/>
+                                Width="Auto"/>
             <DataGridTextColumn Binding="{Binding CreationDate}"
                                 Header="Date Time"
-                                Width="200"/>
+                                Width="Auto"/>
             <DataGridTextColumn Binding="{Binding Source}"
                                 Header="Source"
-                                Width="250"/>
+                                Width="Auto"/>
             <DataGridTextColumn Binding="{Binding Importance}"
                                 Header="Priority"
-                                Width="100"/>
+                                Width="Auto"/>
           </DataGrid.Columns>
         </DataGrid>
       </ScrollViewer>
