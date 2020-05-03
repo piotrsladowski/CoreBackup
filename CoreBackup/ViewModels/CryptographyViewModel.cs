@@ -78,9 +78,8 @@ namespace CoreBackup.ViewModels
         {
             Encryption.LoadAES_KeyIV_FromFile();
             CheckKeyAndIVStatus();
-            EventLogViewModel.AddNewRegistry("AES Key and IV has been loaded from external file",
+            EventLogViewModel.AddNewRegistry("AES Key and IV has been loaded from external file", 
                 DateTime.Now, this.GetType().Name, "HIGH");
-
         }
 
         private void CheckKeyAndIVStatus()
