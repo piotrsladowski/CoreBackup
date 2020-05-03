@@ -27,9 +27,9 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
         public ObservableCollection<LocalPath> Data { get; set; }
         private DirectoryConfig directoryConfig;
 
-        public DirectoryConfViewModel(ref DirectoryConfig directoryConfig)
+        public DirectoryConfViewModel()
         {
-            this.directoryConfig = directoryConfig;
+            directoryConfig = new DirectoryConfig();
             Data = new ObservableCollection<LocalPath>();
             commandsArray = new ReactiveCommand<Unit, Unit>[10];
             commandsArray[0] = ReactiveCommand.Create(Btn0BrowseLocalFiles);
@@ -137,12 +137,13 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 
         public void OnSavedConfigurationEvent(object o, ConfigurationEventArgs e)
         {
-            Debug.WriteLine("OnSavedConfiguration event successfully raised");
+            Debug.WriteLine("OnSavedConfiguration event successfully raised from DirectoryConf");
             if (e.DataType == 1)
             {
                 Debug.WriteLine("DataType: " + e.DataType + ", Side: " + e.Side);
                 if (e.Side == 0)
                 {
+
                     e.ConfigHub.AddLeftSources(directoryConfig);
                     EventLogViewModel.AddNewRegistry("DataType: " + e.DataType + ", Side: " + e.Side + "Config Saved", DateTime.Now, this.GetType().Name, "MEDIUM");
                 }
@@ -152,6 +153,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
                     EventLogViewModel.AddNewRegistry("DataType: " + e.DataType + ", Side: " + e.Side + "Config Saved", DateTime.Now, this.GetType().Name, "MEDIUM");
                 }
             }
+            directoryConfig = new DirectoryConfig();
         }
     }
 }

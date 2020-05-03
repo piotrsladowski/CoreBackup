@@ -43,6 +43,7 @@ namespace CoreBackup.ViewModels
 
         private void UpdateInfoConfigsList()
         {
+            /*
             ID = 1;
             foreach (KeyValuePair<string, ConfigHub> entry in CoreTask.tasksList)
             {
@@ -54,6 +55,15 @@ namespace CoreBackup.ViewModels
                 }
                 ID++;
 
+            }*/
+            ID = 1;
+            InfoConfigsList.Clear();
+            foreach (KeyValuePair<string, ConfigHub> entry in CoreTask.tasksList)
+            {
+                InfoConfig infoConfig = new InfoConfig(ID, entry.Key, entry.Value.isActive);
+                infoConfig.DictionaryPropertyChanged += OnDictionaryPropertyChanged;
+                InfoConfigsList.Add(infoConfig);
+                ID++;
             }
         }
     }
@@ -104,22 +114,19 @@ namespace CoreBackup.ViewModels
             DictionaryPropertyChanged(this, EventArgs.Empty);
         }
 
-        private void UpdateDictionary(string confName)
+        private void UpdateDictionary(string oldConfName)
         {
-            ConfigHub confValue = CoreTask.tasksList[confName];
-            CoreTask.tasksList.Remove(confName);
-            CoreTask.AddTaskEntry(name, confValue);
-            OnDictionaryPropertyChanged();
+            CoreTask.UpdateTasksList(oldConfName, name);
         }
 
         private void UpdateDictionary(bool status)
         {
-            CoreTask.tasksList[name].isActive = status;
-            OnDictionaryPropertyChanged();
+            CoreTask.UpdateTasksList(name, status);
         }
 
         private void RemoveConfiguration(string name)
         {
+            throw new NotImplementedException();
             Debug.WriteLine(name);
             OnDictionaryPropertyChanged();
         }

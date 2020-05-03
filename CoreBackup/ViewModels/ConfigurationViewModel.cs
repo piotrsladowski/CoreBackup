@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reactive;
 using Avalonia.Controls;
 using CoreBackup.Models.Config;
-using CoreBackup.Models.Remote;
 using CoreBackup.Models.Tasks;
 using ReactiveUI;
 using CoreBackup.ViewModels.ConfigurationViewModels;
@@ -22,15 +21,6 @@ namespace CoreBackup.ViewModels
 
         ViewModelBase leftData;
         ViewModelBase rightData;
-
-        private FTP ftpLeft;
-        private FTP ftpRight;
-
-        private FTPConfig ftpLeftConfig;
-        private FTPConfig ftpRightConfig;
-
-        private DirectoryConfig directoryLeftConfig;
-        private DirectoryConfig directoryRightConfig;
 
         public ViewModelBase LeftData
         {
@@ -102,19 +92,10 @@ namespace CoreBackup.ViewModels
 
         private void InitializeConfViewModels()
         {
-            ftpLeft = new FTP();
-            ftpRight = new FTP();
-
-            ftpLeftConfig = new FTPConfig();
-            ftpRightConfig = new FTPConfig();
-
-            directoryLeftConfig = new DirectoryConfig();
-            directoryRightConfig = new DirectoryConfig();
-
-            ftpLeftView = new FTPConfViewModel(ref ftpLeft, ref ftpLeftConfig);
-            ftpRightView = new FTPConfViewModel(ref ftpRight, ref ftpRightConfig);
-            directoryLeftView = new DirectoryConfViewModel(ref directoryLeftConfig);
-            directoryRightView = new DirectoryConfViewModel(ref directoryRightConfig);
+            ftpLeftView = new FTPConfViewModel();
+            ftpRightView = new FTPConfViewModel();
+            directoryLeftView = new DirectoryConfViewModel();
+            directoryRightView = new DirectoryConfViewModel();
         }
         #region Events
         private void SubscribeToEvents()
@@ -167,12 +148,15 @@ namespace CoreBackup.ViewModels
 
             Thread.Sleep(100); // TODO add notify after events complete
             CoreTask.AddTaskEntry(_configurationName, configHub);
-            //Serializer serializer = new Serializer(CoreTask.tasksList);
-            //serializer.Serialze();
             OnSavedConfigurationEvent();
             Debug.WriteLine(_configurationName);
-            EventLogViewModel.AddNewRegistry("Custom Configuration "+ _configurationName + "has been Saved",
+            EventLogViewModel.AddNewRegistry("Custom Configuration "+ _configurationName + " has been Saved",
                 DateTime.Now, this.GetType().Name, "MEDIUM");
+        }
+
+        private void UpdateConfiguraions()
+        {
+
         }
     }
 }

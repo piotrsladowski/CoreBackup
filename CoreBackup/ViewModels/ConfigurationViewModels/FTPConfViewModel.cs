@@ -71,10 +71,10 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 
         private FTP FtpClient;
         private FTPConfig FtpConfig;
-        public FTPConfViewModel(ref FTP ftpClient, ref FTPConfig ftpConfig)
+        public FTPConfViewModel()
         {
-            this.FtpClient = ftpClient;
-            this.FtpConfig = ftpConfig;
+            FtpClient = new FTP();
+            FtpConfig = new FTPConfig();
             BrowseDownloadDirectoryCommand = ReactiveCommand.Create(BrowseDownloadDirectory);
             BrowseUploadDirectoryCommand = ReactiveCommand.Create(BrowseUploadDirectory);
             BrowseDisposableFileUploadCommand = ReactiveCommand.Create(BrowseDisposableFileUpload);
@@ -85,7 +85,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 
         public void OnSavedConfigurationEvent(object o, ConfigurationEventArgs e)
         {
-            Debug.WriteLine("OnSavedConfiguration event successfully raised");
+            Debug.WriteLine("OnSavedConfiguration event successfully raised from FTPConf");
             if(e.DataType == 2)
             {
                 Debug.WriteLine("DataType: " + e.DataType + ", Side: " + e.Side);
@@ -102,6 +102,8 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
                         DateTime.Now, this.GetType().Name, "MEDIUM");
                 }
             }
+            FtpClient = new FTP();
+            FtpConfig = new FTPConfig();
         }
 
 
