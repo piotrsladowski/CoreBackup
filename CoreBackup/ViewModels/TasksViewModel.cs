@@ -73,6 +73,10 @@ namespace CoreBackup.ViewModels
 
         private void GetAllFiles()
         {
+            // To Avoid re-listing files when Button Tasks from Submenu Clicked
+            LeftFiles.Clear();
+            RightFiles.Clear();
+
             List<FileInformation> allLeftFiles = new List<FileInformation>();
             List<FileInformation> allRightFiles = new List<FileInformation>();
             LeftFiles.Where(l => l.Size != 0).ToList().All(i => LeftFiles.Remove(i));
@@ -81,12 +85,15 @@ namespace CoreBackup.ViewModels
 
             foreach (KeyValuePair<string, ConfigHub> entry in CoreTask.tasksList)
             {
-
+                var debugList = new List<FileInformation>();
                 foreach (Configuration leftConf in entry.Value.LeftSources)
                 {
                     allLeftFiles.AddRange(leftConf.GetFiles());
+                    debugList = leftConf.GetFiles();
                     allLeftFiles.All(c => { c.IsChecked = true; return true; });
                 }
+
+               
 
                 foreach (Configuration rightConf in entry.Value.RightSources)
                 {

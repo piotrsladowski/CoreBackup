@@ -195,7 +195,7 @@ namespace CoreBackup.Models.Remote
         }
         #endregion
 
-        public Int32 GetDateTimestamp(string filename, string ip, string username, string password)
+        public static Int32 GetDateTimestamp(string filename, string ip, string username, string password)
         {
             FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + ip + "//" + filename);
             ftpRequest.Method = WebRequestMethods.Ftp.GetDateTimestamp;
@@ -217,7 +217,7 @@ namespace CoreBackup.Models.Remote
         }
 
 
-        public long GetFileSize(string filename, string ip, string username, string password)
+        public static long GetFileSize(string filename, string ip, string username, string password)
         {
             FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + ip + "//" + filename);
             ftpRequest.Method = WebRequestMethods.Ftp.GetFileSize;
@@ -241,7 +241,6 @@ namespace CoreBackup.Models.Remote
 
         public static void GetAllInformationsAboutFiles(string ip, string username, string password, ref List<FileInformation> listFiles)
         {
-            FTP ftp = new FTP();
             var url = "ftp://" + ip;
             var request = (FtpWebRequest)WebRequest.Create(url);
             request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
@@ -264,9 +263,10 @@ namespace CoreBackup.Models.Remote
                                 string[] fullFileNameSplitted = fullFileName.Split(".");
                                 fi.Filename = fullFileNameSplitted[0];
                                 fi.Extension = fullFileNameSplitted[1];
-                                fi.ModificationTime = ftp.GetDateTimestamp(fi.Filename, ip, username, password);
-                                fi.Size = ftp.GetFileSize(fi.Filename, ip, username, password);
+                                fi.ModificationTime = FTP.GetDateTimestamp(fullFileName, ip, username, password);
+                                fi.Size = FTP.GetFileSize(fullFileName, ip, username, password);
                                 listFiles.Add(fi);
+                                fi = null;
                                 //Debug.WriteLine(fi.Filename + " " + fi.Extension + " " + fi.ModificationTime + " " +  fi.Size);
                             }
                         }
