@@ -28,6 +28,9 @@ namespace CoreBackup.ViewModels
         public ObservableCollectionExtended<FileInformation> LeftFiles { get; }
         public ObservableCollectionExtended<FileInformation> RightFiles { get; }
 
+        private long summaryFileSize;
+        private Dictionary<string, FileInformation> leftFilesDictionary;
+        private Dictionary<string, FileInformation> rightFilesDictionary;
 
         public ReactiveCommand<Unit, Unit> SyncToLeftCommand { get; }
         public ReactiveCommand<Unit, Unit> SyncToLeftOverrideCommand { get; }
@@ -62,6 +65,9 @@ namespace CoreBackup.ViewModels
            // ObservableCollectionExtended is single-threaded.
            .Bind(out _derivedRightFiles)
            .Subscribe();
+
+            leftFilesDictionary = new Dictionary<string, FileInformation>();
+            rightFilesDictionary = new Dictionary<string, FileInformation>();
         }
 
 
@@ -69,11 +75,14 @@ namespace CoreBackup.ViewModels
         {
             Debug.WriteLine("OnOpenedTasksView event successfully raised");
             GetAllFiles();
+            CreateFilesDictionary();
+            GetSummaryFileInfo();
+            CompareFiles();
         }
 
         private void GetAllFiles()
         {
-            // To Avoid re-listing files when Button Tasks from Submenu Clicked
+            // To Avoid re-listing files when Button Tasks from Submenu Clicked.
             LeftFiles.Clear();
             RightFiles.Clear();
 
@@ -93,8 +102,6 @@ namespace CoreBackup.ViewModels
                     allLeftFiles.All(c => { c.IsChecked = true; return true; });
                 }
 
-               
-
                 foreach (Configuration rightConf in entry.Value.RightSources)
                 {
                     allRightFiles.AddRange(rightConf.GetFiles());
@@ -105,8 +112,55 @@ namespace CoreBackup.ViewModels
             RightFiles.AddRange(allRightFiles);
         }
 
+        private void CreateFilesDictionary()
+        {
+            foreach (var item in LeftFiles)
+            {
+                leftFilesDictionary.Add(item.Filename, item);
+            }
+            foreach (var item in RightFiles)
+            {
+                rightFilesDictionary.Add(item.Filename, item);
+            }
+        }
+
+        private void GetSummaryFileInfo()
+        {
+            summaryFileSize = 0;
+            foreach (var item in LeftFiles)
+            {
+                summaryFileSize += item.Size;
+            }
+            foreach (var item in RightFiles)
+            {
+                summaryFileSize += item.Size;
+            }
+            Debug.WriteLine(summaryFileSize);
+        }
+
+        private void CompareFiles()
+        {
+            foreach (KeyValuePair<string, FileInformation> entry in leftFilesDictionary)
+            {
+                FileInformation fileInformation;
+                if (rightFilesDictionary.TryGetValue(entry.Key, out fileInformation))
+                {
+
+                }
+
+                if (rightFilesDictionary.ContainsKey(entry.Key))
+                {
+                    
+                }
+            }
+        }
+
         private void SyncMirror()
         {
+            if(leftFilesDictionary.Count == 0 || rightFilesDictionary.Count == 0)
+            {
+
+            }
 
         }
 

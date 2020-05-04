@@ -68,11 +68,11 @@
     </Styles>
   </UserControl.Styles>
   <!-- STYLIZATION END -->
-  <Grid RowDefinitions="30, *, 30" ShowGridLines="True">
+  <Grid RowDefinitions="30, *, 30">
     <!-- Top Navbar -->
     <UserControl Content="{Binding Navbar}" Grid.Row="0"></UserControl>
     <!-- Main -->
-    <Grid ClipToBounds="True" Grid.Row="1" RowDefinitions="*" ColumnDefinitions="300,*" ShowGridLines="True">
+    <Grid ClipToBounds="True" Grid.Row="1" RowDefinitions="*" ColumnDefinitions="300,*">
       <!-- Sidebar -->
       <StackPanel Grid.Column="0">
         <Image  MaxHeight="40" ClipToBounds="True" Source="/Assets/CoreBackup_logo_clipped.png" Margin="10"></Image>

@@ -57,7 +57,8 @@ namespace CoreBackup.Models.Config
                         fileInformation.Filename = fileInfo.FullName;
                         fileInformation.Extension = fileInfo.Extension;
                         fileInformation.Size = fileInfo.Length;
-                        fileInformation.ModificationTime = (long)(DateTime.UtcNow.Subtract(fileInfo.LastWriteTime)).TotalSeconds;
+                        //fileInformation.ModificationTime = (long)(DateTime.UtcNow.Subtract(fileInfo.LastWriteTime)).TotalSeconds;
+                        fileInformation.ModificationTime = new DateTimeOffset(fileInfo.LastWriteTime).ToUnixTimeSeconds();
                         filesList.Add(fileInformation);
                     }
                     catch (FileNotFoundException)

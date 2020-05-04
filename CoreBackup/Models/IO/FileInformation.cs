@@ -10,6 +10,7 @@ namespace CoreBackup.Models.IO
         public string Extension { get; set; }
         public bool IsChecked { get; set; }
         public long Size { get; set; }
+        public bool IsNewer { get; set; }
         private long _modificationTime;
         public long ModificationTime {
             get {

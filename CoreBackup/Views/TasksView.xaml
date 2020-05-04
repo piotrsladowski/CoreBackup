@@ -6,8 +6,8 @@
              x:Class="CoreBackup.Views.TasksView">
 
   
-  <Grid RowDefinitions="50,*" ShowGridLines="True" ClipToBounds="True">
-    <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*,*" ShowGridLines="True" ClipToBounds="True">
+  <Grid RowDefinitions="50,*" ClipToBounds="True">
+    <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*,*" ClipToBounds="True">
       <Button Grid.Column="0" Background="Transparent" Command="{Binding SyncToLeftOverride}">
         <Image Source="avares://CoreBackup/Assets/Icons/arrow_doubleLeft_90_blue.png"></Image>
       </Button>
@@ -24,7 +24,7 @@
         <Image Source="avares://CoreBackup/Assets/Icons/arrow_doubleRight_90_blue.png"></Image>
       </Button>
     </Grid>
-      <Grid ShowGridLines="False" ClipToBounds="True" Grid.Row="1">
+      <Grid ClipToBounds="True" Grid.Row="1">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="10"/>
@@ -33,7 +33,8 @@
         <ScrollViewer Grid.Column="0"
                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
                       ScrollViewer.VerticalScrollBarVisibility="Disabled">
-          <DataGrid Items="{Binding LeftFiles}"
+          <DataGrid x:Name="TasksDataGridLeft"
+                    Items="{Binding LeftFiles}"
                     CanUserReorderColumns="True"
                     CanUserResizeColumns="True"
                     IsReadOnly="False"
@@ -71,7 +72,8 @@
         <ScrollViewer Grid.Column="2"
                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
                       ScrollViewer.VerticalScrollBarVisibility="Disabled">
-        <DataGrid Items="{Binding RightFiles}"
+        <DataGrid x:Name="TasksDataGridRight"
+                  Items="{Binding RightFiles}"
                   CanUserReorderColumns="True"
                   CanUserResizeColumns="True"
                   IsReadOnly="False"

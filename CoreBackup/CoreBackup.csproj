@@ -29,6 +29,7 @@
     <AvaloniaResource Remove="Views\HomeView.xaml" />
     <AvaloniaResource Remove="Views\NavbarView.xaml" />
     <AvaloniaResource Remove="Views\SettingsWindow.xaml" />
+    <AvaloniaResource Remove="Views\StatusBarView.xaml" />
     <AvaloniaResource Remove="Views\TasksView.xaml" />
     <AvaloniaResource Remove="Windows\AboutWindow.xaml" />
     <AvaloniaResource Remove="Windows\SettingsWindow.xaml" />
@@ -50,6 +51,7 @@
     <None Remove="Views\HomeView.xaml" />
     <None Remove="Views\NavbarView.xaml" />
     <None Remove="Views\SettingsWindow.xaml" />
+    <None Remove="Views\StatusBarView.xaml" />
     <None Remove="Views\TasksView.xaml" />
     <None Remove="Windows\AboutWindow.xaml" />
     <None Remove="Windows\SettingsWindow.xaml" />
@@ -130,6 +132,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\CryptographyView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\StatusBarView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>
