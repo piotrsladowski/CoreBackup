@@ -6,6 +6,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia;
 using System.Diagnostics;
 using System.Linq;
+using CoreBackup.ViewModels;
 
 namespace CoreBackup.Models.Crypto
 {
@@ -14,6 +15,7 @@ namespace CoreBackup.Models.Crypto
         public static bool isKeySet { get; set; }
         public static bool isIVSet { get; set; }
         public static bool isPathRemembered { get; set; }
+        public static bool IsKeyLoaded = false;
 
         private static string KeyIVFilePath;
 
@@ -25,8 +27,6 @@ namespace CoreBackup.Models.Crypto
 
         private static byte[] AES256IV;
         private static string AES256IVString;
-        
-        public static bool IsKeyLoaded = false;
 
         public static void CreateAESKey()
         {
@@ -58,18 +58,19 @@ namespace CoreBackup.Models.Crypto
         {
             string resultReturn = null;
             string fullPath = null;
+            string[] result = null;
             if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
             {
                 OpenFileDialog dialog = new OpenFileDialog();
-                string[] result = await dialog.ShowAsync(desktopLifetime.MainWindow);
-                resultReturn = result[0];
-                fullPath = string.Join(" ", resultReturn);
-                Debug.WriteLine(fullPath);
+                result = await dialog.ShowAsync(desktopLifetime.MainWindow);
             }
             try
             {
-                if (!String.IsNullOrEmpty(resultReturn))
+                if (result!=null && result.Length!=0)
                 {
+                    resultReturn = result[0];
+                    fullPath = string.Join(" ", resultReturn);
+                    Debug.WriteLine(fullPath);
                     byte[] buffer = File.ReadAllBytes(fullPath);
                     Debug.WriteLine(buffer.Length);
                     AES256Key = buffer.Take(32).ToArray();
@@ -77,11 +78,14 @@ namespace CoreBackup.Models.Crypto
                     //Debug.WriteLine(Convert.ToBase64String(AES256Key));
                     //Debug.WriteLine(Convert.ToBase64String(AES256IV));
                     IsKeyLoaded = true;
+                    EventLogViewModel.AddNewRegistry("AES Key and IV has been loaded from external file",
+                        DateTime.Now, "Encryption", "HIGH");
                 }
 
             } catch (IOException ex)
             {
-                Debug.WriteLine("Cannot open key file");
+                EventLogViewModel.AddNewRegistry("File that stores a key can not be opened",
+                    DateTime.Now, "Encryption", "ERROR");
             }
 
         }
@@ -89,8 +93,6 @@ namespace CoreBackup.Models.Crypto
         public async static void SaveAES_KeyIV_ToFile()
         {
             string resultReturn = null;
-            //string fullPath = null;
-            //saveFileDialog1.Filters = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
             if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
             {
                 SaveFileDialog saveFileDialog1 = new SaveFileDialog();
@@ -108,6 +110,8 @@ namespace CoreBackup.Models.Crypto
                 AES256Key.CopyTo(concat, 0);
                 AES256IV.CopyTo(concat, 32);
                 File.WriteAllBytes(resultReturn, concat);
+                EventLogViewModel.AddNewRegistry("AES Key and IV has been saved to external file",
+                    DateTime.Now, "Encryption", "HIGH");
             }
         }
 

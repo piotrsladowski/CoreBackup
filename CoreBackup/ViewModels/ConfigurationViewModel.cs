@@ -150,8 +150,6 @@ namespace CoreBackup.ViewModels
             CoreTask.AddTaskEntry(_configurationName, configHub);
             OnSavedConfigurationEvent();
             Debug.WriteLine(_configurationName);
-            EventLogViewModel.AddNewRegistry("Custom Configuration "+ _configurationName + " has been Saved",
-                DateTime.Now, this.GetType().Name, "MEDIUM");
         }
 
         private void UpdateConfiguraions()
