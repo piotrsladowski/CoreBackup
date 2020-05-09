@@ -6,11 +6,14 @@ namespace CoreBackup.Models.IO
 {
     public class FileInformation
     {
-        public string Filename { get; set; }
+        //public string Filename { get; set; }
+        public string RelativePath { get; set; }
+        public string FullPath { get; set; }
         public string Extension { get; set; }
         public bool IsChecked { get; set; }
         public long Size { get; set; }
-        public bool IsNewer { get; set; }
+        public FileVersion FileVersion { get; set; }
+        //public bool IsNewer { get; set; }
         private long _modificationTime;
         public long ModificationTime {
             get {
@@ -20,5 +23,13 @@ namespace CoreBackup.Models.IO
                 _modificationTime = value;
             }
         }
+
+    }
+    public enum FileVersion
+    {
+        NotSet = 0,
+        Newer = 1,
+        Older = 2,
+        Equal = 3
     }
 }

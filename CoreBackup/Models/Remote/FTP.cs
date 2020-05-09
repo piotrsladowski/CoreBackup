@@ -261,7 +261,7 @@ namespace CoreBackup.Models.Remote
                                 FileInformation fi = new FileInformation();
                                 var fullFileName = line.Split(new[] {' ', '\t'}).Last();
                                 string[] fullFileNameSplitted = fullFileName.Split(".");
-                                fi.Filename = fullFileNameSplitted[0];
+                                fi.FullPath = fullFileNameSplitted[0];
                                 fi.Extension = fullFileNameSplitted[1];
                                 fi.ModificationTime = FTP.GetDateTimestamp(fullFileName, ip, username, password);
                                 fi.Size = FTP.GetFileSize(fullFileName, ip, username, password);

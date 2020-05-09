@@ -15,6 +15,7 @@ namespace CoreBackup.Views
             this.InitializeComponent();
             dataGridLeft = this.FindControl<DataGrid>("TasksDataGridLeft");
             dataGridRight = this.FindControl<DataGrid>("TasksDataGridRight");
+            //dataGridLeft.AttachedToLogicalTree
             dataGridLeft.LoadingRow += new System.EventHandler<DataGridRowEventArgs>(DataGrid_LoadingRows);
             dataGridRight.LoadingRow += new System.EventHandler<DataGridRowEventArgs>(DataGrid_LoadingRows);
         }
@@ -26,9 +27,14 @@ namespace CoreBackup.Views
 
         private void DataGrid_LoadingRows(object sender, DataGridRowEventArgs e)
         {
-            var dataObject = e.Row.DataContext as FileInformation;
-            if (dataObject != null && dataObject.IsNewer == false)
+            FileInformation dataObject = e.Row.DataContext as FileInformation;
+            if (dataObject != null && dataObject.FileVersion == FileVersion.Older)
                 e.Row.Background = Brushes.Maroon;
+            else if (dataObject != null && dataObject.FileVersion == FileVersion.Newer)
+                e.Row.Background = Brushes.DarkGreen;
+            else if (dataObject != null && dataObject.FileVersion == FileVersion.Equal)
+                e.Row.Background = Brushes.Indigo;
+                //e.Row.Background = Brushes.Transparent;
         }
     }
 }
