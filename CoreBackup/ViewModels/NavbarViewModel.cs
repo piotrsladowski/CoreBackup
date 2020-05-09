@@ -9,6 +9,9 @@ using System.Reactive;
 using System.Runtime.InteropServices;
 using System.Text;
 using Avalonia.Controls;
+using Avalonia.Markup.Xaml.Styling;
+using Avalonia.Styling;
+using Avalonia.Themes.Default;
 using CoreBackup.Models.Config;
 using DynamicData;
 using CoreBackup.Models.Tasks;
@@ -57,6 +60,7 @@ namespace CoreBackup.ViewModels
         //public ReactiveCommand<Unit, Unit> ExitAppCommand { get; }
         public ReactiveCommand<Unit, Unit> OpenAboutWindowCommand { get; }
         public ReactiveCommand<Unit, Unit> ExitAppCommand { get; }
+        public ReactiveCommand<Unit, Unit> ChangeThemeCommand { get; }
         public NavbarViewModel()
         {
             OpenSettingsWindowCommand = ReactiveCommand.Create(OpenSettingsWindow);
@@ -67,6 +71,8 @@ namespace CoreBackup.ViewModels
             SaveAsConfigCommand = ReactiveCommand.Create(SaveAs);
             SaveConfigCommand = ReactiveCommand.Create(Save);
             OpenConfigCommand = ReactiveCommand.Create(Open);
+
+            ChangeThemeCommand = ReactiveCommand.Create(ChangeTheme);
         }
 
      
@@ -148,6 +154,64 @@ namespace CoreBackup.ViewModels
             }
         }
 
+        private int themeTracker = 1;
 
+        private void ChangeTheme()
+        {
+            if (themeTracker % 2 == 1)
+            {
+                ChangeThemeToLight();
+                themeTracker = themeTracker + 1;
+            } 
+            else if (themeTracker % 2 == 0)
+            {
+                ChangeThemeToDark();
+                themeTracker = themeTracker + 1;
+            }
+        }
+
+        private void ChangeThemeToLight()
+        {
+            // create new style
+            var newStyle = new StyleInclude(new Uri("avares://AvaloniaApplicationTest/App.xaml"));
+            newStyle.Source = new Uri("avares://Avalonia.Themes.Default/Accents/BaseLight.xaml");
+            // load style to get access to the ressources
+            var baseDarkStyle = newStyle.Loaded as Style;
+
+            // get the original source (BaseDark)
+            var ressourceFromAppXaml = ((Style)((StyleInclude)Application.Current.Styles[1]).Loaded).Resources;
+            foreach (var item in baseDarkStyle.Resources)
+            {
+                // for secure lookup if the key exists for the resource otherwise create it
+                if (ressourceFromAppXaml.ContainsKey(item.Key))
+                    ressourceFromAppXaml[item.Key] = item.Value;
+                else
+                    ressourceFromAppXaml.Add(item.Key, item.Value);
+            }
+            // set source name for the new theme
+            ((StyleInclude)Application.Current.Styles[1]).Source = new Uri("avares://Avalonia.Themes.Default/Accents/BaseLight.xaml");
+        }
+
+        private void ChangeThemeToDark()
+        {
+            // create new style
+            var newStyle = new StyleInclude(new Uri("avares://AvaloniaApplicationTest/App.xaml"));
+            newStyle.Source = new Uri("avares://Avalonia.Themes.Default/Accents/BaseDark.xaml");
+            // load style to get access to the ressources
+            var baseLightStyle = newStyle.Loaded as Style;
+
+            // get the original source (BaseDark)
+            var ressourceFromAppXaml = ((Style)((StyleInclude)Application.Current.Styles[1]).Loaded).Resources;
+            foreach (var item in baseLightStyle.Resources)
+            {
+                // for secure lookup if the key exists for the resource otherwise create it
+                if (ressourceFromAppXaml.ContainsKey(item.Key))
+                    ressourceFromAppXaml[item.Key] = item.Value;
+                else
+                    ressourceFromAppXaml.Add(item.Key, item.Value);
+            }
+            // set source name for the new theme
+            ((StyleInclude)Application.Current.Styles[1]).Source = new Uri("avares://Avalonia.Themes.Default/Accents/BaseDark.xaml");
+        }
     }
 }

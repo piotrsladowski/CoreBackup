@@ -16,7 +16,7 @@
       <MenuItem Command="{Binding OpenConfigCommand}" Header="_Open"/>
       <MenuItem Command="{Binding SaveConfigCommand}" Header="_Save"/>
       <MenuItem Command="{Binding SaveAsConfigCommand}" Header="_Save As"/>
-      <MenuItem Header="_Settings" Command="{Binding OpenSettingsWindowCommand}"/>
+      <MenuItem Header="_Change Theme" Command="{Binding ChangeThemeCommand}"/>
       <!--Preferences open new window // theme // settings -->
       <Separator/>
       <MenuItem Header="_Exit" Command="{Binding ExitAppCommand}"/>
