@@ -3,6 +3,7 @@ namespace CoreBackup.Models.IO
 {
     static class FileComparer
     {
+        /*
         public static bool CheckFileVersion(FileInformation older, FileInformation newer)
         {
             if (older.Filename == newer.Filename && older.Extension == newer.Extension)
@@ -18,6 +19,6 @@ namespace CoreBackup.Models.IO
             }
 
             return false;
-        }
+        }*/
     }
 }

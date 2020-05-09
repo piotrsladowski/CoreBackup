@@ -114,13 +114,15 @@ namespace CoreBackup.ViewModels
 
         private void CreateFilesDictionary()
         {
+            leftFilesDictionary = new Dictionary<string, FileInformation>();
+            rightFilesDictionary = new Dictionary<string, FileInformation>();
             foreach (var item in LeftFiles)
             {
-                leftFilesDictionary.Add(item.Filename, item);
+                leftFilesDictionary.Add(item.RelativePath, item);
             }
             foreach (var item in RightFiles)
             {
-                rightFilesDictionary.Add(item.Filename, item);
+                rightFilesDictionary.Add(item.RelativePath, item);
             }
         }
 
@@ -140,18 +142,89 @@ namespace CoreBackup.ViewModels
 
         private void CompareFiles()
         {
+            // Lookup foreach entry in LeftFilesDict in RightFilesDict
             foreach (KeyValuePair<string, FileInformation> entry in leftFilesDictionary)
             {
-                FileInformation fileInformation;
-                if (rightFilesDictionary.TryGetValue(entry.Key, out fileInformation))
+                FileInformation outFileInformation;
+                if (rightFilesDictionary.TryGetValue(entry.Key, out outFileInformation))
                 {
-
+                    if(entry.Value.ModificationTime > outFileInformation.ModificationTime)
+                    {
+                        var item = LeftFiles.FirstOrDefault(i => i.RelativePath == entry.Key);
+                        if(item != null)
+                        {
+                            item.FileVersion = FileVersion.Newer;
+                        }
+                    }
+                    else if(entry.Value.ModificationTime == outFileInformation.ModificationTime)
+                    {
+                        var item = LeftFiles.FirstOrDefault(i => i.RelativePath == entry.Key);
+                        if (item != null)
+                        {
+                            item.FileVersion = FileVersion.Equal;
+                        }
+                    }
+                    else
+                    {
+                        var item = LeftFiles.FirstOrDefault(i => i.RelativePath == entry.Key);
+                        if (item != null)
+                        {
+                            item.FileVersion = FileVersion.Older;
+                        }
+                    }
+                }
+                else
+                {
+                    var item = LeftFiles.First(i => i.RelativePath == entry.Key);
+                    if (item != null)
+                    {
+                        item.FileVersion = FileVersion.Newer;
+                    }
                 }
 
-                if (rightFilesDictionary.ContainsKey(entry.Key))
+            }
+
+            // Similarly for the second set
+
+            foreach (KeyValuePair<string, FileInformation> entry in rightFilesDictionary)
+            {
+                FileInformation outFileInformation;
+                if (leftFilesDictionary.TryGetValue(entry.Key, out outFileInformation))
                 {
-                    
+                    if (entry.Value.ModificationTime > outFileInformation.ModificationTime)
+                    {
+                        var item = RightFiles.FirstOrDefault(i => i.RelativePath == entry.Key);
+                        if (item != null)
+                        {
+                            item.FileVersion = FileVersion.Newer;
+                        }
+                    }
+                    else if (entry.Value.ModificationTime == outFileInformation.ModificationTime)
+                    {
+                        var item = RightFiles.FirstOrDefault(i => i.RelativePath == entry.Key);
+                        if (item != null)
+                        {
+                            item.FileVersion = FileVersion.Equal;
+                        }
+                    }
+                    else
+                    {
+                        var item = RightFiles.FirstOrDefault(i => i.RelativePath == entry.Key);
+                        if (item != null)
+                        {
+                            item.FileVersion = FileVersion.Older;
+                        }
+                    }
                 }
+                else
+                {
+                    var item = RightFiles.First(i => i.RelativePath == entry.Key);
+                    if (item != null)
+                    {
+                        item.FileVersion = FileVersion.Newer;
+                    }
+                }
+
             }
         }
 
