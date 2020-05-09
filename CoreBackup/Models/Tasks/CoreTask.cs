@@ -33,7 +33,22 @@ namespace CoreBackup.Models.Tasks
 
         public static void AddTaskEntry(string taskName, ConfigHub configuration)
         {
-            tasksList.Add(taskName, configuration);
+            try
+            {
+                tasksList.Add(taskName, configuration);
+                EventLogViewModel.AddNewRegistry("Custom Configuration " +  taskName + " has been Saved",
+                    DateTime.Now, "Config", "MEDIUM");
+            }
+            catch (ArgumentException)
+            {
+                EventLogViewModel.AddNewRegistry("Config " + taskName + " already exists",
+                    DateTime.Now, "Config", "HIGH");
+            }
+            catch(Exception)
+            {
+                EventLogViewModel.AddNewRegistry( taskName + " config can not be added ",
+                    DateTime.Now, "Config", "HIGH");
+            }
         }
 
 

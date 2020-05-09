@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reactive;
 using System.Text;
+using Avalonia.Native.Interop;
+using Avalonia.Remote.Protocol.Input;
 using CoreBackup.Models.Crypto;
+using CoreBackup.Models.Tasks;
 using ReactiveUI;
 
 namespace CoreBackup.ViewModels
@@ -15,6 +18,7 @@ namespace CoreBackup.ViewModels
         
         private ReactiveCommand<Unit, Unit> SaveKeyAndIVCommand { get; }
         private ReactiveCommand<Unit, Unit> LoadKeyAndIVCommand { get; }
+        
 
         #region Strings
         private string keyStatus;
@@ -47,6 +51,7 @@ namespace CoreBackup.ViewModels
             SaveKeyAndIVCommand = ReactiveCommand.Create(SaveKeyAndIV);
             LoadKeyAndIVCommand = ReactiveCommand.Create(LoadKeyAndIV);
 
+
             CheckKeyAndIVStatus();
         }
 
@@ -68,18 +73,21 @@ namespace CoreBackup.ViewModels
 
         private void SaveKeyAndIV()
         {
-            Encryption.SaveAES_KeyIV_ToFile();
-            CheckKeyAndIVStatus();
-            EventLogViewModel.AddNewRegistry("AES Key and IV has been saved to external file",
-                DateTime.Now, this.GetType().Name, "HIGH");
+            if (Encryption.isKeySet && Encryption.isIVSet)
+            {
+                Encryption.SaveAES_KeyIV_ToFile();
+            }
+            else
+            {
+                EventLogViewModel.AddNewRegistry("AES Key and IV are not generated thus can not be saved",
+                    DateTime.Now, this.GetType().Name, "MEDIUM");
+            }
         }
 
         private void LoadKeyAndIV()
         {
             Encryption.LoadAES_KeyIV_FromFile();
             CheckKeyAndIVStatus();
-            EventLogViewModel.AddNewRegistry("AES Key and IV has been loaded from external file", 
-                DateTime.Now, this.GetType().Name, "HIGH");
         }
 
         private void CheckKeyAndIVStatus()
