@@ -23,12 +23,16 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
         private int slotLimits = 10;
         
         public Command AddNewRowCommand { get; set; }
+        public Command EraseLastRowCommand { get; set; }
         public ReactiveCommand<Unit, Unit>[] commandsArray;
         public ObservableCollection<LocalPath> Data { get; set; }
         private DirectoryConfig directoryConfig;
 
         public DirectoryConfViewModel()
         {
+            AddNewRowCommand = new Command(AddNewRow);
+            EraseLastRowCommand = new Command(EraseLastRow);
+            EraseRowVisible = false;
             directoryConfig = new DirectoryConfig();
             Data = new ObservableCollection<LocalPath>();
             commandsArray = new ReactiveCommand<Unit, Unit>[10];
@@ -42,10 +46,16 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             commandsArray[7] = ReactiveCommand.Create(Btn7BrowseLocalFiles);
             commandsArray[8] = ReactiveCommand.Create(Btn8BrowseLocalFiles);
             commandsArray[9] = ReactiveCommand.Create(Btn9BrowseLocalFiles);
-            AddNewRowCommand = new Command(AddNewRow);
         }
 
         #region Buttons Binded Functions
+        private bool eraseRowVisible;
+        public bool EraseRowVisible
+        {
+            get => eraseRowVisible;
+            set => this.RaiseAndSetIfChanged(ref eraseRowVisible, value);
+        }
+
         private async void Btn0BrowseLocalFiles()
         {
             Data[0].Path = await GetPath();
@@ -126,6 +136,15 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 
         private void AddNewRow()
         {
+            if (counter >= 0)
+            {
+                EraseRowVisible = true;
+            } else
+
+            {
+                EraseRowVisible = false;
+            }
+
             if (counter + 1 <= slotLimits)
             {
                 Data.Add(new LocalPath() { NumericID = counter, ExplorerCommand = commandsArray[counter] });
@@ -134,6 +153,22 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
                 counter = counter + 1;
             }
         }
+
+        private void EraseLastRow()
+        {
+            if (counter > 0)
+            {
+                Data.RemoveAt(counter-1);
+                EventLogViewModel.AddNewRegistry("Local Path Slot Removed",
+                    DateTime.Now, this.GetType().Name, "LOW");
+                counter = counter - 1;
+                if (counter == 0)
+                {
+                    EraseRowVisible = false;
+                }
+            }
+        }
+        
 
         public void OnSavedConfigurationEvent(object o, ConfigurationEventArgs e)
         {

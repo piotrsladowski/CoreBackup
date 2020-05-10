@@ -12,6 +12,7 @@ using System.Linq;
 using CoreBackup.Models.Tasks;
 using CoreBackup.Models.Config;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace CoreBackup.ViewModels
 {
@@ -97,14 +98,14 @@ namespace CoreBackup.ViewModels
                 var debugList = new List<FileInformation>();
                 foreach (Configuration leftConf in entry.Value.LeftSources)
                 {
-                    allLeftFiles.AddRange(leftConf.GetFiles());
-                    debugList = leftConf.GetFiles();
+                    allLeftFiles.AddRange(Task.Run(() => leftConf.GetFiles()).Result);
+                    //debugList = leftConf.GetFiles();
                     allLeftFiles.All(c => { c.IsChecked = true; return true; });
                 }
 
                 foreach (Configuration rightConf in entry.Value.RightSources)
                 {
-                    allRightFiles.AddRange(rightConf.GetFiles());
+                    allRightFiles.AddRange(Task.Run(() => rightConf.GetFiles()).Result);
                     allLeftFiles.All(c => { c.IsChecked = false; return true; });
                 }
             }
