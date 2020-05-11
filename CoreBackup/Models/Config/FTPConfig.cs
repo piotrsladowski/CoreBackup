@@ -8,43 +8,43 @@ namespace CoreBackup.Models.Config
 {
     class FTPConfig : Configuration
     {
-        public Dictionary<string, string> credentials { get; set; }
+        public Dictionary<string, string> Credentials { get; set; }
 
         public Dictionary<string, string> GetCredentials()
         {
-            return credentials;
+            return Credentials;
         }
 
-        public Dictionary<string, string> paths { get; set; }
+        public Dictionary<string, string> Paths { get; set; }
 
         public Dictionary<string, string> GetPaths()
         {
-            return paths;
+            return Paths;
         }
 
-        public DataSource dataSource { get; set; }
+        public DataSource DataSource { get; set; }
         public FTPConfig()
         {
-            dataSource = DataSource.FTP;
-            credentials = new Dictionary<string, string>();
-            paths = new Dictionary<string, string>();
+            DataSource = DataSource.FTP;
+            Credentials = new Dictionary<string, string>();
+            Paths = new Dictionary<string, string>();
         }
 
-        public void provideCredentials(string username, string password, string server)
+        public void ProvideCredentials(string username, string password, string server)
         { 
-            credentials["username"] = username;
-            credentials["password"] = password;
-            credentials["server"] = server;
+            Credentials["username"] = username;
+            Credentials["password"] = password;
+            Credentials["server"] = server;
         }
 
-        public void provideDownloadPath(string downloadDirectory)
+        public void ProvideDownloadPath(string downloadDirectory)
         {
-            paths["downloadDirectory"] = downloadDirectory;
+            Paths["downloadDirectory"] = downloadDirectory;
         }
 
-        public void provideUploadPath(string uploadDirectory)
+        public void ProvideUploadPath(string uploadDirectory)
         {
-            paths["uploadDirectory"] = uploadDirectory;
+            Paths["uploadDirectory"] = uploadDirectory;
         }
 
         
@@ -52,9 +52,9 @@ namespace CoreBackup.Models.Config
         {
             string result = null;
 
-            if (credentials.ContainsKey(key))
+            if (Credentials.ContainsKey(key))
             {
-                result = credentials[key];
+                result = Credentials[key];
             }
             return result;
         }
@@ -63,9 +63,9 @@ namespace CoreBackup.Models.Config
         {
             string result = null;
 
-            if (paths.ContainsKey(key))
+            if (Paths.ContainsKey(key))
             {
-                result = paths[key];
+                result = Paths[key];
             }
             return result;
         }
@@ -76,7 +76,7 @@ namespace CoreBackup.Models.Config
             {
                 var filesList = new List<FileInformation>();
                 string beforeFilename = "";
-                FTP.GetAllInformationsAboutFiles(credentials["server"], credentials["username"], credentials["password"], ref filesList, beforeFilename);
+                FTP.GetAllInformationsAboutFiles(Credentials["server"], Credentials["username"], Credentials["password"], ref filesList, beforeFilename);
                 return filesList;
             }
             catch (Exception e)

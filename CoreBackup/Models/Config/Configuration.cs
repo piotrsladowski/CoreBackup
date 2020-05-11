@@ -9,7 +9,7 @@ namespace CoreBackup.Models.Config
     [JsonConverter(typeof(ConfigurationConverter))]
     public abstract class Configuration
     {
-        public bool isEncrypted { get; set; }
+        public bool IsEncrypted { get; set; }
         public DataSource dataSource;
         public abstract List<FileInformation> GetFiles();
         public abstract List<string> GetConfigPaths();

@@ -23,7 +23,7 @@ namespace CoreBackup.Views
         {
             this.InitializeComponent();
             dataGrid = this.FindControl<DataGrid>("EventLogsDataGrid");
-            this.dataGrid.LoadingRow += new EventHandler<DataGridRowEventArgs>(dataGrid_LoadingRows);
+            this.dataGrid.LoadingRow += new EventHandler<DataGridRowEventArgs>(DataGrid_LoadingRows);
         } 
 
         private void InitializeComponent()
@@ -31,11 +31,11 @@ namespace CoreBackup.Views
             AvaloniaXamlLoader.Load(this);
         }
 
-        void dataGrid_LoadingRows(object sender, DataGridRowEventArgs e)
+        void DataGrid_LoadingRows(object sender, DataGridRowEventArgs e)
         {
             var dataObject = e.Row.DataContext as LogRegistry;
-            if (dataObject != null && dataObject.Importance == "HIGH")
-                e.Row.Background = Brushes.Red;
+            if (dataObject != null && dataObject.Importance == "ERROR")
+                e.Row.Background = Brushes.DarkRed;
         }
     }
 }

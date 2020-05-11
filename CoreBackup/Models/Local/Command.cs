@@ -13,8 +13,7 @@ namespace CoreBackup.Models.Local
 
         public void Execute(object parameter)
         {
-            if (Action != null)
-                Action();
+            Action?.Invoke();
         }
 
         public bool CanExecute(object parameter)
@@ -29,8 +28,7 @@ namespace CoreBackup.Models.Local
             set
             {
                 _isEnabled = value;
-                if (CanExecuteChanged != null)
-                    CanExecuteChanged(this, EventArgs.Empty);
+                CanExecuteChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -64,8 +62,7 @@ namespace CoreBackup.Models.Local
             set
             {
                 _isEnabled = value;
-                if (CanExecuteChanged != null)
-                    CanExecuteChanged(this, EventArgs.Empty);
+                CanExecuteChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 

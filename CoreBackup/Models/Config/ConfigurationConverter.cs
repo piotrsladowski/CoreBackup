@@ -31,15 +31,12 @@ namespace CoreBackup.Models.Config
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             JObject jo = JObject.Load(reader);
-            switch (jo["ObjType"].Value<int>())
+            return (jo["ObjType"].Value<int>()) switch
             {
-                case 1:
-                    return JsonConvert.DeserializeObject<DirectoryConfig>(jo.ToString(), SpecifiedSubclassConversion);
-                case 2:
-                    return JsonConvert.DeserializeObject<FTPConfig>(jo.ToString(), SpecifiedSubclassConversion);
-                default:
-                    throw new Exception();
-            }
+                1 => JsonConvert.DeserializeObject<DirectoryConfig>(jo.ToString(), SpecifiedSubclassConversion),
+                2 => JsonConvert.DeserializeObject<FTPConfig>(jo.ToString(), SpecifiedSubclassConversion),
+                _ => throw new Exception(),
+            };
             throw new NotImplementedException();
         }
 
