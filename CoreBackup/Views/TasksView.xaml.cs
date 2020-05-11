@@ -33,8 +33,7 @@ namespace CoreBackup.Views
             else if (dataObject != null && dataObject.FileVersion == FileVersion.Newer)
                 e.Row.Background = Brushes.DarkGreen;
             else if (dataObject != null && dataObject.FileVersion == FileVersion.Equal)
-                e.Row.Background = Brushes.Indigo;
-                //e.Row.Background = Brushes.Transparent;
+                e.Row.Background = Brushes.DarkGray;
         }
     }
 }

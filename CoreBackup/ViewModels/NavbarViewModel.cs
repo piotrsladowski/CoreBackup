@@ -161,20 +161,22 @@ namespace CoreBackup.ViewModels
             if (themeTracker % 2 == 1)
             {
                 ChangeThemeToLight();
-                themeTracker = themeTracker + 1;
+                themeTracker += 1;
             } 
             else if (themeTracker % 2 == 0)
             {
                 ChangeThemeToDark();
-                themeTracker = themeTracker + 1;
+                themeTracker += 1;
             }
         }
 
         private void ChangeThemeToLight()
         {
             // create new style
-            var newStyle = new StyleInclude(new Uri("avares://AvaloniaApplicationTest/App.xaml"));
-            newStyle.Source = new Uri("avares://Avalonia.Themes.Default/Accents/BaseLight.xaml");
+            var newStyle = new StyleInclude(new Uri("avares://AvaloniaApplicationTest/App.xaml"))
+            {
+                Source = new Uri("avares://Avalonia.Themes.Default/Accents/BaseLight.xaml")
+            };
             // load style to get access to the ressources
             var baseDarkStyle = newStyle.Loaded as Style;
 
@@ -195,8 +197,10 @@ namespace CoreBackup.ViewModels
         private void ChangeThemeToDark()
         {
             // create new style
-            var newStyle = new StyleInclude(new Uri("avares://AvaloniaApplicationTest/App.xaml"));
-            newStyle.Source = new Uri("avares://Avalonia.Themes.Default/Accents/BaseDark.xaml");
+            var newStyle = new StyleInclude(new Uri("avares://AvaloniaApplicationTest/App.xaml"))
+            {
+                Source = new Uri("avares://Avalonia.Themes.Default/Accents/BaseDark.xaml")
+            };
             // load style to get access to the ressources
             var baseLightStyle = newStyle.Loaded as Style;
 

@@ -20,7 +20,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
     class DirectoryConfViewModel : ViewModelBase
     {
         private int counter = 0;
-        private int slotLimits = 10;
+        private readonly int slotLimits = 10;
         
         public Command AddNewRowCommand { get; set; }
         public ReactiveCommand<Unit, Unit>[] commandsArray;
@@ -109,7 +109,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 
         private async Task<string> GetPath()
         {
-            string resultReturn = null;
+            string resultReturn;
             string fullPath = null;
             if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
             {
@@ -131,7 +131,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
                 Data.Add(new LocalPath() { NumericID = counter, ExplorerCommand = commandsArray[counter] });
                 EventLogViewModel.AddNewRegistry("Local Path Slot Added",
                     DateTime.Now, this.GetType().Name, "LOW");
-                counter = counter + 1;
+                counter += 1;
             }
         }
 

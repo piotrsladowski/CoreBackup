@@ -83,5 +83,10 @@ namespace CoreBackup.Models.Config
                 throw;
             }
         }
+
+        public override List<string> GetConfigPaths()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

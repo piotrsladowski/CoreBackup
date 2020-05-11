@@ -202,7 +202,7 @@ namespace CoreBackup.ViewModels
                 else
                     ConnectionStatus = "Disconnected";
             }
-            catch (System.Net.NetworkInformation.PingException)
+            catch (PingException)
             {
                 ConnectionStatus = "Disconnected";
             }

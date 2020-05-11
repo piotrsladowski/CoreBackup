@@ -12,6 +12,7 @@ namespace CoreBackup.Models.Config
         public bool isEncrypted { get; set; }
         public DataSource dataSource;
         public abstract List<FileInformation> GetFiles();
+        public abstract List<string> GetConfigPaths();
     }
     public enum DataSource
     {

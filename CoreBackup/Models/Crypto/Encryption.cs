@@ -12,9 +12,9 @@ namespace CoreBackup.Models.Crypto
 {
     static class Encryption
     {
-        public static bool isKeySet { get; set; }
-        public static bool isIVSet { get; set; }
-        public static bool isPathRemembered { get; set; }
+        public static bool IsKeySet { get; set; }
+        public static bool IsIVSet { get; set; }
+        public static bool IsPathRemembered { get; set; }
         public static bool IsKeyLoaded = false;
 
         private static string KeyIVFilePath;
@@ -33,7 +33,7 @@ namespace CoreBackup.Models.Crypto
             AES256Key = CreateByteArray(AES256KEYSIZE);
             AES256KeySTRING = Convert.ToBase64String(AES256Key);
             Debug.WriteLine(AES256KeySTRING);
-            isKeySet = true;
+            IsKeySet = true;
         }
 
         public static void CreateAESIV()
@@ -41,7 +41,7 @@ namespace CoreBackup.Models.Crypto
             AES256IV = CreateByteArray(AES256IVSIZE);
             AES256IVString = Convert.ToBase64String(AES256IV);
             Debug.WriteLine(AES256IVString);
-            isIVSet = true;
+            IsIVSet = true;
         }
 
         public static byte[] CreateByteArray(int length)
@@ -56,8 +56,8 @@ namespace CoreBackup.Models.Crypto
 
         public async static void LoadAES_KeyIV_FromFile()
         {
-            string resultReturn = null;
-            string fullPath = null;
+            string resultReturn;
+            string fullPath;
             string[] result = null;
             if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
             {
@@ -95,10 +95,12 @@ namespace CoreBackup.Models.Crypto
             string resultReturn = null;
             if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
             {
-                SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-                saveFileDialog1.Title = "Save AES key to file";
-                saveFileDialog1.InitialFileName = "core.key";
-                saveFileDialog1.DefaultExtension = "key";
+                SaveFileDialog saveFileDialog1 = new SaveFileDialog
+                {
+                    Title = "Save AES key to file",
+                    InitialFileName = "core.key",
+                    DefaultExtension = "key"
+                };
                 string result = await saveFileDialog1.ShowAsync(desktopLifetime.MainWindow);
                 resultReturn = result;
                 Debug.WriteLine(resultReturn);

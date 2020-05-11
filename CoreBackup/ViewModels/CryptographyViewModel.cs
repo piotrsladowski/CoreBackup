@@ -73,7 +73,7 @@ namespace CoreBackup.ViewModels
 
         private void SaveKeyAndIV()
         {
-            if (Encryption.isKeySet && Encryption.isIVSet)
+            if (Encryption.IsKeySet && Encryption.IsIVSet)
             {
                 Encryption.SaveAES_KeyIV_ToFile();
             }
@@ -92,7 +92,7 @@ namespace CoreBackup.ViewModels
 
         private void CheckKeyAndIVStatus()
         {
-            if (Encryption.isKeySet)
+            if (Encryption.IsKeySet)
             {
                 KeyStatus = "Generated, ";
             }
@@ -101,7 +101,7 @@ namespace CoreBackup.ViewModels
                 KeyStatus = "Not generated, ";
             }
 
-            if (Encryption.isIVSet)
+            if (Encryption.IsIVSet)
             {
                 IVStatus = "Generated, ";
             }
@@ -110,7 +110,7 @@ namespace CoreBackup.ViewModels
                 IVStatus = "Not generated, ";
             }
 
-            if (Encryption.isPathRemembered)
+            if (Encryption.IsPathRemembered)
             {
                 PathStatus = "path remembered";
             }

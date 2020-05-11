@@ -94,20 +94,22 @@ namespace CoreBackup.ViewModels
 
             foreach (KeyValuePair<string, ConfigHub> entry in CoreTask.tasksList)
             {
-                var debugList = new List<FileInformation>();
                 foreach (Configuration leftConf in entry.Value.LeftSources)
                 {
-                    allLeftFiles.AddRange(leftConf.GetFiles());
-                    debugList = leftConf.GetFiles();
-                    allLeftFiles.All(c => { c.IsChecked = true; return true; });
+                    var files = leftConf.GetFiles();
+                    files.All(c => { c.ConfigurationName = entry.Key; return true; });
+                    allLeftFiles.AddRange(files);
                 }
 
                 foreach (Configuration rightConf in entry.Value.RightSources)
                 {
-                    allRightFiles.AddRange(rightConf.GetFiles());
-                    allLeftFiles.All(c => { c.IsChecked = false; return true; });
+                    var files = rightConf.GetFiles();
+                    files.All(c => { c.ConfigurationName = entry.Key; return true; });
+                    allRightFiles.AddRange(files);
                 }
             }
+            allLeftFiles.All(c => { c.IsChecked = true; return true; });
+            allRightFiles.All(c => { c.IsChecked = true; return true; });
             LeftFiles.AddRange(allLeftFiles);
             RightFiles.AddRange(allRightFiles);
         }
@@ -145,18 +147,17 @@ namespace CoreBackup.ViewModels
             // Lookup foreach entry in LeftFilesDict in RightFilesDict
             foreach (KeyValuePair<string, FileInformation> entry in leftFilesDictionary)
             {
-                FileInformation outFileInformation;
-                if (rightFilesDictionary.TryGetValue(entry.Key, out outFileInformation))
+                if (rightFilesDictionary.TryGetValue(entry.Key, out FileInformation outFileInformation))
                 {
-                    if(entry.Value.ModificationTime > outFileInformation.ModificationTime)
+                    if (entry.Value.ModificationTime > outFileInformation.ModificationTime)
                     {
                         var item = LeftFiles.FirstOrDefault(i => i.RelativePath == entry.Key);
-                        if(item != null)
+                        if (item != null)
                         {
                             item.FileVersion = FileVersion.Newer;
                         }
                     }
-                    else if(entry.Value.ModificationTime == outFileInformation.ModificationTime)
+                    else if (entry.Value.ModificationTime == outFileInformation.ModificationTime)
                     {
                         var item = LeftFiles.FirstOrDefault(i => i.RelativePath == entry.Key);
                         if (item != null)
@@ -188,8 +189,7 @@ namespace CoreBackup.ViewModels
 
             foreach (KeyValuePair<string, FileInformation> entry in rightFilesDictionary)
             {
-                FileInformation outFileInformation;
-                if (leftFilesDictionary.TryGetValue(entry.Key, out outFileInformation))
+                if (leftFilesDictionary.TryGetValue(entry.Key, out FileInformation outFileInformation))
                 {
                     if (entry.Value.ModificationTime > outFileInformation.ModificationTime)
                     {
@@ -230,26 +230,29 @@ namespace CoreBackup.ViewModels
 
         private void SyncMirror()
         {
-            if(leftFilesDictionary.Count == 0 || rightFilesDictionary.Count == 0)
-            {
-
-            }
-
+            SyncActions syncActions = new SyncActions(LeftFiles, RightFiles);
+            syncActions.SyncMirror();
         }
 
         private void SyncToLeft()
         {
-
+            SyncActions syncActions = new SyncActions(LeftFiles, RightFiles);
+            syncActions.SyncToLeft();
         }
         private void SyncToLeftOverride()
         {
-
+            SyncActions syncActions = new SyncActions(LeftFiles, RightFiles);
+            syncActions.SyncToLeftOverride();
         }
         private void SyncToRight()
         {
+            SyncActions syncActions = new SyncActions(LeftFiles, RightFiles);
+            syncActions.SyncToRight();
         }
         private void SyncToRightOverride()
         {
+            SyncActions syncActions = new SyncActions(LeftFiles, RightFiles);
+            syncActions.SyncToRightOverride();
         }
     }
 }
