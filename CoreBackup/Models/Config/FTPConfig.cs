@@ -75,7 +75,8 @@ namespace CoreBackup.Models.Config
             try
             {
                 var filesList = new List<FileInformation>();
-                FTP.GetAllInformationsAboutFiles(credentials["server"], credentials["username"], credentials["password"], ref filesList);
+                string beforeFilename = "";
+                FTP.GetAllInformationsAboutFiles(credentials["server"], credentials["username"], credentials["password"], ref filesList, beforeFilename);
                 return filesList;
             }
             catch (Exception e)

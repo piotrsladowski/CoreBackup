@@ -12,6 +12,7 @@ using System.Linq;
 using CoreBackup.Models.Tasks;
 using CoreBackup.Models.Config;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace CoreBackup.ViewModels
 {

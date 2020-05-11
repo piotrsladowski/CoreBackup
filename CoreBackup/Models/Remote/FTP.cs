@@ -8,6 +8,7 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using CoreBackup.Models.IO;
+using DynamicData;
 using File = System.IO.File;
 
 namespace CoreBackup.Models.Remote
@@ -197,7 +198,7 @@ namespace CoreBackup.Models.Remote
 
         public static Int32 GetDateTimestamp(string filename, string ip, string username, string password)
         {
-            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + ip + "//" + filename);
+            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + ip + "/" + filename);
             ftpRequest.Method = WebRequestMethods.Ftp.GetDateTimestamp;
             ftpRequest.Credentials = new NetworkCredential(username, password);
             try
@@ -219,7 +220,7 @@ namespace CoreBackup.Models.Remote
 
         public static long GetFileSize(string filename, string ip, string username, string password)
         {
-            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + ip + "//" + filename);
+            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + ip + "/" + filename);
             ftpRequest.Method = WebRequestMethods.Ftp.GetFileSize;
             ftpRequest.Credentials = new NetworkCredential(username, password);
             try
@@ -232,18 +233,18 @@ namespace CoreBackup.Models.Remote
             }
             catch (Exception e)
             {
+                Debug.WriteLine("OKEJ");
                 if (e.Message.Contains("File unavailable"))
                     return 0;
                 throw;
             }
-
         }
 
-        public static void GetAllInformationsAboutFiles(string ip, string username, string password, ref List<FileInformation> listFiles)
+        public static void GetAllInformationsAboutFiles(string ip, string username, string password, ref List<FileInformation> listFiles, string beforeFilename)
         {
             var url = "ftp://" + ip;
             var request = (FtpWebRequest)WebRequest.Create(url);
-            request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
+            request.Method = WebRequestMethods.Ftp.ListDirectory;
             request.Credentials = new NetworkCredential(username, password);
 
             try
@@ -255,19 +256,39 @@ namespace CoreBackup.Models.Remote
                         var reader = new StreamReader(responseStream);
                         while (!reader.EndOfStream)
                         {
-                            var line = reader.ReadLine();
+                            string line = reader.ReadLine();
                             if (string.IsNullOrWhiteSpace(line) == false)
                             {
+                                string[] lineComponents = line.Split('/');
+                                string[] lineChecker= line.Split('.');
+
                                 FileInformation fi = new FileInformation();
-                                var fullFileName = line.Split(new[] {' ', '\t'}).Last();
-                                string[] fullFileNameSplitted = fullFileName.Split(".");
-                                fi.FullPath = fullFileNameSplitted[0];
-                                fi.Extension = fullFileNameSplitted[1];
-                                fi.ModificationTime = FTP.GetDateTimestamp(fullFileName, ip, username, password);
-                                fi.Size = FTP.GetFileSize(fullFileName, ip, username, password);
-                                listFiles.Add(fi);
-                                fi = null;
-                                //Debug.WriteLine(fi.Filename + " " + fi.Extension + " " + fi.ModificationTime + " " +  fi.Size);
+
+                                // DIRECTORIES
+                                if (lineChecker.Length == 1)
+                                {
+                                    string directory = lineChecker[0];
+                                    GetAllInformationsAboutFiles(ip+"/"+directory, username, password, ref listFiles, directory);
+                                }
+                                // FILE
+                                else if (lineChecker.Length == 2)
+                                {
+                                    string fileName = lineComponents.Last();
+                                    string[] fileNameSplitted = fileName.Split(".");
+                                    fi.RelativePath = fileNameSplitted[0];
+                                    fi.Extension = fileNameSplitted[1];
+                                    if (beforeFilename.Equals(""))
+                                    {
+                                        fi.FullPath = beforeFilename + fileName;
+                                    }
+                                    else
+                                    {
+                                        fi.FullPath = beforeFilename + "/" + fileName;
+                                    } 
+                                    fi.ModificationTime = FTP.GetDateTimestamp(fi.FullPath, ip, username, password);
+                                    fi.Size = FTP.GetFileSize(fi.FullPath, ip, username, password);
+                                    listFiles.Add(fi);
+                                }
                             }
                         }
                     }

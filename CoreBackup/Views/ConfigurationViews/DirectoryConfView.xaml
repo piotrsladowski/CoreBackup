@@ -6,9 +6,11 @@
              x:Class="CoreBackup.Views.ConfigurationViews.DirectoryConfView">
 
   
-   <DockPanel Margin="0,27,0,0">   
-    <Button Content="Add New Slot" Command="{Binding AddNewRowCommand}" Width="100"
-            Margin="-240,5,0,0" DockPanel.Dock="Bottom"/>
+   <DockPanel Margin="0,27,0,0">
+    <Button Content="Delete Slot" Command="{Binding EraseLastRowCommand}" Width="200"
+            Margin="-290,5,0,0" DockPanel.Dock="Bottom" IsVisible="{Binding EraseRowVisible}"/>
+    <Button Content="Add New Slot" Command="{Binding AddNewRowCommand}" Width="200"
+            Margin="-290,20,0,0" DockPanel.Dock="Bottom"/>
     <ItemsControl Items="{Binding Data}">
       <ItemsControl.ItemTemplate>
         <DataTemplate>
