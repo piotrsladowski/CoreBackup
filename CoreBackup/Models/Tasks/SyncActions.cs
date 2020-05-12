@@ -7,6 +7,7 @@ using CoreBackup.Models.IO;
 using DynamicData.Binding;
 using System.Linq;
 using System.IO;
+using CoreBackup.Models.Crypto;
 
 namespace CoreBackup.Models.Tasks
 {
@@ -46,17 +47,8 @@ namespace CoreBackup.Models.Tasks
 
         public void SyncMirror()
         {
-            var targetPathRight = rightFiles.FirstOrDefault().LocalPath;
-            var targetPathLeft = leftFiles.FirstOrDefault().LocalPath;
-            foreach (var item in leftFiles)
-            {
-                if (item.FileVersion == FileVersion.Newer)
-                {
-                    string destFile = Path.Combine(targetPathRight, item.RelativePath);
-                    string sourceFile = item.FullPath;
-                    //File.Copy(sourceFile, destFile, true);
-                }
-            }
+            SyncToLeft();
+            SyncToRight();
         }
 
         public void SyncToLeft()
@@ -72,7 +64,7 @@ namespace CoreBackup.Models.Tasks
             {
                 targetPathLeft = leftFile.LocalPath;
             }
-            foreach (var item in leftFiles)
+            foreach (var item in rightFiles)
             {
                 if (item.FileVersion == FileVersion.Newer)
                 {
@@ -84,7 +76,15 @@ namespace CoreBackup.Models.Tasks
                     {
                         Directory.CreateDirectory(path);
                     }
-                    File.Copy(sourceFile, destFile, true);*/
+                    if (Encryption.IsKeySet && Encryption.IsIVSet)
+                    {
+                        Encryption.AESDecryptFile(sourceFile, destFile, true);
+                    }
+                    else
+                    {
+                        File.Copy(sourceFile, destFile, true);
+                    }*/
+
                 }
             }
         }
@@ -118,7 +118,14 @@ namespace CoreBackup.Models.Tasks
                     {
                         Directory.CreateDirectory(path);
                     }
-                    File.Copy(sourceFile, destFile, true);*/
+                    if (Encryption.IsKeySet && Encryption.IsIVSet)
+                    {
+                        Encryption.AESEncryptFile(sourceFile, destFile, true);
+                    }
+                    else
+                    {
+                        File.Copy(sourceFile, destFile, true);
+                    }*/
                 }
             }
         }

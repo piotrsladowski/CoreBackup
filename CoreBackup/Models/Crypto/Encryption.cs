@@ -73,8 +73,6 @@ namespace CoreBackup.Models.Crypto
                     Debug.WriteLine(buffer.Length);
                     AES256Key = buffer.Take(32).ToArray();
                     AES256IV = buffer.Skip(32).Take(16).ToArray();
-                    //Debug.WriteLine(Convert.ToBase64String(AES256Key));
-                    //Debug.WriteLine(Convert.ToBase64String(AES256IV));
                     IsKeyLoaded = true;
                     EventLogViewModel.AddNewRegistry("AES Key and IV has been loaded from external file",
                         DateTime.Now, "Encryption", "HIGH");
@@ -167,6 +165,58 @@ namespace CoreBackup.Models.Crypto
             }
         }
 
+        public static bool AESEncryptFile(string filePath, string targetFilePath, bool deletePlainFile)
+        {
+            if (true)
+            {
+                byte[] salt = CreateByteArray(2);
+                // FileStream for Creating Encrypted File
+                using FileStream fs = new FileStream(targetFilePath + ".enc", FileMode.Create);
+                using Aes aes = new AesManaged
+                {
+                    Key = AES256Key,
+                    IV = AES256IV,
+                    Padding = PaddingMode.ISO10126,
+                    Mode = CipherMode.CBC
+                };
+                int offset = 0;
+
+                fs.Write(salt, offset, salt.Length);
+                // FileStream for Encrypting 
+                using CryptoStream cs = new CryptoStream(fs, aes.CreateEncryptor(), CryptoStreamMode.Write);
+                // FileStream for Opening Plain File
+                using FileStream fsIn = new FileStream(filePath, FileMode.Open);
+                byte[] buffer = new byte[1];
+                int read;
+                try
+                {
+                    while ((read = fsIn.Read(buffer, 0, buffer.Length)) > 0)
+                    {
+                        cs.Write(buffer, 0, read);
+                    }
+
+                    if (deletePlainFile)
+                    {
+                        File.Delete(filePath);
+                    }
+
+                    cs.Close();
+                    fs.Close();
+                    fsIn.Close();
+
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
         public static bool AESDecryptFile(string filePath, bool keepEncryptedFile)
         {
@@ -186,6 +236,59 @@ namespace CoreBackup.Models.Crypto
 
                 using CryptoStream cs = new CryptoStream(fsIn, aes.CreateDecryptor(), CryptoStreamMode.Read);
                 using FileStream fsOut = new FileStream(filePath.Remove(filePath.Length - 4),
+FileMode.Create);
+                byte[] buffer = new byte[1];
+                int read;
+
+                try
+                {
+                    while ((read = cs.Read(buffer, 0, buffer.Length)) > 0)
+                    {
+                        fsOut.Write(buffer, 0, buffer.Length);
+                    }
+
+                    if (!keepEncryptedFile)
+                    {
+                        File.Delete(filePath);
+                    }
+
+                    cs.FlushFinalBlock();
+                    fsOut.Close();
+                    fsIn.Close();
+                    cs.Close();
+
+                    return true;
+
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool AESDecryptFile(string filePath, string targetFilePath, bool keepEncryptedFile)
+        {
+            if (true)
+            {
+                byte[] salt = CreateByteArray(2);
+                int offset = 0;
+                using FileStream fsIn = new FileStream(filePath, FileMode.Open);
+                fsIn.Read(salt, offset, salt.Length);
+                using Aes aes = new AesManaged
+                {
+                    Key = AES256Key,
+                    IV = AES256IV,
+                    Padding = PaddingMode.ISO10126,
+                    Mode = CipherMode.CBC
+                };
+
+                using CryptoStream cs = new CryptoStream(fsIn, aes.CreateDecryptor(), CryptoStreamMode.Read);
+                using FileStream fsOut = new FileStream(targetFilePath.Remove(targetFilePath.Length - 4),
 FileMode.Create);
                 byte[] buffer = new byte[1];
                 int read;
