@@ -4,6 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CoreBackup.Views.HomeView">
-    Home Page. Starting Page.
+ 
+  <StackPanel>
+    <Image Source="avares://CoreBackup/Assets/CoreBackup_logo.png" HorizontalAlignment="Center"
+           VerticalAlignment="Center" Width="400" Height="400" Margin="0,-55,0,0"/>
+    <TextBlock Text="Welcome to the CoreBackup. Enjoy and keep your data safe." HorizontalAlignment="Center"
+               VerticalAlignment="Center" FontSize="20" Margin="0,-30,0,20"/>
+    <TextBlock Text="Local and Remote files backup" HorizontalAlignment="Center"
+               VerticalAlignment="Center" FontSize="13"/>
+    <TextBlock Text="Full support for FTP type servers" HorizontalAlignment="Center"
+               VerticalAlignment="Center" FontSize="13"/>
+    <TextBlock Text="Optional files encryption by dint of AES256" HorizontalAlignment="Center"
+               VerticalAlignment="Center" FontSize="13"/>
+    <TextBlock Text="Multi-optional synchronization" HorizontalAlignment="Center"
+               VerticalAlignment="Center" FontSize="13"/>
+    
+  </StackPanel>
     
 </UserControl>

@@ -78,11 +78,11 @@
       
       <!-- Menu Sidebar -->
       <StackPanel Grid.Column="0">
-        <Image  MaxHeight="40" ClipToBounds="True" Source="/Assets/CoreBackup.png" Margin="10"/>
+        <Image  MaxHeight="60" ClipToBounds="True" Source="/Assets/CoreBackup.png" Margin="10"/>
         <Button Content="Tasks" HorizontalContentAlignment="Center" Classes="MenuButton"
                 Command="{Binding ChangeScreenTasks}" Padding="15"/>
-        <Button Content="File Explorer" HorizontalContentAlignment="Center" Classes="MenuButton"
-                Command="{Binding ChangeScreenFileExplorer}" Padding="15"/>
+        <!--<Button Content="File Explorer" HorizontalContentAlignment="Center" Classes="MenuButton"
+                Command="{Binding ChangeScreenFileExplorer}" Padding="15"/>-->
         
         <!-- Dropdown submenu -->
         <Expander Classes="Expander" HorizontalAlignment="Stretch" VerticalAlignment="Top" ExpandDirection="Down">

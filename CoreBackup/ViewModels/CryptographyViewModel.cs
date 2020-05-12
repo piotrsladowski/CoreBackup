@@ -118,8 +118,6 @@ namespace CoreBackup.ViewModels
             {
                 PathStatus = "path not remembered";
             }
-            EventLogViewModel.AddNewRegistry("AES Key Status Updated",
-                DateTime.Now, this.GetType().Name, "LOW");
         }
     }
 }
