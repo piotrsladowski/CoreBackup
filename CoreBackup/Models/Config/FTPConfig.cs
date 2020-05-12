@@ -76,13 +76,13 @@ namespace CoreBackup.Models.Config
             try
             {
                 var filesList = new List<FileInformation>();
-                FTP.GetAllInformationsAboutFiles(credentials["server"], credentials["username"], credentials["password"], ref filesList);
+                FTP.GetAllInformationsAboutFiles(Credentials["server"], Credentials["username"], Credentials["password"], ref filesList);
                 return filesList;
             }
             catch (Exception e)
             {
                 EventLogViewModel.AddNewRegistry("An error has occured during remote file listing", DateTime.Now, 
-                    "FTP" + credentials["server"], "ERROR");
+                    "FTP" + Credentials["server"], "ERROR");
                 throw;
             }
         }
