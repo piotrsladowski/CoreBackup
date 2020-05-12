@@ -47,11 +47,9 @@ namespace CoreBackup.Models.Crypto
         public static byte[] CreateByteArray(int length)
         {
             byte[] result = new byte[length];
-            using (RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider())
-            {
-                provider.GetBytes(result);
-                return result;
-            }
+            using RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
+            provider.GetBytes(result);
+            return result;
         }
 
         public async static void LoadAES_KeyIV_FromFile()
@@ -123,50 +121,44 @@ namespace CoreBackup.Models.Crypto
             {
                 byte[] salt = CreateByteArray(2);
                 // FileStream for Creating Encrypted File
-                using (FileStream fs = new FileStream(filePath + ".enc", FileMode.Create))
+                using FileStream fs = new FileStream(filePath + ".enc", FileMode.Create);
+                using Aes aes = new AesManaged
                 {
-                    using (Aes aes = new AesManaged())
+                    Key = AES256Key,
+                    IV = AES256IV,
+                    Padding = PaddingMode.ISO10126,
+                    Mode = CipherMode.CBC
+                };
+                int offset = 0;
+
+                fs.Write(salt, offset, salt.Length);
+                // FileStream for Encrypting 
+                using CryptoStream cs = new CryptoStream(fs, aes.CreateEncryptor(), CryptoStreamMode.Write);
+                // FileStream for Opening Plain File
+                using FileStream fsIn = new FileStream(filePath, FileMode.Open);
+                byte[] buffer = new byte[1];
+                int read;
+                try
+                {
+                    while ((read = fsIn.Read(buffer, 0, buffer.Length)) > 0)
                     {
-                        aes.Key = AES256Key;
-                        aes.IV = AES256IV;
-                        aes.Padding = PaddingMode.ISO10126;
-                        aes.Mode = CipherMode.CBC;
-                        int offset = 0;
-
-                        fs.Write(salt, offset, salt.Length);
-                        // FileStream for Encrypting 
-                        using (CryptoStream cs = new CryptoStream(fs, aes.CreateEncryptor(), CryptoStreamMode.Write))
-                        {
-                            // FileStream for Opening Plain File
-                            using (FileStream fsIn = new FileStream(filePath, FileMode.Open))
-                            {
-                                byte[] buffer = new byte[1];
-                                int read;
-                                try
-                                {
-                                    while ((read = fsIn.Read(buffer, 0, buffer.Length)) > 0)
-                                    {
-                                        cs.Write(buffer, 0, read);
-                                    }
-
-                                    if (deletePlainFile)
-                                    {
-                                        File.Delete(filePath);
-                                    }
-
-                                    cs.Close();
-                                    fs.Close();
-                                    fsIn.Close();
-
-                                    return true;
-                                }
-                                catch (Exception e)
-                                {
-                                    return false;
-                                }
-                            }
-                        }
+                        cs.Write(buffer, 0, read);
                     }
+
+                    if (deletePlainFile)
+                    {
+                        File.Delete(filePath);
+                    }
+
+                    cs.Close();
+                    fs.Close();
+                    fsIn.Close();
+
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    return false;
                 }
             }
             else
@@ -182,51 +174,45 @@ namespace CoreBackup.Models.Crypto
             {
                 byte[] salt = CreateByteArray(2);
                 int offset = 0;
-                using (FileStream fsIn = new FileStream(filePath, FileMode.Open))
+                using FileStream fsIn = new FileStream(filePath, FileMode.Open);
+                fsIn.Read(salt, offset, salt.Length);
+                using Aes aes = new AesManaged
                 {
-                    fsIn.Read(salt, offset, salt.Length);
-                    using (Aes aes = new AesManaged())
+                    Key = AES256Key,
+                    IV = AES256IV,
+                    Padding = PaddingMode.ISO10126,
+                    Mode = CipherMode.CBC
+                };
+
+                using CryptoStream cs = new CryptoStream(fsIn, aes.CreateDecryptor(), CryptoStreamMode.Read);
+                using FileStream fsOut = new FileStream(filePath.Remove(filePath.Length - 4),
+FileMode.Create);
+                byte[] buffer = new byte[1];
+                int read;
+
+                try
+                {
+                    while ((read = cs.Read(buffer, 0, buffer.Length)) > 0)
                     {
-                        aes.Key = AES256Key;
-                        aes.IV = AES256IV;
-                        aes.Padding = PaddingMode.ISO10126;
-                        aes.Mode = CipherMode.CBC;
-
-                        using (CryptoStream cs = new CryptoStream(fsIn, aes.CreateDecryptor(), CryptoStreamMode.Read))
-                        {
-                            using (FileStream fsOut = new FileStream(filePath.Remove(filePath.Length - 4),
-                                FileMode.Create))
-                            {
-                                byte[] buffer = new byte[1];
-                                int read;
-
-                                try
-                                {
-                                    while ((read = cs.Read(buffer, 0, buffer.Length)) > 0)
-                                    { 
-                                        fsOut.Write(buffer, 0, buffer.Length);
-                                    }
-
-                                    if (!keepEncryptedFile)
-                                    {
-                                        File.Delete(filePath);
-                                    }
-
-                                    cs.FlushFinalBlock();
-                                    fsOut.Close();
-                                    fsIn.Close();
-                                    cs.Close();
-
-                                    return true;
-
-                                }
-                                catch (Exception e)
-                                {
-                                    return false;
-                                }
-                            }
-                        }
+                        fsOut.Write(buffer, 0, buffer.Length);
                     }
+
+                    if (!keepEncryptedFile)
+                    {
+                        File.Delete(filePath);
+                    }
+
+                    cs.FlushFinalBlock();
+                    fsOut.Close();
+                    fsIn.Close();
+                    cs.Close();
+
+                    return true;
+
+                }
+                catch (Exception e)
+                {
+                    return false;
                 }
             }
             else

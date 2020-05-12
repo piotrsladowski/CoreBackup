@@ -49,7 +49,7 @@ namespace CoreBackup.ViewModels
             {
                 if(!InfoConfigsList.Any(u => u.Name == entry.Key))
                 {
-                    InfoConfig infoConfig = new InfoConfig(ID, entry.Key, entry.Value.isActive);
+                    InfoConfig infoConfig = new InfoConfig(ID, entry.Key, entry.Value.IsActive);
                     infoConfig.DictionaryPropertyChanged += OnDictionaryPropertyChanged;
                     InfoConfigsList.Add(infoConfig);
                 }
@@ -60,7 +60,7 @@ namespace CoreBackup.ViewModels
             InfoConfigsList.Clear();
             foreach (KeyValuePair<string, ConfigHub> entry in CoreTask.tasksList)
             {
-                InfoConfig infoConfig = new InfoConfig(ID, entry.Key, entry.Value.isActive);
+                InfoConfig infoConfig = new InfoConfig(ID, entry.Key, entry.Value.IsActive);
                 infoConfig.DictionaryPropertyChanged += OnDictionaryPropertyChanged;
                 InfoConfigsList.Add(infoConfig);
                 ID++;

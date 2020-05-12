@@ -9,33 +9,33 @@ namespace CoreBackup.Models.Config
 {
     class DirectoryConfig : Configuration
     {
-        public DataSource dataSource { get; set; }
-        public Dictionary<int, string> localPaths { get; set; }
+        public DataSource DataSource { get; set; }
+        public Dictionary<int, string> LocalPaths { get; set; }
         // List caused problems in GUI.
 
         public Dictionary<int, string> GetLocalPaths()
         {
-            return localPaths;
+            return LocalPaths;
         }
 
         public DirectoryConfig()
         {
-            localPaths = new Dictionary<int, string>();
-            dataSource = DataSource.Directory;
+            LocalPaths = new Dictionary<int, string>();
+            DataSource = DataSource.Directory;
         }
 
         public void ProvideLocalPath(int key, string localPath)
         {
-            localPaths[key] = localPath;
+            LocalPaths[key] = localPath;
         }
 
         public string BrowseLocalPaths(int key)
         {
             string result = null;
 
-            if (localPaths.ContainsKey(key))
+            if (LocalPaths.ContainsKey(key))
             {
-                result = localPaths[key];
+                result = LocalPaths[key];
             }
             return result;
         }
@@ -44,7 +44,7 @@ namespace CoreBackup.Models.Config
         public override List<FileInformation> GetFiles()
         {
             var filesList = new List<FileInformation>();
-            foreach (KeyValuePair<int, string> entry in localPaths)
+            foreach (KeyValuePair<int, string> entry in LocalPaths)
             {
                 var path = entry.Value;
                 string[] allfiles = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
@@ -76,7 +76,7 @@ namespace CoreBackup.Models.Config
         public override List<string> GetConfigPaths()
         {
             var pathsList = new List<string>();
-            foreach (KeyValuePair<int, string> entry in localPaths)
+            foreach (KeyValuePair<int, string> entry in LocalPaths)
             {
                 pathsList.Add(entry.Value);
             }

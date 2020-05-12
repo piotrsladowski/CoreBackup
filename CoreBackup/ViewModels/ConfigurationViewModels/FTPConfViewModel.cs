@@ -31,7 +31,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref _uploadPath, value);
-                FtpConfig.provideUploadPath(value);
+                FtpConfig.ProvideUploadPath(value);
             }
         }
 
@@ -43,7 +43,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref _downloadPath, value);
-                FtpConfig.provideDownloadPath(value);
+                FtpConfig.ProvideDownloadPath(value);
             }
         }
 
@@ -131,7 +131,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 
         private async Task<string> GetPath(bool DisposableUploadFile)
         {
-            string[] resultReturn = null;
+            string[] resultReturn;
             string fullPath = null;
             if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
             {
@@ -150,7 +150,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
                     fullPath = string.Join(" ", resultReturn);
                     dialog.AllowMultiple = true;
                     string[] PathTreeSteps = fullPath.Split('\\');
-                    ToUploadFile = PathTreeSteps[PathTreeSteps.Length - 1];
+                    ToUploadFile = PathTreeSteps[^1];
                 }
 
             }
@@ -315,7 +315,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
                     IsLogged = FtpClient.ValidateLogging();
                     if (IsLogged)
                     {
-                        FtpConfig.provideCredentials(UsernameInput, PasswordInput, ServerInput);
+                        FtpConfig.ProvideCredentials(UsernameInput, PasswordInput, ServerInput);
                         EventLogViewModel.AddNewRegistry("Successful login to the FTP server", DateTime.Now, this.GetType().Name, "HIGH");
                         ListFiles();
                     }

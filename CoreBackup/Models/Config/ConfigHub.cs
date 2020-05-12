@@ -8,12 +8,12 @@ namespace CoreBackup.Models.Config
     {
         public List<Configuration> LeftSources { get; set; }
         public List<Configuration> RightSources { get; set; }
-        public bool isActive { get; set; }
+        public bool IsActive { get; set; }
         public ConfigHub()
         {
             LeftSources = new List<Configuration>();
             RightSources = new List<Configuration>();
-            isActive = true;
+            IsActive = true;
         }
 
         internal void AddLeftSources(Configuration leftSources)
@@ -26,18 +26,6 @@ namespace CoreBackup.Models.Config
         {
             RightSources.Clear();
             RightSources.Add(rightSources);
-        }
-
-        void AddConfigHubEntry(List<Configuration> leftSources, List<Configuration> rightSources)
-        {
-            LeftSources = leftSources;
-            RightSources = rightSources;
-        }
-
-        void AddConfigHubEntry(Configuration leftConfiguration, Configuration rightConfiguration)
-        {
-            LeftSources.Add(leftConfiguration);
-            RightSources.Add(rightConfiguration);
         }
     }
 }

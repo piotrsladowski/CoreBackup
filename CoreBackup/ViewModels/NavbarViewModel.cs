@@ -107,10 +107,10 @@ namespace CoreBackup.ViewModels
                 if (!string.IsNullOrEmpty(result))
                 {
                     string[] resultArray = result.Split("\\");
-                    CoreTask.configFilename = resultArray[resultArray.Length - 1];
+                    CoreTask.configFilename = resultArray[^1];
                     resultArray = resultArray.Where((source, index) => index != (resultArray.Length - 1)).ToArray();
                     CoreTask.jsonConfigPath = string.Join("\\", resultArray);
-                    CoreTask.saveConfigToJsonFile();
+                    CoreTask.SaveConfigToJsonFile();
                     EventLogViewModel.AddNewRegistry("Configuration has been saved to JSON",
                         DateTime.Now, "Git Hub", "Low");
 
@@ -126,7 +126,7 @@ namespace CoreBackup.ViewModels
             }
             else
             {
-                CoreTask.saveConfigToJsonFile();
+                CoreTask.SaveConfigToJsonFile();
                 EventLogViewModel.AddNewRegistry("Configuration has been updated in JSON",
                     DateTime.Now, "Git Hub", "Low");
 
@@ -144,10 +144,10 @@ namespace CoreBackup.ViewModels
                 if (!string.IsNullOrEmpty(fullPath))
                 {
                     string[] resultArray = fullPath.Split("\\");
-                    CoreTask.configFilename = resultArray[resultArray.Length - 1];
+                    CoreTask.configFilename = resultArray[^1];
                     resultArray = resultArray.Where((source, index) => index != (resultArray.Length - 1)).ToArray();
                     CoreTask.jsonConfigPath = string.Join("\\", resultArray);
-                    CoreTask.readConfigFromJsonFile();
+                    CoreTask.ReadConfigFromJsonFile();
                     EventLogViewModel.AddNewRegistry("Configuration has been loaded from JSON",
                         DateTime.Now, "Git Hub", "Low");
                 }
@@ -196,25 +196,25 @@ namespace CoreBackup.ViewModels
 
         private void ChangeThemeToDark()
         {
-            // create new style
+            // Create new style.
             var newStyle = new StyleInclude(new Uri("avares://AvaloniaApplicationTest/App.xaml"))
             {
                 Source = new Uri("avares://Avalonia.Themes.Default/Accents/BaseDark.xaml")
             };
-            // load style to get access to the ressources
+            // Load style to get access to the ressources.
             var baseLightStyle = newStyle.Loaded as Style;
 
-            // get the original source (BaseDark)
+            // Get the original source (BaseDark).
             var ressourceFromAppXaml = ((Style)((StyleInclude)Application.Current.Styles[1]).Loaded).Resources;
             foreach (var item in baseLightStyle.Resources)
             {
-                // for secure lookup if the key exists for the resource otherwise create it
+                // For secure lookup if the key exists for the resource otherwise create it.
                 if (ressourceFromAppXaml.ContainsKey(item.Key))
                     ressourceFromAppXaml[item.Key] = item.Value;
                 else
                     ressourceFromAppXaml.Add(item.Key, item.Value);
             }
-            // set source name for the new theme
+            // Set source name for the new theme.
             ((StyleInclude)Application.Current.Styles[1]).Source = new Uri("avares://Avalonia.Themes.Default/Accents/BaseDark.xaml");
         }
     }

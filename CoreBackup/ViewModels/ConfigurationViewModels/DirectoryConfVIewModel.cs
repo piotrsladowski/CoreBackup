@@ -161,7 +161,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
                 Data.RemoveAt(counter-1);
                 EventLogViewModel.AddNewRegistry("Local Path Slot Removed",
                     DateTime.Now, this.GetType().Name, "LOW");
-                counter = counter - 1;
+                counter -= 1;
                 if (counter == 0)
                 {
                     EraseRowVisible = false;

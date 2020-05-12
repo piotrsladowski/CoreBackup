@@ -52,17 +52,15 @@ namespace CoreBackup.Models.Tasks
         }
 
 
-        public static void saveConfigToJsonFile()
+        public static void SaveConfigToJsonFile()
         {
             jsonConfig = JsonConvert.SerializeObject(CoreTask.tasksList, Formatting.Indented);
-            using (var writer = new StreamWriter(jsonConfigPath + "\\" + configFilename))
-            {
-                writer.Write(jsonConfig);
-            }
+            using var writer = new StreamWriter(jsonConfigPath + "\\" + configFilename);
+            writer.Write(jsonConfig);
 
         }
 
-        public static void readConfigFromJsonFile()
+        public static void ReadConfigFromJsonFile()
         {
             string jsonFromFile;
             using (var reader = new StreamReader(jsonConfigPath + "/" + configFilename))
@@ -101,7 +99,7 @@ namespace CoreBackup.Models.Tasks
         {
             try
             {
-                tasksList[name].isActive = status;
+                tasksList[name].IsActive = status;
                 EventLogViewModel.AddNewRegistry("Updated " + name + " activity status",
                 DateTime.Now, typeof(CoreTask).Name, "MEDIUM");
                 return true;

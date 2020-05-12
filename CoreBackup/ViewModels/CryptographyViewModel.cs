@@ -94,20 +94,20 @@ namespace CoreBackup.ViewModels
         {
             if (Encryption.IsKeySet)
             {
-                KeyStatus = "Generated, ";
+                KeyStatus = "Generated ";
             }
             else
             {
-                KeyStatus = "Not generated, ";
+                KeyStatus = "Not generated ";
             }
 
             if (Encryption.IsIVSet)
             {
-                IVStatus = "Generated, ";
+                IVStatus = "Generated ";
             }
             else
             {
-                IVStatus = "Not generated, ";
+                IVStatus = "Not generated ";
             }
 
             if (Encryption.IsPathRemembered)

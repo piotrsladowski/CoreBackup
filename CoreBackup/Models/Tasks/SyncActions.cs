@@ -52,15 +52,9 @@ namespace CoreBackup.Models.Tasks
             {
                 if (item.FileVersion == FileVersion.Newer)
                 {
-                    string fileName = "test.txt";
-                    string sourcePath = @"C:\Users\Public\TestFolder";
-                    string targetPath = @"C:\Users\Public\TestFolder\SubDir";
-
-                    //string sourceFile = Path.Combine(sourcePath, fileName);
                     string destFile = Path.Combine(targetPathRight, item.RelativePath);
                     string sourceFile = item.FullPath;
-
-                    File.Copy(sourceFile, destFile, true);
+                    //File.Copy(sourceFile, destFile, true);
                 }
             }
         }
