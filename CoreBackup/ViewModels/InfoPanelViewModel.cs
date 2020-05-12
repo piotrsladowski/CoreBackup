@@ -43,19 +43,6 @@ namespace CoreBackup.ViewModels
 
         private void UpdateInfoConfigsList()
         {
-            /*
-            ID = 1;
-            foreach (KeyValuePair<string, ConfigHub> entry in CoreTask.tasksList)
-            {
-                if(!InfoConfigsList.Any(u => u.Name == entry.Key))
-                {
-                    InfoConfig infoConfig = new InfoConfig(ID, entry.Key, entry.Value.IsActive);
-                    infoConfig.DictionaryPropertyChanged += OnDictionaryPropertyChanged;
-                    InfoConfigsList.Add(infoConfig);
-                }
-                ID++;
-
-            }*/
             ID = 1;
             InfoConfigsList.Clear();
             foreach (KeyValuePair<string, ConfigHub> entry in CoreTask.tasksList)
