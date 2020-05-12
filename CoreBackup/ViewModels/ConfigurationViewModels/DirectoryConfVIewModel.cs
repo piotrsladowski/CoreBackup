@@ -190,5 +190,11 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             }
             directoryConfig = new DirectoryConfig();
         }
+
+        public void OnRefreshSourcesEvent(object o, EventArgs e)
+        {
+            counter = 0;
+            Data.Clear();
+        }
     }
 }

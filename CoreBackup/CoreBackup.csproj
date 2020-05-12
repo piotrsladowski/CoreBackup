@@ -17,10 +17,6 @@
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
   <ItemGroup>
-    <AvaloniaResource Remove="Assets\CryptoIcons\icons8-data-encryption-64.png" />
-    <AvaloniaResource Remove="Assets\CryptoIcons\icons8-key-160.png" />
-    <AvaloniaResource Remove="Assets\CryptoIcons\icons8-key-256.png" />
-    <AvaloniaResource Remove="Assets\CryptoIcons\icons8-security-aes-64.png" />
     <AvaloniaResource Remove="Assets\Icons\icons8-data-encryption-64.png" />
     <AvaloniaResource Remove="Assets\Icons\icons8-key-160.png" />
     <AvaloniaResource Remove="Assets\Icons\icons8-key-256.png" />
@@ -39,10 +35,6 @@
     <AvaloniaResource Remove="Windows\SettingsWindow.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Assets\CryptoIcons\icons8-data-encryption-64.png" />
-    <None Remove="Assets\CryptoIcons\icons8-key-160.png" />
-    <None Remove="Assets\CryptoIcons\icons8-key-256.png" />
-    <None Remove="Assets\CryptoIcons\icons8-security-aes-64.png" />
     <None Remove="Assets\Icons\icons8-data-encryption-64.png" />
     <None Remove="Assets\Icons\icons8-key-160.png" />
     <None Remove="Assets\Icons\icons8-key-256.png" />
@@ -59,10 +51,6 @@
     <None Remove="Views\TasksView.xaml" />
     <None Remove="Windows\AboutWindow.xaml" />
     <None Remove="Windows\SettingsWindow.xaml" />
-    <Content Include="Assets\CryptoIcons\icons8-data-encryption-64.png" />
-    <Content Include="Assets\CryptoIcons\icons8-key-160.png" />
-    <Content Include="Assets\CryptoIcons\icons8-key-256.png" />
-    <Content Include="Assets\CryptoIcons\icons8-security-aes-64.png" />
     <None Include="..\.editorconfig" Link=".editorconfig" />
     <None Include="Assets\CoreBackup.png">
       <Pack>True</Pack>

@@ -347,5 +347,13 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
         }
 
         #endregion
+
+        public void OnRefreshSourcesEvent(object o, EventArgs e)
+        {
+            IsLogged = false;
+            UsernameInput = String.Empty;
+            PasswordInput = String.Empty;
+            ServerInput = String.Empty;
+        }
     }
 }

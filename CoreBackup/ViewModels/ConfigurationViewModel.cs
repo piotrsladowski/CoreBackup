@@ -104,6 +104,10 @@ namespace CoreBackup.ViewModels
             SavedConfigurationLeftEvent += directoryLeftView.OnSavedConfigurationEvent;
             SavedConfigurationRightEvent += ftpRightView.OnSavedConfigurationEvent;
             SavedConfigurationRightEvent += directoryRightView.OnSavedConfigurationEvent;
+            RefreshSourcesEvent += directoryLeftView.OnRefreshSourcesEvent;
+            RefreshSourcesEvent += directoryRightView.OnRefreshSourcesEvent;
+            RefreshSourcesEvent += ftpLeftView.OnRefreshSourcesEvent;
+            RefreshSourcesEvent += ftpRightView.OnRefreshSourcesEvent;
         }
 
 
@@ -129,6 +133,13 @@ namespace CoreBackup.ViewModels
         }
 
 
+        public event EventHandler RefreshSourcesEvent;
+
+        protected virtual void OnRefreshSourcesEvent()
+        {
+            RefreshSourcesEvent(this, EventArgs.Empty);
+        }
+
         #endregion
 
         private string _configurationName;
@@ -150,6 +161,8 @@ namespace CoreBackup.ViewModels
             CoreTask.AddTaskEntry(_configurationName, configHub);
             OnSavedConfigurationEvent();
             Debug.WriteLine(_configurationName);
+
+            OnRefreshSourcesEvent();
         }
 
         private void UpdateConfiguraions()
