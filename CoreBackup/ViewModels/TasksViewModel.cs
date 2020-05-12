@@ -145,6 +145,9 @@ namespace CoreBackup.ViewModels
 
         private void CompareFiles()
         {
+            EventLogViewModel.AddNewRegistry("File Comparing algorithm is running",
+                DateTime.Now, this.GetType().Name, "HIGH");
+
             // Lookup foreach entry in LeftFilesDict in RightFilesDict
             foreach (KeyValuePair<string, FileInformation> entry in leftFilesDictionary)
             {

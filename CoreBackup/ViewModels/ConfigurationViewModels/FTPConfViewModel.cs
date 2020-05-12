@@ -129,6 +129,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 
         }
 
+        #region GetPath
         private async Task<string> GetPath(bool DisposableUploadFile)
         {
             string[] resultReturn;
@@ -156,11 +157,11 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             }
             return fullPath;
         }
+    #endregion
 
-        // FTP SERVER CONFIGURATION //
         #region FTP Configuration Fields
 
-        
+
 
         private string _username;
         public string UsernameInput

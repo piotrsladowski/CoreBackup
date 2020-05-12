@@ -31,6 +31,8 @@
         </ComboBox>
         <UserControl Grid.Column="1" Grid.Row="2" Content="{Binding RightData}"/>
       </Grid>
+
+      <!-- CONFIGURATION NAME PLACEHOLDER -->
       <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
         <TextBox Text="{Binding ConfigurationName}" Watermark="Type configuration name" Height="30" Margin="0,-55,5,0"/>
         <Button Width="150" Height="30" Content="Save Configuration" HorizontalContentAlignment="Center"

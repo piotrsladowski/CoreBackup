@@ -8,6 +8,7 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using CoreBackup.Models.IO;
+using CoreBackup.ViewModels;
 using DynamicData;
 using File = System.IO.File;
 
@@ -23,13 +24,6 @@ namespace CoreBackup.Models.Remote
         public static List<string> files;
 
         #region Validate Logging Process
-        /// <summary>
-        /// User Login Validation
-        /// </summary>
-        /// <returns>
-        /// False if Username, Password or Server IP is Incorrect
-        /// True if data listed above is Correct
-        /// </returns>
         public bool ValidateLogging()
         {
 
@@ -88,7 +82,8 @@ namespace CoreBackup.Models.Remote
             }
             catch (WebException)
             {
-                Debug.WriteLine("Exception - FTP Class - Upload Method");
+                EventLogViewModel.AddNewRegistry("An error has occured during file uploading",
+                    DateTime.Now, this.GetType().Name, "ERROR");
             }
         }
         #endregion
@@ -142,7 +137,8 @@ namespace CoreBackup.Models.Remote
             }
             catch (Exception e)
             {
-               Debug.WriteLine("Exception - FTP Class - Download Method");
+                EventLogViewModel.AddNewRegistry("An error has occured during file downloading",
+                    DateTime.Now, this.GetType().Name, "ERROR");
             }
         }
         #endregion
@@ -170,7 +166,8 @@ namespace CoreBackup.Models.Remote
             }
             catch (WebException)
             {
-               Debug.WriteLine("Exception - FTP Class - GetFileList Method");
+                EventLogViewModel.AddNewRegistry("An error has occured during file listing",
+                    DateTime.Now, this.GetType().Name, "ERROR");
             }
         }
         #endregion
@@ -295,7 +292,8 @@ namespace CoreBackup.Models.Remote
             }
             catch (Exception e)
             {
-                throw;
+                EventLogViewModel.AddNewRegistry("An error has occured during files listing",
+                    DateTime.Now, "FTP", "ERROR");
             }
            
         }
@@ -322,8 +320,9 @@ namespace CoreBackup.Models.Remote
                 }
             }
             catch (Exception e)
-            { 
-                throw;
+            {
+                EventLogViewModel.AddNewRegistry("An error has occured during collecting files' infos",
+                    DateTime.Now, "FTP", "ERROR");
             }
 
         }

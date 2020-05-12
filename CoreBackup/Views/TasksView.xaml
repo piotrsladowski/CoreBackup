@@ -7,6 +7,7 @@
 
   
   <Grid RowDefinitions="50,*" ClipToBounds="True">
+    <!--Synchronization buttons-->
     <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*,*" ClipToBounds="True">
       <Button Grid.Column="0" Background="Transparent" Command="{Binding SyncToLeftOverride}">
         <Image Source="avares://CoreBackup/Assets/Icons/arrow_doubleLeft_90_blue.png"></Image>
@@ -24,6 +25,7 @@
         <Image Source="avares://CoreBackup/Assets/Icons/arrow_doubleRight_90_blue.png"></Image>
       </Button>
     </Grid>
+    
       <Grid ClipToBounds="True" Grid.Row="1">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*"/>
@@ -33,6 +35,7 @@
         <ScrollViewer Grid.Column="0"
                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
                       ScrollViewer.VerticalScrollBarVisibility="Disabled">
+          <!-- Dynamic data grid - Left Source-->
           <DataGrid x:Name="TasksDataGridLeft"
                     Items="{Binding LeftFiles}"
                     CanUserReorderColumns="True"
@@ -75,6 +78,7 @@
         <ScrollViewer Grid.Column="2"
                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
                       ScrollViewer.VerticalScrollBarVisibility="Disabled">
+          <!--Dynamic data grid - Right Source-->
         <DataGrid x:Name="TasksDataGridRight"
                   Items="{Binding RightFiles}"
                   CanUserReorderColumns="True"

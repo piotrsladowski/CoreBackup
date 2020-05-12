@@ -68,16 +68,21 @@
     </Styles>
   </UserControl.Styles>
   <!-- STYLIZATION END -->
+  
+  
   <Grid RowDefinitions="30, *, 30" ShowGridLines="True">
     <!-- Top Navbar -->
     <UserControl Content="{Binding Navbar}" Grid.Row="0"></UserControl>
     <!-- Main -->
     <Grid ClipToBounds="True" Grid.Row="1" RowDefinitions="*" ColumnDefinitions="300,*" ShowGridLines="True">
-      <!-- Sidebar -->
+      
+      <!-- Menu Sidebar -->
       <StackPanel Grid.Column="0">
-        <Image  MaxHeight="40" ClipToBounds="True" Source="/Assets/CoreBackup.png" Margin="10"></Image>
-        <Button Content="Tasks" HorizontalContentAlignment="Center" Classes="MenuButton" Command="{Binding ChangeScreenTasks}" Padding="15"/>
-        <Button Content="File Explorer" HorizontalContentAlignment="Center" Classes="MenuButton" Command="{Binding ChangeScreenFileExplorer}" Padding="15"/>
+        <Image  MaxHeight="40" ClipToBounds="True" Source="/Assets/CoreBackup.png" Margin="10"/>
+        <Button Content="Tasks" HorizontalContentAlignment="Center" Classes="MenuButton"
+                Command="{Binding ChangeScreenTasks}" Padding="15"/>
+        <Button Content="File Explorer" HorizontalContentAlignment="Center" Classes="MenuButton"
+                Command="{Binding ChangeScreenFileExplorer}" Padding="15"/>
         
         <!-- Dropdown submenu -->
         <Expander Classes="Expander" HorizontalAlignment="Stretch" VerticalAlignment="Top" ExpandDirection="Down">
@@ -85,15 +90,19 @@
             <TextBlock Text="Settings" Margin="100,10,0,10" FontSize="13"/>
           </Expander.Header>
           <StackPanel>
-            <Button Content="Configuration" HorizontalContentAlignment="Center" Classes="SubmenuButton" Command="{Binding ChangeScreenConfiguration}" Padding="8"/>
-            <Button Content="Crypto" HorizontalContentAlignment="Center" Command="{Binding ChangeScreenCryptography}" Classes="SubmenuButton" Padding="8"/>
+            <Button Content="Configuration" HorizontalContentAlignment="Center" Classes="SubmenuButton"
+                    Command="{Binding ChangeScreenConfiguration}" Padding="8"/>
+            <Button Content="Crypto" HorizontalContentAlignment="Center"
+                    Command="{Binding ChangeScreenCryptography}" Classes="SubmenuButton" Padding="8"/>
           </StackPanel>
         </Expander>
        
-        <Button Content="Event Log" HorizontalContentAlignment="Center" Classes="MenuButton" Command="{Binding ChangeScreenEventLog}" Padding="15"/>
+        <Button Content="Event Log" HorizontalContentAlignment="Center" Classes="MenuButton"
+                Command="{Binding ChangeScreenEventLog}" Padding="15"/>
        <UserControl Content="{Binding InfoPanel}" Grid.Column="1"/>
       </StackPanel>
-      <!-- Container -->
+      
+      <!-- Container-->
       <UserControl Content="{Binding Screen}" Grid.Column="1"/>
     </Grid>
 
