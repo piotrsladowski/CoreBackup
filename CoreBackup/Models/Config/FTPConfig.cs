@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using CoreBackup.Models.Remote;
+using CoreBackup.ViewModels;
 
 namespace CoreBackup.Models.Config
 {
@@ -75,12 +76,13 @@ namespace CoreBackup.Models.Config
             try
             {
                 var filesList = new List<FileInformation>();
-                string beforeFilename = "";
-                FTP.GetAllInformationsAboutFiles(credentials["server"], credentials["username"], credentials["password"], ref filesList, beforeFilename);
+                FTP.GetAllInformationsAboutFiles(credentials["server"], credentials["username"], credentials["password"], ref filesList);
                 return filesList;
             }
             catch (Exception e)
             {
+                EventLogViewModel.AddNewRegistry("An error has occured during remote file listing", DateTime.Now, 
+                    "FTP" + credentials["server"], "ERROR");
                 throw;
             }
         }

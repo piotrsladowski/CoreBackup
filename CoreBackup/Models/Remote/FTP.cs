@@ -20,7 +20,8 @@ namespace CoreBackup.Models.Remote
         public string Password { get; set; }
 
         public List<string> directories;
-                
+        public static List<string> files;
+
         #region Validate Logging Process
         /// <summary>
         /// User Login Validation
@@ -196,9 +197,9 @@ namespace CoreBackup.Models.Remote
         }
         #endregion
 
-        public static Int32 GetDateTimestamp(string filename, string ip, string username, string password)
+        public static Int32 GetDateTimestamp(string entry, string username, string password)
         {
-            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + ip + "/" + filename);
+            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create(entry);
             ftpRequest.Method = WebRequestMethods.Ftp.GetDateTimestamp;
             ftpRequest.Credentials = new NetworkCredential(username, password);
             try
@@ -206,21 +207,21 @@ namespace CoreBackup.Models.Remote
                 using (FtpWebResponse response =
                     (FtpWebResponse)ftpRequest.GetResponse())
                 {
-                    return (Int32)(DateTime.UtcNow.Subtract(response.LastModified)).TotalSeconds;
+                    return (Int32) (new DateTimeOffset(response.LastModified)).ToUnixTimeSeconds();
                 }
             }
             catch (Exception e)
             {
                 if (e.Message.Contains("File unavailable"))
-                    return (Int32)(DateTime.UtcNow.Subtract(new DateTime(2020, 1, 1))).TotalSeconds;
+                    return (Int32) (new DateTimeOffset(DateTime.Now)).ToUnixTimeSeconds();
                 throw;
             }
         }
 
 
-        public static long GetFileSize(string filename, string ip, string username, string password)
+        public static long GetFileSize(string entry, string username, string password)
         {
-            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://" + ip + "/" + filename);
+            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create(entry);
             ftpRequest.Method = WebRequestMethods.Ftp.GetFileSize;
             ftpRequest.Credentials = new NetworkCredential(username, password);
             try
@@ -233,72 +234,99 @@ namespace CoreBackup.Models.Remote
             }
             catch (Exception e)
             {
-                Debug.WriteLine("OKEJ");
                 if (e.Message.Contains("File unavailable"))
                     return 0;
                 throw;
             }
         }
 
-        public static void GetAllInformationsAboutFiles(string ip, string username, string password, ref List<FileInformation> listFiles, string beforeFilename)
+        public static void ListFilesAndDirectories(string ip, string username, string password)
         {
-            var url = "ftp://" + ip;
-            var request = (FtpWebRequest)WebRequest.Create(url);
-            request.Method = WebRequestMethods.Ftp.ListDirectory;
-            request.Credentials = new NetworkCredential(username, password);
-
             try
             {
-                using (var response = (FtpWebResponse)request.GetResponse())
+                files = new List<string>();
+                Queue<String> folders = new Queue<String>();
+                folders.Enqueue("ftp://" + ip + "/");
+
+                while (folders.Count > 0)
                 {
-                    using (var responseStream = response.GetResponseStream())
+                    String fld = folders.Dequeue();
+                    List<String> newFiles = new List<String>();
+
+                    FtpWebRequest ftp = (FtpWebRequest)FtpWebRequest.Create(fld);
+                    ftp.Credentials = new NetworkCredential(username, password);
+                    ftp.UsePassive = false;
+                    ftp.Method = WebRequestMethods.Ftp.ListDirectory;
+                    using (StreamReader resp = new StreamReader(ftp.GetResponse().GetResponseStream()))
                     {
-                        var reader = new StreamReader(responseStream);
-                        while (!reader.EndOfStream)
+                        String line = resp.ReadLine();
+                        while (line != null)
                         {
-                            string line = reader.ReadLine();
-                            if (string.IsNullOrWhiteSpace(line) == false)
-                            {
-                                string[] lineComponents = line.Split('/');
-                                string[] lineChecker= line.Split('.');
-
-                                FileInformation fi = new FileInformation();
-
-                                // DIRECTORIES
-                                if (lineChecker.Length == 1)
-                                {
-                                    string directory = lineChecker[0];
-                                    GetAllInformationsAboutFiles(ip+"/"+directory, username, password, ref listFiles, directory);
-                                }
-                                // FILE
-                                else if (lineChecker.Length == 2)
-                                {
-                                    string fileName = lineComponents.Last();
-                                    string[] fileNameSplitted = fileName.Split(".");
-                                    fi.RelativePath = fileNameSplitted[0];
-                                    fi.Extension = fileNameSplitted[1];
-                                    if (beforeFilename.Equals(""))
-                                    {
-                                        fi.FullPath = beforeFilename + fileName;
-                                    }
-                                    else
-                                    {
-                                        fi.FullPath = beforeFilename + "/" + fileName;
-                                    } 
-                                    fi.ModificationTime = FTP.GetDateTimestamp(fi.FullPath, ip, username, password);
-                                    fi.Size = FTP.GetFileSize(fi.FullPath, ip, username, password);
-                                    listFiles.Add(fi);
-                                }
-                            }
+                            newFiles.Add(line.Trim());
+                            line = resp.ReadLine();
                         }
                     }
+
+                    ftp = (FtpWebRequest)FtpWebRequest.Create(fld);
+                    ftp.Credentials = new NetworkCredential(username, password);
+                    ftp.UsePassive = false;
+                    ftp.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
+                    using (StreamReader resp = new StreamReader(ftp.GetResponse().GetResponseStream()))
+                    {
+                        String line = resp.ReadLine();
+                        while (line != null)
+                        {
+                            if (line.Trim().ToLower().StartsWith("d") || line.Contains(" <DIR> "))
+                            {
+                                String dir = newFiles.First(x => line.EndsWith(x));
+                                newFiles.Remove(dir);
+                                folders.Enqueue(fld + dir + "/");
+                            }
+                            line = resp.ReadLine();
+                        }
+                    }
+                    files.AddRange(from f in newFiles select fld + f);
+                }
+
+                foreach (var entry in files)
+                {
+                    Debug.WriteLine(entry.ToString());
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
                 throw;
             }
+           
         }
+
+        public static void GetAllInformationsAboutFiles(string ip, string username, string password,
+            ref List<FileInformation> listFiles)
+        {
+            ListFilesAndDirectories(ip, username, password);
+            try
+            {
+                foreach (var entry in files)
+                {
+                    FileInformation fileInfo = new FileInformation();
+                    string[] entrySplitted = entry.Split("/");
+                    string filename = entrySplitted[entrySplitted.Length - 1];
+                    string[] filenameSplitted = filename.Split(".");
+                    fileInfo.FullPath = entry;
+                    fileInfo.RelativePath = filenameSplitted[0];
+                    fileInfo.Extension = filenameSplitted[1];
+                    fileInfo.ModificationTime = GetDateTimestamp(entry, username, password);
+                    fileInfo.Size = GetFileSize(entry, username, password);
+                    fileInfo.LocalPath = entry;
+                    listFiles.Add(fileInfo);
+                }
+            }
+            catch (Exception e)
+            { 
+                throw;
+            }
+
+        }
+
     }
 }

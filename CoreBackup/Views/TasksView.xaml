@@ -65,7 +65,7 @@
             <DataGridTextColumn Header="Extension"
                                 Binding="{Binding Extension}"
                                 Width="Auto"/>
-            <DataGridTextColumn Header="LocalPath"
+            <DataGridTextColumn Header="Path"
                                 Binding="{Binding LocalPath}"
                                 Width="Auto"/>
           </DataGrid.Columns>
