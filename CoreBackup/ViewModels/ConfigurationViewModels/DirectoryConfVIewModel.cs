@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Reactive;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -19,6 +14,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 {
     class DirectoryConfViewModel : ViewModelBase
     {
+        #region Variables
         private int counter = 0;
         private readonly int slotLimits = 10;
         
@@ -27,7 +23,9 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
         public ReactiveCommand<Unit, Unit>[] commandsArray;
         public ObservableCollection<LocalPath> Data { get; set; }
         private DirectoryConfig directoryConfig;
+        #endregion
 
+        #region Constructor
         public DirectoryConfViewModel()
         {
             AddNewRowCommand = new Command(AddNewRow);
@@ -47,6 +45,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             commandsArray[8] = ReactiveCommand.Create(Btn8BrowseLocalFiles);
             commandsArray[9] = ReactiveCommand.Create(Btn9BrowseLocalFiles);
         }
+        #endregion
 
         #region Buttons Binded Functions
         private bool eraseRowVisible;
@@ -117,6 +116,7 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
         }
         #endregion
 
+        #region GetPath
         private async Task<string> GetPath()
         {
             string resultReturn;
@@ -133,7 +133,9 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
 
             return fullPath;
         }
+        #endregion
 
+        #region Dynamic Rows Manipulation
         private void AddNewRow()
         {
             if (counter >= 0)
@@ -168,8 +170,9 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
                 }
             }
         }
-        
+        #endregion
 
+        #region Handled Events
         public void OnSavedConfigurationEvent(object o, ConfigurationEventArgs e)
         {
             Debug.WriteLine("OnSavedConfiguration event successfully raised from DirectoryConf");
@@ -196,5 +199,6 @@ namespace CoreBackup.ViewModels.ConfigurationViewModels
             counter = 0;
             Data.Clear();
         }
+        #endregion
     }
 }

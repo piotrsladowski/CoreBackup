@@ -4,7 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CoreBackup.Views.ConfigurationViews.FTPConfView">
-  <Grid ColumnDefinitions="50*, 50*" RowDefinitions="30,30,30,30,30,30,30,40,30,30,40,30,40,30,30*" Margin="10,0,0,0" ClipToBounds="True">
+
+  <!-- FTP Layout fully grid-on based -->
+  <Grid ColumnDefinitions="50*, 50*" RowDefinitions="30,30,30,30,30,30,30,40,30,30,40,30,40,30,30*"
+        Margin="10,0,0,0" ClipToBounds="True">
 
     <!-- SERVER -->
     <TextBlock Text="Type FTP Server IP Address" Grid.Column="0" Grid.Row="1"

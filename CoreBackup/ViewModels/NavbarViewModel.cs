@@ -192,7 +192,11 @@ namespace CoreBackup.ViewModels
             }
             // set source name for the new theme
             ((StyleInclude)Application.Current.Styles[1]).Source = new Uri("avares://Avalonia.Themes.Default/Accents/BaseLight.xaml");
+
+            EventLogViewModel.AddNewRegistry("Application Theme has been changed to Light",
+                DateTime.Now, this.GetType().Name, "LOW");
         }
+    
 
         private void ChangeThemeToDark()
         {
@@ -216,6 +220,9 @@ namespace CoreBackup.ViewModels
             }
             // Set source name for the new theme.
             ((StyleInclude)Application.Current.Styles[1]).Source = new Uri("avares://Avalonia.Themes.Default/Accents/BaseDark.xaml");
+
+            EventLogViewModel.AddNewRegistry("Application Theme has been changed to Dark",
+                DateTime.Now, this.GetType().Name, "LOW");
         }
     }
 }

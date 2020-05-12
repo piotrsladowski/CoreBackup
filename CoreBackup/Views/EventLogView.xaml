@@ -6,9 +6,12 @@
              x:Class="CoreBackup.Views.EventLogView">
 
   <DockPanel>
-    <TextBlock Text="--- Notifications and Events ---" TextAlignment="Center" FontSize="16" Margin="1,1,1,10" Grid.Row="0" DockPanel.Dock="Top"/>
+    <TextBlock Text="--- Notifications and Events ---" TextAlignment="Center" FontSize="16"
+               Margin="1,1,1,10" Grid.Row="0" DockPanel.Dock="Top"/>
     <Grid>
-      <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
+      <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <!-- Dynamic data grid -->
         <DataGrid x:Name="EventLogsDataGrid"
                   AutoGenerateColumns="False"
                   Items="{Binding LogsData}"

@@ -5,12 +5,13 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CoreBackup.Views.ConfigurationViews.DirectoryConfView">
 
-  
-   <DockPanel Margin="0,27,0,0">
+
+  <DockPanel Margin="0,27,0,0">
     <Button Content="Delete Slot" Command="{Binding EraseLastRowCommand}" Width="200"
             Margin="-290,5,0,0" DockPanel.Dock="Bottom" IsVisible="{Binding EraseRowVisible}"/>
     <Button Content="Add New Slot" Command="{Binding AddNewRowCommand}" Width="200"
             Margin="-290,20,0,0" DockPanel.Dock="Bottom"/>
+    <!-- Binding items to dynamically changed collection. Dynamic Grid-->
     <ItemsControl Items="{Binding Data}">
       <ItemsControl.ItemTemplate>
         <DataTemplate>
@@ -27,18 +28,20 @@
                 <ColumnDefinition Width="100"/>
               </Grid.ColumnDefinitions>
 
-         
+              <!--Mapping property-->
               <TextBox Text="{Binding Path}"
                             Grid.Row="1" Grid.ColumnSpan="1" IsEnabled="False"
                             Margin="30,0,0,0"/>
 
               <Button Content="Browse" Command="{Binding ExplorerCommand}" Grid.Column="3"
               Grid.Row="1"  MaxWidth="130" Margin="-70,0,0,0" IsEnabled="True"/>
-              
+
             </Grid>
           </Border>
         </DataTemplate>
       </ItemsControl.ItemTemplate>
     </ItemsControl>
   </DockPanel>
+
 </UserControl>
+
