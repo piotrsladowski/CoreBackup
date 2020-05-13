@@ -8,6 +8,7 @@ using CoreBackup.Models.Tasks;
 using ReactiveUI;
 using CoreBackup.ViewModels.ConfigurationViewModels;
 using System.Threading;
+using CoreBackup.Models.Logging;
 
 namespace CoreBackup.ViewModels
 {
@@ -152,17 +153,38 @@ namespace CoreBackup.ViewModels
 
         private async void SaveConfiguration()
         {
-            ConfigHub configHub = new ConfigHub();
-            OnSavedConfigurationLeftEvent(configHub, _cBoxLeftSelectedIdx, 0);
-            OnSavedConfigurationRightEvent(configHub, _cBoxRightSelectedIdx, 1);
+            if ((_cBoxLeftSelectedIdx == 2 && !ftpLeftView.IsLogged) ||
+                (_cBoxRightSelectedIdx == 2 && !ftpRightView.IsLogged))
+            {
+                ConfigurationName = "";
+                EventLogViewModel.AddNewRegistry("You Can not save configuration without proper credentials",
+                    DateTime.Now,
+                    "Configuration", "ERROR");
+            }
+            else
+            {
+                if (!CoreTask.tasksList.ContainsKey(_configurationName))
+                {
+                    ConfigHub configHub = new ConfigHub();
+                    OnSavedConfigurationLeftEvent(configHub, _cBoxLeftSelectedIdx, 0);
+                    OnSavedConfigurationRightEvent(configHub, _cBoxRightSelectedIdx, 1);
 
 
-            Thread.Sleep(100); // TODO add notify after events complete
-            CoreTask.AddTaskEntry(_configurationName, configHub);
-            OnSavedConfigurationEvent();
-            Debug.WriteLine(_configurationName);
+                    Thread.Sleep(100); // TODO add notify after events complete
+                    CoreTask.AddTaskEntry(_configurationName, configHub);
+                    OnSavedConfigurationEvent();
+                    Debug.WriteLine(_configurationName);
 
-            OnRefreshSourcesEvent();
+                    OnRefreshSourcesEvent();
+                    ConfigurationName = "";
+                }
+                else
+                {
+                    ConfigurationName = "";
+                    EventLogViewModel.AddNewRegistry("Configuration " + ConfigurationName + " already exists!", DateTime.Now,
+                        "Configuration", "ERROR");
+                }
+            }
         }
 
         private void UpdateConfiguraions()
