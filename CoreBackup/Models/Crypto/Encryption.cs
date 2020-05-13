@@ -74,6 +74,8 @@ namespace CoreBackup.Models.Crypto
                     AES256Key = buffer.Take(32).ToArray();
                     AES256IV = buffer.Skip(32).Take(16).ToArray();
                     IsKeyLoaded = true;
+                    IsKeySet = true;
+                    IsIVSet = true;
                     EventLogViewModel.AddNewRegistry("AES Key and IV has been loaded from external file",
                         DateTime.Now, "Encryption", "HIGH");
                 }

@@ -114,7 +114,7 @@ namespace CoreBackup.ViewModels
         private void RemoveConfiguration(string name)
         {
             CoreTask.RemoveTaskEntry(name);
-            // TODO: Update Info Panel View
+            OnDictionaryPropertyChanged();
         }
     }
 }
