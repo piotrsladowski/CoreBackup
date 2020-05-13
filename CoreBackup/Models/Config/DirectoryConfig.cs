@@ -54,9 +54,7 @@ namespace CoreBackup.Models.Config
                     {
                         FileInformation fileInformation = new FileInformation();
                         var fileInfo = new FileInfo(file);
-                        //var dirName = fileInfo.Directory.Name;
                         fileInformation.FullPath = fileInfo.FullName;
-                        //fileInformation.RelativePath = dirName + Path.DirectorySeparatorChar + fileInfo.FullName.Remove(0, path.Length + 1);
                         fileInformation.RelativePath = fileInfo.FullName.Remove(0, path.Length + 1);
                         fileInformation.Extension = fileInfo.Extension;
                         fileInformation.Size = fileInfo.Length;

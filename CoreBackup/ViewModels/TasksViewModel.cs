@@ -75,6 +75,11 @@ namespace CoreBackup.ViewModels
         public void OnOpenedTasksView(object o, EventArgs e)
         {
             Debug.WriteLine("OnOpenedTasksView event successfully raised");
+            RefreshDataGrid();
+        }
+
+        private void RefreshDataGrid()
+        {
             GetAllFiles();
             CreateFilesDictionary();
             GetSummaryFileInfo();
@@ -233,27 +238,42 @@ namespace CoreBackup.ViewModels
         {
             SyncActions syncActions = new SyncActions(LeftFiles, RightFiles);
             syncActions.SyncMirror();
+            EventLogViewModel.AddNewRegistry("Synchronization completed",
+DateTime.Now, this.GetType().Name, "HIGH");
+            RefreshDataGrid();
         }
 
         private void SyncToLeft()
         {
             SyncActions syncActions = new SyncActions(LeftFiles, RightFiles);
             syncActions.SyncToLeft();
+            EventLogViewModel.AddNewRegistry("Synchronization completed",
+DateTime.Now, this.GetType().Name, "HIGH");
+            RefreshDataGrid();
         }
         private void SyncToLeftOverride()
         {
             SyncActions syncActions = new SyncActions(LeftFiles, RightFiles);
             syncActions.SyncToLeftOverride();
+            EventLogViewModel.AddNewRegistry("Synchronization completed",
+DateTime.Now, this.GetType().Name, "HIGH");
+            RefreshDataGrid();
         }
         private void SyncToRight()
         {
             SyncActions syncActions = new SyncActions(LeftFiles, RightFiles);
             syncActions.SyncToRight();
+            EventLogViewModel.AddNewRegistry("Synchronization completed",
+DateTime.Now, this.GetType().Name, "HIGH");
+            RefreshDataGrid();
         }
         private void SyncToRightOverride()
         {
             SyncActions syncActions = new SyncActions(LeftFiles, RightFiles);
             syncActions.SyncToRightOverride();
+            EventLogViewModel.AddNewRegistry("Synchronization completed",
+    DateTime.Now, this.GetType().Name, "HIGH");
+            RefreshDataGrid();
         }
     }
 }

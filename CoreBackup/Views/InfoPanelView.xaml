@@ -6,6 +6,7 @@
 						 x:Class="CoreBackup.Views.InfoPanelView">
   
   <!-- Dynamic data grid-->
+  <ScrollViewer>
 	<DataGrid Items="{Binding InfoConfigsList}"
 						CanUserReorderColumns="True"
 						CanUserResizeColumns="True"
@@ -39,4 +40,5 @@
       </DataGridTemplateColumn>
 		</DataGrid.Columns>
 	</DataGrid>
+  </ScrollViewer>
 </UserControl>
